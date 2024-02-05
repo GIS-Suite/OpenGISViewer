@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2360d212-7ba0-4b4f-b9f7-d63ccf4b4e70" name="Changes" comment="wip">
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/app.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/app.jsx" afterDir="false" />
-    </list>
+    <list default="true" id="2360d212-7ba0-4b4f-b9f7-d63ccf4b4e70" name="Changes" comment="wip" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,6 +18,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="test" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -40,7 +43,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "test",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "C:/Users/jakeh/source/OpenGISViewer",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -107,6 +110,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
     <MESSAGE value="wip" />
-    <option name="LAST_COMMIT_MESSAGE" value="wip" />
+    <MESSAGE value="WORK" />
+    <option name="LAST_COMMIT_MESSAGE" value="WORK" />
   </component>
 </project>
