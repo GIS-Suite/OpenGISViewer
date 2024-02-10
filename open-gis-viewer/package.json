@@ -11,7 +11,8 @@
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
-    "keywords": [],
+
+  "keywords": [],
   "author": {
     "name": "JakeIsCodingAway",
     "email": "jake.s.held123@gmail.com"
@@ -35,6 +36,7 @@
     "style-loader": "^3.0.0"
   },
   "dependencies": {
+    "csp-html-webpack-plugin": "^5.1.0",
     "electron-squirrel-startup": "^1.0.0",
     "ol": "^8.2.0",
     "react": "^18.2.0",

@@ -6,14 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="2360d212-7ba0-4b4f-b9f7-d63ccf4b4e70" name="Changes" comment="wip">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/forge.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/forge.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/Maps.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/Maps.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/app.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/app.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/preload.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/preload.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/renderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/renderer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/webpack.main.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/webpack.main.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/webpack.renderer.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/webpack.renderer.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,6 +106,11 @@
       <workItem from="1707006039962" duration="1735000" />
       <workItem from="1707356906660" duration="14613000" />
       <workItem from="1707419391336" duration="5091000" />
+      <workItem from="1707435217809" duration="410000" />
+      <workItem from="1707447385199" duration="3338000" />
+      <workItem from="1707451673909" duration="3538000" />
+      <workItem from="1707455423305" duration="1260000" />
+      <workItem from="1707537731879" duration="9218000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
