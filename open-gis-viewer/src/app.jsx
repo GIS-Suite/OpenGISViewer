@@ -1,5 +1,9 @@
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
+import AppContainer from "./components/AppContainer";
 
-const root = createRoot(document.body);
-root.render(<h2>Hello from React!</h2>);
+const mapNode  = document.getElementById('root');
+const root  = createRoot(mapNode);
+
+
+root.render(<><AppContainer/></>);
