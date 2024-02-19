@@ -6,9 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="2360d212-7ba0-4b4f-b9f7-d63ccf4b4e70" name="Changes" comment="wip">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/forge.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/forge.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/ControlMenu.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/ControlMenu.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/index.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +18,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="CSS File" />
         <option value="JavaScript File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -106,6 +106,7 @@
       <workItem from="1708054174023" duration="7055000" />
       <workItem from="1708061754836" duration="4927000" />
       <workItem from="1708066754277" duration="193000" />
+      <workItem from="1708319479667" duration="7057000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />

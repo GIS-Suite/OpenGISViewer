@@ -1,13 +1,14 @@
 html, body  {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  overflow:hidden;
+  overflow-x:hidden;
+  overflow-y: auto;
 }
 
 .map{
 
   width:100%;
-  height:90dvh;
+  height:100dvh;  overflow:hidden;
 
 }
 

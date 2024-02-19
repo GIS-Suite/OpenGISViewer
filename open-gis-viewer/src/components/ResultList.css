@@ -1,0 +1,23 @@
+.result {
+    width: 100%;
+    margin: auto;
+    padding: 3rem;
+    border-spacing: 1rem;
+    text-align: center;
+    overflow: scroll;
+    border-radius: 8px;
+    background: #080909;
+
+}
+
+.result thead {
+    font-size: 1.2rem;
+    color: #ffffff;
+    margin: 2rem;
+}
+
+.result tbody {
+    padding:2rem;
+    font-size: 1rem;
+    color: #ffffff;
+}

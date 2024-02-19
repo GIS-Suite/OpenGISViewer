@@ -1,44 +1,33 @@
 import React, {useEffect, useRef, useState} from 'react';
-import  "./ControlMenu.css";
+import "./ControlMenu.css";
 import 'ol/ol.css';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import OSM from 'ol/source/OSM';
-import {MousePosition, defaults as defaultControls, ZoomSlider, Attribution, OverviewMap} from 'ol/control';
-import { ScaleLine } from 'ol/control';
+import {Attribution, defaults as defaultControls, MousePosition, OverviewMap, ScaleLine, ZoomSlider} from 'ol/control';
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
-import {ImageWMS, TileJSON, TileWMS, WMTS} from "ol/source";
-import {GeoJSON, WMSCapabilities, WMTSCapabilities} from "ol/format";
+import {TileWMS} from "ol/source";
+import {GeoJSON} from "ol/format";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import {bbox as bboxStrategy} from 'ol/loadingstrategy';
+import {fetchWmsService} from "../utils/fetchParseWMS";
+import ResultList from "./ResultList";
+
 function Maps() {
     const [maps, setMaps] = useState({});
     const mapElement = useRef();
     const [layerType, setLayerType] = useState('XYZ');
     const [layerUrl, setLayerUrl] = useState('');
+    const [dataLayers, setDataLayers] = useState(null);
 
-    //parser for WMS xml
-    const parser = new WMSCapabilities();
-    const fetchWms = async () => {//fetch bluemarble layer or else from url
-        try {
-            const response = await fetch('https://geoint.nrlssc.org/nrltileserver/wms?REQUEST=GetCapabilities&SERVICE=WMS&VERSION=1.3.0');
-            const text = await response.text();
-            const result = parser.read(text);
-            const marble = result.Capability.Layer.Layer.find(layer => layer.Name === 'bluemarble');
-            return marble;
-
-        } catch (error) {
-            console.error('Error fetching or parsing WMS capabilities:', error);
-        }
-    };
 
     useEffect( () => {
         //initialize a  main Map
         const initMap = async () => {
-            let res = await fetchWms();
-            console.log("marble;", res);
+            const res = await fetchWmsService('https://geoint.nrlssc.org/nrltileserver/wms/layername?REQUEST=GetCapabilities&SERVICE=WMS');
+            const marble = res.Capability.Layer.Layer.find(layer => layer.Name === 'bluemarble');
             const initialMap = new Map({
 
                 target: mapElement.current,
@@ -47,7 +36,7 @@ function Maps() {
                         source: new TileWMS({
                             url: 'https://geoint.nrlssc.org/nrltileserver/wms',
                             params: {
-                                'LAYERS': res.Name,
+                                'LAYERS': marble.Name,
                             },
                             serverType: 'geoserver',
                         }),
@@ -88,7 +77,7 @@ function Maps() {
     }, []);
     //handle adding layers based on user input
     const handleAddLayer = () => {
-        console.log("Main map", maps);
+
         let layerToAdd;
 
         switch (layerType) {//support XYZ here
@@ -100,13 +89,32 @@ function Maps() {
                     }),
                 });
                 break;
-            case 'WMS'://add WMS layeres suport, TileWMS , todos ImageWMS
+            case 'WMS'://add WMS layeres suport, TileWMS , todos ImageWMS?
+                const getWMS = async () => {
+
+                    try {
+                        const data = await fetchWmsService(layerUrl);
+                        console.log(data);
+                        setDataLayers(data);
+                    } catch (error) {
+                        console.error('Error fetching data:', error);
+                    }
+
+                }
+                getWMS();
+                const baseUrl = new URL(layerUrl).origin + new URL(layerUrl).pathname.split('/').slice(0, 3).join('/');
+                console.log(baseUrl);
                 layerToAdd = new TileLayer({
                     source: new TileWMS({
-                        url: layerUrl,
+                       url:baseUrl ,
+                        params: {
+                            'LAYERS':"DBDBV7_level0_30sec_nps",
+                        },
                         serverType: 'geoserver',
                     })
                 });
+
+
                 break;
             case 'WFS':// suport for WFS TODOS
                 layerToAdd = new VectorLayer({
@@ -129,7 +137,7 @@ function Maps() {
                 const attribution = new Attribution({
                     collapsible: false,
                 });
-                const parser = new WMTSCapabilities();
+
 
 
                 break;
@@ -144,6 +152,20 @@ function Maps() {
             setLayerUrl('');
         }
     };
+   function onSelectLayerHandler(name){
+       const newLayer = new TileLayer({
+           source: new TileWMS({
+               url: 'https://geoint.nrlssc.org/nrltileserver/wms',
+               params: {
+                   'LAYERS': name,
+               },
+               serverType: 'geoserver',
+           }),
+
+       })
+       maps.addLayer(newLayer);
+   console.log(maps.getLayers());
+   }
 
     return (
         <>
@@ -167,7 +189,9 @@ function Maps() {
                 <button className="control-btn"
                         onClick={handleAddLayer}>Add Layer
                 </button>
+
             </div>
+            {dataLayers && <ResultList input={dataLayers} onSelectLayer={onSelectLayerHandler}/>}
         </>
     );
 }
