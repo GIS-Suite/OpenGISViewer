@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import "./ControlMenu.css";
+import "./Maps.css";
 import 'ol/ol.css';
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -14,6 +14,8 @@ import VectorSource from "ol/source/Vector";
 import {bbox as bboxStrategy} from 'ol/loadingstrategy';
 import {fetchWmsService} from "../utils/fetchParseWMS";
 import ResultList from "./ResultList";
+import {isNotEmpty, validateWMSUrl, validateXYZUrl} from "../utils/vaidateInputUrl";
+import {fetchWmtsService} from "../utils/fetchParseWMTS";
 
 function Maps() {
     const [maps, setMaps] = useState({});
@@ -21,7 +23,13 @@ function Maps() {
     const [layerType, setLayerType] = useState('XYZ');
     const [layerUrl, setLayerUrl] = useState('');
     const [dataLayers, setDataLayers] = useState(null);
+    const [expanded, setExpanded] = useState(false);
+    const [isValid, setIsValid] = useState(true);
 
+    const toggleBottomBar = () => {
+        setExpanded(!expanded);
+
+    };
 
     useEffect( () => {
         //initialize a  main Map
@@ -53,7 +61,7 @@ function Maps() {
                             return `Coordinates: ${coordinate[0].toFixed(2)}, ${coordinate[1].toFixed(2)}`;
                         },
                         projection: 'EPSG:4326',
-                        className: 'cursor-map-controls',
+                        className: 'cursor-map-controls',// css for map cursor Maps.css
                         //  target: document.getElementById('mouse-position'),
 
                         undefinedHTML: '&nbsp;'
@@ -77,9 +85,13 @@ function Maps() {
     }, []);
     //handle adding layers based on user input
     const handleAddLayer = () => {
-
+        const check = (isNotEmpty(layerUrl) || validateXYZUrl(layerUrl) || validateWMSUrl(layerUrl));
+        setIsValid(check);
         let layerToAdd;
-
+        if(!check){
+            console.log("Invalid data");
+            return;
+        }
         switch (layerType) {//support XYZ here
             case 'XYZ':
                 layerToAdd = new TileLayer({
@@ -88,8 +100,12 @@ function Maps() {
 
                     }),
                 });
+                maps.addLayer(layerToAdd);
+                console.log("maps: ", maps.getLayers());
+                setLayerUrl('');
                 break;
             case 'WMS'://add WMS layeres suport, TileWMS , todos ImageWMS?
+
                 const getWMS = async () => {
 
                     try {
@@ -104,15 +120,7 @@ function Maps() {
                 getWMS();
                 const baseUrl = new URL(layerUrl).origin + new URL(layerUrl).pathname.split('/').slice(0, 3).join('/');
                 console.log(baseUrl);
-                layerToAdd = new TileLayer({
-                    source: new TileWMS({
-                       url:baseUrl ,
-                        params: {
-                            'LAYERS':"DBDBV7_level0_30sec_nps",
-                        },
-                        serverType: 'geoserver',
-                    })
-                });
+                setLayerUrl('');
 
 
                 break;
@@ -134,23 +142,25 @@ function Maps() {
                 });
                 break;
             case 'WMTS'://support for WMTS
-                const attribution = new Attribution({
-                    collapsible: false,
-                });
+                const getWMTS = async () => {
 
+                    try {
+                        const data = await fetchWmtsService(layerUrl);
+                        console.log(data);
+                        setDataLayers(data);
+                    } catch (error) {
+                        console.error('Error fetching data:', error);
+                    }
 
+                }
+                getWMTS();
 
                 break;
             default:
                 console.error('Invalid layer type');
                 return;
         }
-        if (maps) {
-            //add layers to main map
-            maps.addLayer(layerToAdd);
-            console.log("maps: ", maps.getLayers());
-            setLayerUrl('');
-        }
+
     };
    function onSelectLayerHandler(name){
        const newLayer = new TileLayer({
@@ -169,29 +179,71 @@ function Maps() {
 
     return (
         <>
-            <div id='map' className="map"
-                 ref={mapElement}/>
-            <div id="mouse-position" className="mouse-position"/>
-            <div className='content'>
+            < div id='map' className="map" ref={mapElement}/>
+                <button className="menu-btn" onClick={toggleBottomBar}>{expanded? "Hide" : "Import"} </button>
 
-                <select value={layerType} onChange={(e) => setLayerType(e.target.value)}>
-                    <option value="XYZ">XYZ (Tile) Layer</option>
-                    <option value="WFS">WFS Layer</option>
-                    <option value="WMS">WMS Layer</option>
-                    <option value="WMTS">WMTS Layer</option>
-                </select>
-                <input
-                    type="text"
-                    value={layerUrl}
-                    onChange={(e) => setLayerUrl(e.target.value)}
-                    placeholder="Enter layer URL"
-                />
-                <button className="control-btn"
-                        onClick={handleAddLayer}>Add Layer
-                </button>
+            <div className={`bottom-container ${expanded ? 'bottom-expanded' : ''}`}>
 
+                <div className='content'>
+                    <div className='radios-container'>
+                        <label>
+                            <input
+                                type="radio"
+                                value="XYZ"
+                                checked={layerType === 'XYZ'}
+                                onChange={() => setLayerType('XYZ')}
+                            />
+                            XYZ
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                value="WFS"
+                                checked={layerType === 'WFS'}
+                                onChange={() => setLayerType('WFS')}
+                            />
+                            WFS
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                value="WMS"
+                                checked={layerType === 'WMS'}
+                                onChange={() => setLayerType('WMS')}
+                            />
+                            WMS
+                        </label>
+                        <label>
+
+                            <input
+                                type="radio"
+                                value="WMTS"
+                                checked={layerType === 'WMTS'}
+                                onChange={() => setLayerType('WMTS')}
+                            />
+                            WMTS
+                        </label>
+
+                    </div>
+                    {!isValid && <div className="control-error">
+                        <p>Please enter a valid url</p>
+                    </div>}
+                    <input
+                        type="text"
+                        className="input-urls"
+                        value={layerUrl}
+                        onChange={(e) => setLayerUrl(e.target.value)}
+                        placeholder="Enter layer URL"
+                        required
+                    />
+                    <button className="control-btn"
+                            onClick={handleAddLayer}>Import Layer
+                    </button>
+
+                </div>
+                <ResultList input={dataLayers} onSelectLayer={onSelectLayerHandler}/>
             </div>
-            {dataLayers && <ResultList input={dataLayers} onSelectLayer={onSelectLayerHandler}/>}
+
         </>
     );
 }

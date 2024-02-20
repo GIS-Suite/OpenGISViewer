@@ -1,30 +1,32 @@
 import React from 'react';
-import "./ResultList.css";
+import "./DataList.css";
 
 export default function ResultList({ input, onSelectLayer }) {
 
-
     return (
-        <>
-                <table className="result">
-                    <thead>
-                    <tr>
-                        <th>Layers</th>
-                        <th>Abstract</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {input?.Capability?.Layer?.Layer?.map((layer) => (
+        <div className="data-scroll">
+            <table className="data">
+                <thead>
+                {input ? <tr>
+                    <th>Layers</th>
+                    <th>Abstract</th>
+                    <th>Action</th>
+                </tr> : null}
+                </thead>
+                <tbody>
+                {input ? (
+                    input?.Capability?.Layer?.Layer?.map((layer) => (
                         <tr key={layer.Title}>
-                            <td>{layer.Name}</td>
-                            <td>{layer.Abstract ? layer.Abstract : "No Abstract available"}</td>
-                            <td><button onClick={() => onSelectLayer(layer.Name)}>Add Layer</button> </td>
+                            <td colSpan={1}>{layer.Name}</td>
+                            <td >{layer.Abstract ? layer.Abstract : "No Abstract available"}</td>
+                            <td><button onClick={() => onSelectLayer(layer.Name)}>+</button></td>
                         </tr>
-                    ))}
-                    </tbody>
-                </table>
-
-        </>
+                    ))
+                ) : (
+                        null
+                )}
+                </tbody>
+            </table>
+        </div>
     );
 }
