@@ -7,7 +7,7 @@ import OSM from 'ol/source/OSM';
 import {Attribution, defaults as defaultControls, MousePosition, OverviewMap, ScaleLine, ZoomSlider} from 'ol/control';
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
-import {TileWMS} from "ol/source";
+import {TileWMS, WMTS} from "ol/source";
 import {GeoJSON} from "ol/format";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
@@ -16,6 +16,9 @@ import {fetchWmsService} from "../utils/fetchParseWMS";
 import DataList from "./DataList";
 import {isNotEmpty, validateWMSUrl, validateXYZUrl} from "../utils/vaidateInputUrl";
 import {fetchWmtsService} from "../utils/fetchParseWMTS";
+import {getTopLeft, getWidth} from "ol/extent";
+import {get} from "ol/proj";
+import WMTSTileGrid from "ol/tilegrid/WMTS";
 
 function Maps() {
     const [maps, setMaps] = useState({});
@@ -31,7 +34,7 @@ function Maps() {
 
     };
 
-    useEffect( () => {
+    useEffect(() => {
         //initialize a  main Map
         const initMap = async () => {
             const res = await fetchWmsService('https://geoint.nrlssc.org/nrltileserver/wms/layername?REQUEST=GetCapabilities&SERVICE=WMS');
@@ -88,7 +91,7 @@ function Maps() {
         const check = (isNotEmpty(layerUrl) || validateXYZUrl(layerUrl) || validateWMSUrl(layerUrl));
         setIsValid(check);
         let layerToAdd;
-        if(!check){
+        if (!check) {
             console.log("Invalid data");
             return;
         }
@@ -101,7 +104,9 @@ function Maps() {
                     }),
                 });
                 maps.addLayer(layerToAdd);
-                console.log("maps: ", maps.getLayers());
+                // console.log("maps: ", maps.getLayers());
+                setDataLayers(layerToAdd);
+                console.log(dataLayers);
                 setLayerUrl('');
                 break;
             case 'WMS'://add WMS layeres suport, TileWMS , todos ImageWMS?
@@ -118,8 +123,8 @@ function Maps() {
 
                 }
                 getWMS();
-                const baseUrl = new URL(layerUrl).origin + new URL(layerUrl).pathname.split('/').slice(0, 3).join('/');
-                console.log(baseUrl);
+                //  const baseUrl = new URL(layerUrl).origin + new URL(layerUrl).pathname.split('/').slice(0, 3).join('/');
+                console.log(dataLayers);
                 setLayerUrl('');
 
 
@@ -128,8 +133,8 @@ function Maps() {
                 layerToAdd = new VectorLayer({
                     source: new VectorSource({
                         format: new GeoJSON(),
-                        url: function(extent) {
-                            return ( layerUrl +
+                        url: function (extent) {
+                            return (layerUrl +
                                 'version=1.1.0&request=GetFeature&typename=osm:water_areas&' +
                                 'outputFormat=application/json&srsname=EPSG:3857&' +
                                 'bbox=' +
@@ -146,15 +151,17 @@ function Maps() {
 
                     try {
                         const data = await fetchWmtsService(layerUrl);
-                        console.log(data);
+                        // console.log(data);
                         setDataLayers(data);
+                        console.log(dataLayers);
                     } catch (error) {
                         console.error('Error fetching data:', error);
                     }
 
                 }
                 getWMTS();
-
+                console.log(dataLayers);
+                setLayerUrl('');
                 break;
             default:
                 console.error('Invalid layer type');
@@ -162,25 +169,58 @@ function Maps() {
         }
 
     };
-   function onSelectLayerHandler(name){
-       const newLayer = new TileLayer({
-           source: new TileWMS({
-               url: 'https://geoint.nrlssc.org/nrltileserver/wms',
-               params: {
-                   'LAYERS': name,
-               },
-               serverType: 'geoserver',
-           }),
 
-       })
-       maps.addLayer(newLayer);
-   console.log(maps.getLayers());
-   }
+
+    function onSelectLayerHandler(name, type) {
+        if (type === 'WMS') {
+            const newLayer = new TileLayer({
+                source: new TileWMS({
+                    url: 'https://geoint.nrlssc.org/nrltileserver/wms',
+                    params: {
+                        'LAYERS': name,
+                    },
+                    serverType: 'geoserver',
+                }),
+
+            })
+            maps.addLayer(newLayer);
+            // console.log(maps.getLayers());}
+
+        } else if (type === 'WMTS') {
+            const projection = get('EPSG:3857');
+            const projectionExtent = projection.getExtent();
+            const size = getWidth(projectionExtent) / 256;
+            const resolutions = new Array(19);
+            const matrixIds = new Array(19);
+            for (let z = 0; z < 19; ++z) {
+                // generate resolutions and matrixIds arrays for this WMTS
+                resolutions[z] = size / Math.pow(2, z);
+                matrixIds[z] = z;
+            }
+            const newLayer = new TileLayer({
+                source: new WMTS({
+                    url: 'https://geoint.nrlssc.org/nrltileserver/wmts',
+                    params: {
+                        'layer': name,
+                    },
+                    format: 'image/png',
+                    projection: projection,
+                    tileGrid: new WMTSTileGrid({
+                        origin: getTopLeft(projectionExtent),
+                        resolutions: resolutions,
+                        matrixIds: matrixIds,
+                    }),
+                }),
+            })
+            maps.addLayer(newLayer);
+        }
+    }
+
 
     return (
         <>
             < div id='map' className="map" ref={mapElement}/>
-                <button className="menu-btn" onClick={toggleBottomBar}>{expanded? "Hide" : "Import"} </button>
+            <button className="menu-btn" onClick={toggleBottomBar}>{expanded ? "Hide" : "Import"} </button>
 
             <div className={`bottom-container ${expanded ? 'bottom-expanded' : ''}`}>
 
