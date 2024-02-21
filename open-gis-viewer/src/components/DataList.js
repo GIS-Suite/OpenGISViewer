@@ -1,7 +1,7 @@
 import React from 'react';
 import "./DataList.css";
 
-export default function ResultList({ input, onSelectLayer }) {
+export default function DataList({ input, onSelectLayer }) {
 
     return (
         <div className="data-scroll">
@@ -16,9 +16,9 @@ export default function ResultList({ input, onSelectLayer }) {
                 <tbody>
                 {input ? (
                     input?.Capability?.Layer?.Layer?.map((layer) => (
-                        <tr key={layer.Title}>
-                            <td colSpan={1}>{layer.Name}</td>
-                            <td >{layer.Abstract ? layer.Abstract : "No Abstract available"}</td>
+                        <tr  key={layer.Title}>
+                            <td >{layer.Name}</td>
+                            <td colSpan="2">{layer.Abstract ? layer.Abstract : "No Abstract available"}</td>
                             <td><button onClick={() => onSelectLayer(layer.Name)}>+</button></td>
                         </tr>
                     ))

@@ -13,7 +13,7 @@ import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import {bbox as bboxStrategy} from 'ol/loadingstrategy';
 import {fetchWmsService} from "../utils/fetchParseWMS";
-import ResultList from "./ResultList";
+import DataList from "./DataList";
 import {isNotEmpty, validateWMSUrl, validateXYZUrl} from "../utils/vaidateInputUrl";
 import {fetchWmtsService} from "../utils/fetchParseWMTS";
 
@@ -241,7 +241,7 @@ function Maps() {
                     </button>
 
                 </div>
-                <ResultList input={dataLayers} onSelectLayer={onSelectLayerHandler}/>
+                <DataList input={dataLayers} onSelectLayer={onSelectLayerHandler}/>
             </div>
 
         </>
