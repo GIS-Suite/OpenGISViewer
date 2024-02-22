@@ -4,7 +4,7 @@ import "./DataList.css";
 export default function DataList({input, onSelectLayer}) {
 
     return (
-
+//WMS
         <>{input?.Service?.Name === 'WMS' && <div className="data-scroll">
             <table className="data">
                 <thead>
@@ -15,17 +15,20 @@ export default function DataList({input, onSelectLayer}) {
                 </tr>
                 </thead>
                 <tbody>
-                {input ? (
-                    input?.Capability?.Layer?.Layer?.map((layer) => (
-                        <tr key={layer.Title}>
-                            <td>{layer.Name}</td>
-                            <td>{layer.Abstract ? layer.Abstract : "No Abstract available"}</td>
-                            <td>
-                                <button onClick={() => onSelectLayer(layer.Name, 'WMS')}>+</button>
-                            </td>
-                        </tr>
-                    ))
-                ) : null}
+
+                {input?.Capability?.Layer?.Layer?.map((layer) => (
+                    <tr key={layer.Title}>
+                        <td>{layer.Name}</td>
+                        <td>{layer.Abstract ? layer.Abstract : "No Abstract available"}</td>
+                        <td>
+                            <button
+                                onClick={() => onSelectLayer(layer.Name, 'WMS', input.Capability.Request.GetCapabilities.DCPType[0].HTTP.Get.OnlineResource)}>
+
+                                +
+                            </button>
+                        </td>
+                    </tr>
+                ))}
                 </tbody>
             </table>
         </div>} {
@@ -49,7 +52,9 @@ export default function DataList({input, onSelectLayer}) {
                                     <td>{layer.Identifier}</td>
                                     <td>{layer.Title ? layer.Title : "No Abstract available"}</td>
                                     <td>
-                                        <button onClick={() => onSelectLayer(layer.Identifier, 'WMTS')}>+</button>
+                                        <button
+                                            onClick={() => onSelectLayer(layer.Identifier, 'WMTS', "https://geoint.nrlssc.org/nrltileserver/wmts")}>+
+                                        </button>
                                     </td>
                                 </tr>
                             ))

@@ -4,7 +4,7 @@ import 'ol/ol.css';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import OSM from 'ol/source/OSM';
-import {Attribution, defaults as defaultControls, MousePosition, OverviewMap, ScaleLine, ZoomSlider} from 'ol/control';
+import {defaults as defaultControls, MousePosition, OverviewMap, ScaleLine, ZoomSlider} from 'ol/control';
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
 import {TileWMS, WMTS} from "ol/source";
@@ -20,6 +20,7 @@ import {getTopLeft, getWidth} from "ol/extent";
 import {get} from "ol/proj";
 import WMTSTileGrid from "ol/tilegrid/WMTS";
 
+
 function Maps() {
     const [maps, setMaps] = useState({});
     const mapElement = useRef();
@@ -28,7 +29,6 @@ function Maps() {
     const [dataLayers, setDataLayers] = useState(null);
     const [expanded, setExpanded] = useState(false);
     const [isValid, setIsValid] = useState(true);
-
     const toggleBottomBar = () => {
         setExpanded(!expanded);
 
@@ -88,6 +88,7 @@ function Maps() {
     }, []);
     //handle adding layers based on user input
     const handleAddLayer = () => {
+
         const check = (isNotEmpty(layerUrl) || validateXYZUrl(layerUrl) || validateWMSUrl(layerUrl));
         setIsValid(check);
         let layerToAdd;
@@ -106,7 +107,6 @@ function Maps() {
                 maps.addLayer(layerToAdd);
                 // console.log("maps: ", maps.getLayers());
                 setDataLayers(layerToAdd);
-                console.log(dataLayers);
                 setLayerUrl('');
                 break;
             case 'WMS'://add WMS layeres suport, TileWMS , todos ImageWMS?
@@ -123,8 +123,8 @@ function Maps() {
 
                 }
                 getWMS();
-                //  const baseUrl = new URL(layerUrl).origin + new URL(layerUrl).pathname.split('/').slice(0, 3).join('/');
-                console.log(dataLayers);
+
+                //  console.log(dataLayers);
                 setLayerUrl('');
 
 
@@ -167,15 +167,18 @@ function Maps() {
                 console.error('Invalid layer type');
                 return;
         }
-
+        console.log(dataLayers);
     };
 
 
-    function onSelectLayerHandler(name, type) {
+    function onSelectLayerHandler(name, type, url) {
+        const baseUrl = new URL(url).origin + new URL(url).pathname.split('/').slice(0, 3).join('/');
         if (type === 'WMS') {
             const newLayer = new TileLayer({
                 source: new TileWMS({
-                    url: 'https://geoint.nrlssc.org/nrltileserver/wms',
+
+                    // url: 'https://geoint.nrlssc.org/nrltileserver/wms',
+                    url: baseUrl,
                     params: {
                         'LAYERS': name,
                     },
@@ -214,6 +217,8 @@ function Maps() {
             })
             maps.addLayer(newLayer);
         }
+        console.log("Current Map state: ", maps);
+        console.log("Current layers: ", maps.getLayers(),);
     }
 
 
@@ -223,7 +228,6 @@ function Maps() {
             <button className="menu-btn" onClick={toggleBottomBar}>{expanded ? "Hide" : "Import"} </button>
 
             <div className={`bottom-container ${expanded ? 'bottom-expanded' : ''}`}>
-
                 <div className='content'>
                     <div className='radios-container'>
                         <label>
@@ -269,11 +273,13 @@ function Maps() {
                         <p>Please enter a valid url</p>
                     </div>}
                     <input
-                        type="text"
+                        id="url"
+                        type="url"
                         className="input-urls"
                         value={layerUrl}
                         onChange={(e) => setLayerUrl(e.target.value)}
                         placeholder="Enter layer URL"
+                        pattern="https://.*"
                         required
                     />
                     <button className="control-btn"
@@ -281,6 +287,7 @@ function Maps() {
                     </button>
 
                 </div>
+
                 <DataList input={dataLayers} onSelectLayer={onSelectLayerHandler}/>
             </div>
 
