@@ -277,26 +277,27 @@ function Maps() {
                     </div>
 
                     <div>
-                        {!isValid && (
-                            <div className="control-error">
-                                <p>Please enter a valid URL</p>
-                            </div>
-                        )}
+                        <div>
+                            {!isValid && (
+                                <div className="control-error">
+                                    <p>Please enter a valid URL</p>
+                                </div>
+                            )}
 
-                        <button className="control-btn" onClick={handleAddLayer}>
-                            Import Layer
-                        </button>
+                            <button className="control-btn" onClick={handleAddLayer}>
+                                Import Layer
+                            </button>
+                        </div>
+
+                        <input
+                            type="text"
+                            className="input-urls"
+                            value={layerUrl}
+                            onChange={(e) => setLayerUrl(e.target.value)}
+                            placeholder="Enter layer URL"
+                            required
+                        />
                     </div>
-
-                    <input
-                        type="text"
-                        className="input-urls"
-                        value={layerUrl}
-                        onChange={(e) => setLayerUrl(e.target.value)}
-                        placeholder="Enter layer URL"
-                        required
-                    />
-
                 </div>
                 <DataList input={dataLayers} onSelectLayer={onSelectLayerHandler}/>
             </div>
