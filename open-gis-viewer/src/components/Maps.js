@@ -264,6 +264,17 @@ function Maps() {
                             WMTS
                         </label>
 
+                        <label>
+
+                            <input
+                                type="radio"
+                                value="GeoTIFF"
+                                checked={layerType === 'GeoTIFF'}
+                                onChange={() => setLayerType('GeoTIFF')}
+                            />
+                            GeoTIFF
+                        </label>
+
                     </div>
                     {!isValid && <div className="control-error">
                         <p>Please enter a valid url</p>
