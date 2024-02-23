@@ -274,11 +274,20 @@ function Maps() {
                             />
                             GeoTIFF
                         </label>
-
                     </div>
-                    {!isValid && <div className="control-error">
-                        <p>Please enter a valid url</p>
-                    </div>}
+
+                    <div>
+                        {!isValid && (
+                            <div className="control-error">
+                                <p>Please enter a valid URL</p>
+                            </div>
+                        )}
+
+                        <button className="control-btn" onClick={handleAddLayer}>
+                            Import Layer
+                        </button>
+                    </div>
+
                     <input
                         type="text"
                         className="input-urls"
@@ -287,9 +296,6 @@ function Maps() {
                         placeholder="Enter layer URL"
                         required
                     />
-                    <button className="control-btn"
-                            onClick={handleAddLayer}>Import Layer
-                    </button>
 
                 </div>
                 <DataList input={dataLayers} onSelectLayer={onSelectLayerHandler}/>
