@@ -1,42 +1,47 @@
 
-.data-scroll{
+.data-scroll {
 
-    width:100%;
-    margin: 0;
+    width: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
-    scroll-snap-type:y proximity;
+    scroll-snap-type: y proximity;
     scroll-behavior: smooth;
-    background: rgba(0,0,0,0.9);
+    background: rgba(0, 0, 0, 0.9);
 
 }
 
 .data {
     margin: 12px;
-    padding: 2rem;
-    border-collapse: collapse;
     table-layout: fixed;
     text-align: left;
-
 }
+
 .data tbody tr {
     height: 50px;
+
 }
 
 .data thead {
+    height: 75px;
     font-size: 1.2rem;
     color: #ffffff;
     margin: 2rem;
-
+    border-bottom: 1px solid grey;
 }
 
 .data tbody {
-    padding:6px;
+    padding: 6px;
+    margin: 4px 8px;
     font-size: 1rem;
     color: #ffffff;
 }
 
-.data tr:hover{
+.data tbody tr {
+    margin: 4px;
+
+}
+
+.data tbody tr:hover {
     background: rgba(65, 64, 64, 0.9);
 
 }
@@ -44,16 +49,17 @@
 .data td button {
     background-color: #d7a831;
     color: #fff;
-    border: none;
-    margin-left:8px;
+    margin-left: 8px;
     padding: 8px 16px;
-    border-radius: 4px;
     cursor: pointer;
+    border-radius: 12px;
 }
+
 .data td button:hover {
-    background-color: #795910;
+    background-color: #fcce67;
 
 }
+
 .data p {
 
     text-align: center;

@@ -28,11 +28,17 @@ function Maps() {
     const [layerUrl, setLayerUrl] = useState('');
     const [dataLayers, setDataLayers] = useState(null);
     const [expanded, setExpanded] = useState(false);
+    const [searching, setSearching] = useState(false);
     const [isValid, setIsValid] = useState(true);
+
     const toggleBottomBar = () => {
         setExpanded(!expanded);
 
     };
+
+    function toggleSearchUrl() {
+        setSearching(!searching);
+    }
 
     useEffect(() => {
         //initialize a  main Map
@@ -190,6 +196,7 @@ function Maps() {
             // console.log(maps.getLayers());}
 
         } else if (type === 'WMTS') {
+            console.log(url);
             const projection = get('EPSG:3857');
             const projectionExtent = projection.getExtent();
             const size = getWidth(projectionExtent) / 256;
@@ -202,7 +209,7 @@ function Maps() {
             }
             const newLayer = new TileLayer({
                 source: new WMTS({
-                    url: 'https://geoint.nrlssc.org/nrltileserver/wmts',
+                    url: url,
                     params: {
                         'layer': name,
                     },
@@ -225,50 +232,47 @@ function Maps() {
     return (
         <>
             < div id='map' className="map" ref={mapElement}/>
-            <button className="menu-btn" onClick={toggleBottomBar}>{expanded ? "Hide" : "Import"} </button>
+            <button className="menu-btn" onClick={toggleBottomBar}>{expanded ? "Hide" : "Map"} </button>
+            <button className="search-btn" onClick={toggleSearchUrl}>{searching ? "Hide" : "Import"}</button>
+            {searching && <div className={`content ${searching ? 'content-small' : ''}`}>
+                <div className='radios-container'>
+                    <label>
+                        <input
+                            type="radio"
+                            value="XYZ"
+                            checked={layerType === 'XYZ'}
+                            onChange={() => setLayerType('XYZ')}
+                        />
+                        XYZ
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            value="WFS"
+                            checked={layerType === 'WFS'}
+                            onChange={() => setLayerType('WFS')}
+                        />
+                        WFS
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            value="WMS"
+                            checked={layerType === 'WMS'}
+                            onChange={() => setLayerType('WMS')}
+                        />
+                        WMS
+                    </label>
+                    <label>
 
-            <div className={`bottom-container ${expanded ? 'bottom-expanded' : ''}`}>
-                <div className='content'>
-                    <div className='radios-container'>
-                        <label>
-                            <input
-                                type="radio"
-                                value="XYZ"
-                                checked={layerType === 'XYZ'}
-                                onChange={() => setLayerType('XYZ')}
-                            />
-                            XYZ
-                        </label>
-                        <label>
-                            <input
-                                type="radio"
-                                value="WFS"
-                                checked={layerType === 'WFS'}
-                                onChange={() => setLayerType('WFS')}
-                            />
-                            WFS
-                        </label>
-                        <label>
-                            <input
-                                type="radio"
-                                value="WMS"
-                                checked={layerType === 'WMS'}
-                                onChange={() => setLayerType('WMS')}
-                            />
-                            WMS
-                        </label>
-                        <label>
-
-                            <input
-                                type="radio"
-                                value="WMTS"
-                                checked={layerType === 'WMTS'}
-                                onChange={() => setLayerType('WMTS')}
-                            />
-                            WMTS
-                        </label>
-
-                    </div>
+                        <input
+                            type="radio"
+                            value="WMTS"
+                            checked={layerType === 'WMTS'}
+                            onChange={() => setLayerType('WMTS')}
+                        />
+                        WMTS
+                    </label>
                     {!isValid && <div className="control-error">
                         <p>Please enter a valid url</p>
                     </div>}
@@ -287,6 +291,10 @@ function Maps() {
                     </button>
 
                 </div>
+            </div>}
+
+            <div className={`bottom-container ${expanded ? 'bottom-expanded' : ''}`}>
+
 
                 <DataList input={dataLayers} onSelectLayer={onSelectLayerHandler}/>
             </div>

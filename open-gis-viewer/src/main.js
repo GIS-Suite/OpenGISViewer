@@ -11,8 +11,9 @@ const createWindow = () => {
 
     // Create the browser window.
     const mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1600,
+        height: 900,
+        //autoHideMenuBar: true, //hide electron top menu bar
         webPreferences: {
             preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
         },

@@ -10,7 +10,9 @@ export default function DataList({input, onSelectLayer}) {
                 <thead>
                 <tr>
                     <th>Layers</th>
+                    <th>Update Time</th>
                     <th>Abstract</th>
+                    <th> Projections</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -43,6 +45,7 @@ export default function DataList({input, onSelectLayer}) {
                             <th>Identifier</th>
                             <th>Title</th>
                             <th>Action</th>
+
                         </tr>
                         </thead>
                         <tbody>
@@ -53,7 +56,7 @@ export default function DataList({input, onSelectLayer}) {
                                     <td>{layer.Title ? layer.Title : "No Abstract available"}</td>
                                     <td>
                                         <button
-                                            onClick={() => onSelectLayer(layer.Identifier, 'WMTS', "https://geoint.nrlssc.org/nrltileserver/wmts")}>+
+                                            onClick={() => onSelectLayer(layer.Identifier, 'WMTS', input.OperationsMetadata.GetCapabilities.DCP.HTTP.Get[0].href)}>+
                                         </button>
                                     </td>
                                 </tr>
