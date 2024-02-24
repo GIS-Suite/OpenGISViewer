@@ -20,6 +20,13 @@ import {getTopLeft, getWidth} from "ol/extent";
 import {get} from "ol/proj";
 import WMTSTileGrid from "ol/tilegrid/WMTS";
 
+function handleFileSelect(event) {
+    const file = event.target.files[0]; // Get the selected file
+    // Process the selected file here (e.g., read the file, parse it, etc.)
+    console.log("Selected file:", file);
+    // You can perform further processing of the selected file based on your requirements
+}
+
 function Maps() {
     const [maps, setMaps] = useState({});
     const mapElement = useRef();
@@ -289,14 +296,25 @@ function Maps() {
                             </button>
                         </div>
 
-                        <input
-                            type="text"
-                            className="input-urls"
-                            value={layerUrl}
-                            onChange={(e) => setLayerUrl(e.target.value)}
-                            placeholder="Enter layer URL"
-                            required
-                        />
+                        {/* Conditional rendering for input based on layer type */}
+                        {layerType === 'GeoTIFF' ? (
+                            <input
+                                type="file"
+                                className="input-file"
+                                accept=".tif, .tiff"
+                                onChange={handleFileSelect}
+                                required
+                            />
+                        ) : (
+                            <input
+                                type="text"
+                                className="input-urls"
+                                value={layerUrl}
+                                onChange={(e) => setLayerUrl(e.target.value)}
+                                placeholder="Enter layer URL"
+                                required
+                            />
+                        )}
                     </div>
                 </div>
                 <DataList input={dataLayers} onSelectLayer={onSelectLayerHandler}/>
