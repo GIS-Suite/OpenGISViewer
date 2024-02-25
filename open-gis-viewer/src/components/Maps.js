@@ -19,6 +19,7 @@ import {fetchWmtsService} from "../utils/fetchParseWMTS";
 import {getTopLeft, getWidth} from "ol/extent";
 import {get} from "ol/proj";
 import WMTSTileGrid from "ol/tilegrid/WMTS";
+import {MapInfo} from "./MapInfo";
 
 
 function Maps() {
@@ -92,141 +93,8 @@ function Maps() {
         }
         initMap();
     }, []);
+
     //handle adding layers based on user input
-    const handleAddLayer = () => {
-
-        const check = (isNotEmpty(layerUrl) || validateXYZUrl(layerUrl) || validateWMSUrl(layerUrl));
-        setIsValid(check);
-        let layerToAdd;
-        if (!check) {
-            console.log("Invalid data");
-            return;
-        }
-        switch (layerType) {//support XYZ here
-            case 'XYZ':
-                layerToAdd = new TileLayer({
-                    source: new XYZ({
-                        url: layerUrl,
-
-                    }),
-                });
-                maps.addLayer(layerToAdd);
-                // console.log("maps: ", maps.getLayers());
-                setDataLayers(layerToAdd);
-                setLayerUrl('');
-                break;
-            case 'WMS'://add WMS layeres suport, TileWMS , todos ImageWMS?
-
-                const getWMS = async () => {
-
-                    try {
-                        const data = await fetchWmsService(layerUrl);
-                        console.log(data);
-                        setDataLayers(data);
-                    } catch (error) {
-                        console.error('Error fetching data:', error);
-                    }
-
-                }
-                getWMS();
-
-                //  console.log(dataLayers);
-                setLayerUrl('');
-
-
-                break;
-            case 'WFS':// suport for WFS TODOS
-                layerToAdd = new VectorLayer({
-                    source: new VectorSource({
-                        format: new GeoJSON(),
-                        url: function (extent) {
-                            return (layerUrl +
-                                'version=1.1.0&request=GetFeature&typename=osm:water_areas&' +
-                                'outputFormat=application/json&srsname=EPSG:3857&' +
-                                'bbox=' +
-                                extent.join(',') +
-                                ',EPSG:3857'
-                            );
-                        },
-                        strategy: bboxStrategy,
-                    })
-                });
-                break;
-            case 'WMTS'://support for WMTS
-                const getWMTS = async () => {
-
-                    try {
-                        const data = await fetchWmtsService(layerUrl);
-                        // console.log(data);
-                        setDataLayers(data);
-                        console.log(dataLayers);
-                    } catch (error) {
-                        console.error('Error fetching data:', error);
-                    }
-
-                }
-                getWMTS();
-                console.log(dataLayers);
-                setLayerUrl('');
-                break;
-            default:
-                console.error('Invalid layer type');
-                return;
-        }
-        console.log(dataLayers);
-    };
-
-
-    function onSelectLayerHandler(name, type, url) {
-        const baseUrl = new URL(url).origin + new URL(url).pathname.split('/').slice(0, 3).join('/');
-        if (type === 'WMS') {
-            const newLayer = new TileLayer({
-                source: new TileWMS({
-
-                    // url: 'https://geoint.nrlssc.org/nrltileserver/wms',
-                    url: baseUrl,
-                    params: {
-                        'LAYERS': name,
-                    },
-                    serverType: 'geoserver',
-                }),
-
-            })
-            maps.addLayer(newLayer);
-            // console.log(maps.getLayers());}
-
-        } else if (type === 'WMTS') {
-            console.log(url);
-            const projection = get('EPSG:3857');
-            const projectionExtent = projection.getExtent();
-            const size = getWidth(projectionExtent) / 256;
-            const resolutions = new Array(19);
-            const matrixIds = new Array(19);
-            for (let z = 0; z < 19; ++z) {
-                // generate resolutions and matrixIds arrays for this WMTS
-                resolutions[z] = size / Math.pow(2, z);
-                matrixIds[z] = z;
-            }
-            const newLayer = new TileLayer({
-                source: new WMTS({
-                    url: url,
-                    params: {
-                        'layer': name,
-                    },
-                    format: 'image/png',
-                    projection: projection,
-                    tileGrid: new WMTSTileGrid({
-                        origin: getTopLeft(projectionExtent),
-                        resolutions: resolutions,
-                        matrixIds: matrixIds,
-                    }),
-                }),
-            })
-            maps.addLayer(newLayer);
-        }
-        console.log("Current Map state: ", maps);
-        console.log("Current layers: ", maps.getLayers(),);
-    }
 
 
     return (
@@ -234,69 +102,12 @@ function Maps() {
             < div id='map' className="map" ref={mapElement}/>
             <button className="menu-btn" onClick={toggleBottomBar}>{expanded ? "Hide" : "Map"} </button>
             <button className="search-btn" onClick={toggleSearchUrl}>{searching ? "Hide" : "Import"}</button>
-            {searching && <div className={`content ${searching ? 'content-small' : ''}`}>
-                <div className='radios-container'>
-                    <label>
-                        <input
-                            type="radio"
-                            value="XYZ"
-                            checked={layerType === 'XYZ'}
-                            onChange={() => setLayerType('XYZ')}
-                        />
-                        XYZ
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            value="WFS"
-                            checked={layerType === 'WFS'}
-                            onChange={() => setLayerType('WFS')}
-                        />
-                        WFS
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            value="WMS"
-                            checked={layerType === 'WMS'}
-                            onChange={() => setLayerType('WMS')}
-                        />
-                        WMS
-                    </label>
-                    <label>
 
-                        <input
-                            type="radio"
-                            value="WMTS"
-                            checked={layerType === 'WMTS'}
-                            onChange={() => setLayerType('WMTS')}
-                        />
-                        WMTS
-                    </label>
-                    {!isValid && <div className="control-error">
-                        <p>Please enter a valid url</p>
-                    </div>}
-                    <input
-                        id="url"
-                        type="url"
-                        className="input-urls"
-                        value={layerUrl}
-                        onChange={(e) => setLayerUrl(e.target.value)}
-                        placeholder="Enter layer URL"
-                        pattern="https://.*"
-                        required
-                    />
-                    <button className="control-btn"
-                            onClick={handleAddLayer}>Import Layer
-                    </button>
-
-                </div>
-            </div>}
 
             <div className={`bottom-container ${expanded ? 'bottom-expanded' : ''}`}>
 
+                <MapInfo key={maps} map={maps}/>
 
-                <DataList input={dataLayers} onSelectLayer={onSelectLayerHandler}/>
             </div>
 
         </>

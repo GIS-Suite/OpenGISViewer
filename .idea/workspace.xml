@@ -6,11 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="2360d212-7ba0-4b4f-b9f7-d63ccf4b4e70" name="Changes" comment="wip">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/index.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +18,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="CSS File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -119,7 +117,9 @@
       <workItem from="1708584454009" duration="679000" />
       <workItem from="1708643062273" duration="2722000" />
       <workItem from="1708661100509" duration="6575000" />
-      <workItem from="1708749963066" duration="5071000" />
+      <workItem from="1708749963066" duration="5151000" />
+      <workItem from="1708782669319" duration="789000" />
+      <workItem from="1708835784692" duration="9496000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />

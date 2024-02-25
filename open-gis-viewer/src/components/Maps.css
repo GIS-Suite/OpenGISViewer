@@ -2,21 +2,21 @@
 .content {
     background: rgba(0, 0, 0, 0.9);
     position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     color: white;
     gap: 3rem;
     padding: 8px;
     right: 0;
-    top: 50%;
-    width: 0;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-
+    top: 40%;
+    height: 0;
+    bottom: 40vh;
+    width: 500px;
+    transition: height 2s;
+    animation: reverse;
 }
 
 .content-small {
-    width: 45vw;
+    height: 40vw;
+    bottom: 50vh;
     z-index: 1;
 }
 
@@ -25,7 +25,10 @@
 }
 
 .radios-container {
-
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     margin: 12px;
 
 
