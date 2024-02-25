@@ -130,21 +130,48 @@ function Maps() {
 
                 break;
             case 'WFS':// suport for WFS TODOS
+                try {
                 layerToAdd = new VectorLayer({
                     source: new VectorSource({
                         format: new GeoJSON(),
                         url: function (extent) {
-                            return (layerUrl +
-                                'version=1.1.0&request=GetFeature&typename=osm:water_areas&' +
-                                'outputFormat=application/json&srsname=EPSG:3857&' +
-                                'bbox=' +
-                                extent.join(',') +
-                                ',EPSG:3857'
-                            );
+                            return (layerUrl);
                         },
                         strategy: bboxStrategy,
                     })
                 });
+
+                const vector = new VectorLayer({
+                    source: layerToAdd,
+                    style: {
+                        'stroke-width': 0.75,
+                        'stroke-color': 'white',
+                        'fill-color': rgbaToLcha()
+                    }
+                })
+
+                const raster = new TileLayer({
+                    source: new XYZ({}),
+                });
+
+                const map = new Map({
+                    layers: [raster, vector],
+                    target: document.getElementById('map'),
+                    view: new View({
+                        center: [-8908887.277395891, 5381918.072437216],
+                        maxZoom: 19,
+                        zoom: 12,
+                    }),
+                });
+
+                console.log(map);
+                setDataLayers(map);
+
+                setLayerUrl('');
+
+            } catch (error) {
+                console.error('Error with WFS:', error);
+            }
                 break;
             case 'WMTS'://support for WMTS
                 const getWMTS = async () => {
