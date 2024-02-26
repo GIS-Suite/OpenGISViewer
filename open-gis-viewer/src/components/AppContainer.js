@@ -1,12 +1,12 @@
 import Maps from "./Maps";
 
-import * as React from 'react';
-
+import * as React from "react";
 
 function AppContainer() {
-
-    return <><Maps/></>
-
-
+  return (
+    <>
+      <Maps />
+    </>
+  );
 }
 export default AppContainer;

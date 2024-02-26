@@ -1,60 +1,52 @@
-
-.data-scroll{
-
-    width:100%;
-    margin: 0;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    scroll-snap-type:y proximity;
-    scroll-behavior: smooth;
-    background: rgba(0,0,0,0.9);
-
+.data-scroll {
+  width: 100%;
+  margin: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scroll-snap-type: y proximity;
+  scroll-behavior: smooth;
+  background: rgba(0, 0, 0, 0.9);
 }
 
 .data {
-    margin: 12px;
-    padding: 2rem;
-    border-collapse: collapse;
-    table-layout: fixed;
-    text-align: left;
-
+  margin: 12px;
+  padding: 2rem;
+  border-collapse: collapse;
+  table-layout: fixed;
+  text-align: left;
 }
 .data tbody tr {
-    height: 50px;
+  height: 50px;
 }
 
 .data thead {
-    font-size: 1.2rem;
-    color: #ffffff;
-    margin: 2rem;
-
+  font-size: 1.2rem;
+  color: #ffffff;
+  margin: 2rem;
 }
 
 .data tbody {
-    padding:6px;
-    font-size: 1rem;
-    color: #ffffff;
+  padding: 6px;
+  font-size: 1rem;
+  color: #ffffff;
 }
 
-.data tr:hover{
-    background: rgba(65, 64, 64, 0.9);
-
+.data tr:hover {
+  background: rgba(65, 64, 64, 0.9);
 }
 
 .data td button {
-    background-color: #d7a831;
-    color: #fff;
-    border: none;
-    margin-left:8px;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
+  background-color: #d7a831;
+  color: #fff;
+  border: none;
+  margin-left: 8px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 .data td button:hover {
-    background-color: #795910;
-
+  background-color: #795910;
 }
 .data p {
-
-    text-align: center;
+  text-align: center;
 }

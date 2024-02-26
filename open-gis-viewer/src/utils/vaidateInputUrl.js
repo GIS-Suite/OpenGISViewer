@@ -1,12 +1,12 @@
 export const isNotEmpty = (url) => {
-    return url.trim() !== '';
-}
+  return url.trim() !== "";
+};
 export const validateXYZUrl = (url) => {
-    return /^https?:\/\/.*\{x}.*\{y}.*\{z}/.test(url.trim());
+  return /^https?:\/\/.*\{x}.*\{y}.*\{z}/.test(url.trim());
 };
 
 export const validateWMSUrl = (url) => {
-
-    return /^https:\/\/.*\?SERVICE=WMS&VERSION=1.3.0$|&SERVICE=WMS&VERSION=1.3.0$/.test(url.trim());
+  return /^https:\/\/.*\?SERVICE=WMS&VERSION=1.3.0$|&SERVICE=WMS&VERSION=1.3.0$/.test(
+    url.trim()
+  );
 };
-

@@ -11,7 +11,6 @@
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
-
   "keywords": [],
   "author": {
     "name": "JakeIsCodingAway",
