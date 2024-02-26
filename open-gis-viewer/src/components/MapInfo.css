@@ -1,11 +1,13 @@
 .mapinfo-section {
     margin: 0;
     width: 100vw;
+    color: whitesmoke;
     background: rgba(0, 0, 0, 0.9);
+
 }
 
 .mapinfo-section h2 {
-    text-align: left;
+    text-align: center;
 }
 
 .mapinfo-section menu {
@@ -15,6 +17,11 @@
     gap: 3.5rem;
     list-style: none;
     justify-content: space-evenly;
+}
+
+.mapinfo-section-no-data {
+    margin: 12rem;
+    text-align: center;
 }
 
 .mapinfo-section menu button {
@@ -38,10 +45,15 @@
     color: #ebe7ef;
 }
 
-.info-content {
+.mapinfo-content {
     padding: 1rem;
-
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-snap-type: y proximity;
+    scroll-behavior: smooth;
 }
+
 
 /*//////////////////////     INPUT-FORM CSS*/
 .input-form-container {
@@ -50,6 +62,10 @@
     justify-content: center;
     align-items: center;
     margin: 12px;
+}
+
+.form-hide {
+    display: none;
 }
 
 .input-label-wrapper {
@@ -83,4 +99,32 @@
 
 .input-btn:hover {
     background-color: #cc9a1f;
+}
+
+/*/////////////// Updated time compnent Css*/
+.update-date {
+    display: flex;
+    flex-direction: column;
+    width: 5.5rem;
+    height: 5.5rem;
+    border: 1px solid #ececec;
+    background-color: #2a2a2a;
+    color: white;
+    border-radius: 12px;
+    align-items: center;
+    justify-content: center;
+}
+
+.update-date__month {
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.update-date__year {
+    font-size: 0.75rem;
+}
+
+.update-date__day {
+    font-size: 1.5rem;
+    font-weight: bold;
 }

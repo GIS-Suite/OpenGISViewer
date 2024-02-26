@@ -15,7 +15,7 @@ export const InputForm = ({onHandleAddLayer}) => {
     const [layerUrl, setLayerUrl] = useState('');
     const [dataLayers, setDataLayers] = useState(null);
     useEffect(() => {
-        console.log("Layer", dataLayers);
+        console.log("Input_form Layer", dataLayers);
         onHandleAddLayer(dataLayers);
     }, [dataLayers]);
     const handleAddLayer = (e, layerType, layerUrl) => {
@@ -97,7 +97,11 @@ export const InputForm = ({onHandleAddLayer}) => {
     };
     return (
         < >
-            <form className='input-form-container'>
+            <form className='input-form-container' onSubmit={
+                (e) => {
+                    handleAddLayer(e, layerType, layerUrl)
+                }
+            }>
                 <div className="input-label-wrapper">
                     <label>
                         <input
@@ -145,15 +149,9 @@ export const InputForm = ({onHandleAddLayer}) => {
                     value={layerUrl}
                     onChange={(e) => setLayerUrl(e.target.value)}
                     placeholder="Enter layer URL"
-                    pattern="https://.*"
                     required
                 />
-                <button className="input-btn"
-                        onClick={
-                            (e) => {
-                                handleAddLayer(e, layerType, layerUrl)
-                            }
-                        }>Import Layer
+                <button className="input-btn">Import Layer
                 </button>
             </form>
         </>)

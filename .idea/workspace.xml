@@ -6,9 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="2360d212-7ba0-4b4f-b9f7-d63ccf4b4e70" name="Changes" comment="wip">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/InputForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/InputForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/NavItems.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/UI/SectionItem.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/Section.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/UI/Section.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,6 +79,11 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\vasyl\SELU Univ\411CMPS\OpenGISViewer\open-gis-viewer\src\UI" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
@@ -119,7 +130,8 @@
       <workItem from="1708661100509" duration="6575000" />
       <workItem from="1708749963066" duration="5151000" />
       <workItem from="1708782669319" duration="789000" />
-      <workItem from="1708835784692" duration="9496000" />
+      <workItem from="1708835784692" duration="9557000" />
+      <workItem from="1708916145738" duration="16894000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />

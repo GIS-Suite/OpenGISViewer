@@ -1,10 +1,10 @@
 import React from 'react';
 
-export const NavItems = ({children, buttons, ButtonsContainer = 'menu'}) => {
+export const SectionItem = ({children, items, SectionContainer = 'menu'}) => {
     // const ButtonsContainer = buttonsContainer;
     return (
         <>
-            <ButtonsContainer>{buttons}</ButtonsContainer>
+            <SectionContainer>{items}</SectionContainer>
             {children}
         </>
     );

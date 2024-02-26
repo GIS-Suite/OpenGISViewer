@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Section} from "./Section";
-import {NavItems} from "./NavItems";
+import {Section} from "../UI/Section";
+import {SectionItem} from "../UI/SectionItem";
 import {NavItemButton} from "./NavItemButton";
 import "./MapInfo.css";
 
@@ -12,16 +12,22 @@ import {getTopLeft, getWidth} from "ol/extent";
 import WMTSTileGrid from "ol/tilegrid/WMTS";
 import DataList from "./DataList";
 
+
 export const MapInfo = ({map}) => {
-    const [selectedTab, setSelectedTab] = useState();
+    const [selectedTab, setSelectedTab] = useState('Import');
     const [dataLayer, setDataLayer] = useState(null);
+    const [showData, setShowData] = useState(false);
+
 
     function selectedLayerHandler(dataLayer) {
+        if (dataLayer) {
+            setShowData(true);
+        }
 
         setDataLayer(dataLayer);
     }
 
-
+    console.log(showData);
     console.log("INFO:", dataLayer);
     console.log("INFOMAP:", map);
 
@@ -40,7 +46,7 @@ export const MapInfo = ({map}) => {
                 }),
 
             })
-            map?.addLayer(newLayer);
+            map.addLayer(newLayer);
             // console.log(maps.getLayers());}
 
         }
@@ -75,7 +81,8 @@ export const MapInfo = ({map}) => {
             map?.addLayer(newLayer);
         }
         if (type === 'XYZ') {
-            map?.AddLayer(dataLayer);
+            map.addLayer(dataLayer);
+            console.log(map.getLayer());
         }
     }
 
@@ -86,22 +93,28 @@ export const MapInfo = ({map}) => {
 
     }
 
-    let infoContent = <p>No data available</p>;
+    let infoContent = <p className="mapinfo-section-no-data">No data available</p>;
 
     if (selectedTab === "Import") {
-        console.log(selectedTab);
         infoContent = (
-            <div className="info-content">
-                <InputForm onHandleAddLayer={selectedLayerHandler}/>
-                <DataList input={dataLayer} onSelectLayer={onSelectLayerHandler}/>
+            <div className="mapinfo-content">
+                {!showData && <InputForm onHandleAddLayer={selectedLayerHandler}/>}
+                {showData &&
+                    <DataList input={dataLayer} onSelectLayer={onSelectLayerHandler}/>
+
+                }
+
             </div>
         );
+    } else if (selectedTab === "Layers") {
+        infoContent = {}
+
     }
 
     return (
         <Section className="mapinfo-section">
-            <NavItems
-                buttons={
+            <SectionItem
+                items={
                     <>
                         <NavItemButton
                             isSelected={selectedTab === 'Import'}
@@ -137,7 +150,7 @@ export const MapInfo = ({map}) => {
                 }
             >
                 {infoContent}
-            </NavItems>
+            </SectionItem>
         </Section>
     );
 }

@@ -1,18 +1,20 @@
 import React from 'react';
 import "./DataList.css";
+import * as source from "ol/source";
+import DataUpdateTime from "./DataUpdateTime";
 
 export default function DataList({input, onSelectLayer}) {
-
+    //const isXYZLayer = input?.getSource() instanceof source.XYZ;
     return (
 //WMS
-        <>{input?.Service?.Name === 'WMS' && <div className="data-scroll">
+        <>{input?.Service?.Name === 'WMS' &&
             <table className="data">
                 <thead>
                 <tr>
-                    <th>Layers</th>
-                    <th>Update Time</th>
-                    <th>Abstract</th>
+                    <th colSpan="1">Layers</th>
+                    <th colSpan="2">Abstract</th>
                     <th> Projections</th>
+                    <th>Update Time</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -20,8 +22,14 @@ export default function DataList({input, onSelectLayer}) {
 
                 {input?.Capability?.Layer?.Layer?.map((layer) => (
                     <tr key={layer.Title}>
-                        <td>{layer.Name}</td>
-                        <td>{layer.Abstract ? layer.Abstract : "No Abstract available"}</td>
+                        <td colSpan="1">{layer.Name}</td>
+                        <td colSpan='2'>{layer.Abstract ? layer.Abstract : "No Abstract available"}</td>
+                        <td>Projections...</td>
+                        <td><DataUpdateTime date={layer?.KeywordList.find((item) => {
+                            return item.includes('Layer Update Time');
+
+
+                        })?.split('=')[1]?.trim()}/></td>
                         <td>
                             <button
                                 onClick={() => onSelectLayer(layer.Name, 'WMS', input.Capability.Request.GetCapabilities.DCPType[0].HTTP.Get.OnlineResource)}>
@@ -33,47 +41,68 @@ export default function DataList({input, onSelectLayer}) {
                 ))}
                 </tbody>
             </table>
-        </div>} {
+
+        } {
 
         }
             {//WMTS
                 input?.ServiceIdentification?.ServiceType === 'WMTS' &&
+
+                <table className="data">
+                    <thead>
+                    <tr>
+                        <th>Identifier</th>
+                        <th>Title</th>
+                        <th>Action</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {
+                        input?.Contents?.Layer?.map((layer, index) => (
+                            <tr key={index}>
+                                <td>{layer.Identifier}</td>
+                                <td>{layer.Title ? layer.Title : "No Abstract available"}</td>
+                                <td>
+                                    <button
+                                        onClick={() => onSelectLayer(layer.Identifier, 'WMTS', input.OperationsMetadata.GetCapabilities.DCP.HTTP.Get[0].href)}>+
+                                    </button>
+                                </td>
+                            </tr>
+                        ))
+                    }
+                    </tbody>
+                </table>
+
+            }
+            {/*   {isXYZLayer &&
                 <div className="data-scroll">
                     <table className="data">
                         <thead>
                         <tr>
-                            <th>Identifier</th>
-                            <th>Title</th>
-                            <th>Action</th>
+                            <th>Source</th>
+                            <th>Projections</th>
+                            <th>Urls</th>
 
                         </tr>
                         </thead>
                         <tbody>
-                        {
-                            input?.Contents?.Layer?.map((layer, index) => (
-                                <tr key={index}>
-                                    <td>{layer.Identifier}</td>
-                                    <td>{layer.Title ? layer.Title : "No Abstract available"}</td>
-                                    <td>
-                                        <button
-                                            onClick={() => onSelectLayer(layer.Identifier, 'WMTS', input.OperationsMetadata.GetCapabilities.DCP.HTTP.Get[0].href)}>+
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
-                        }
+
+
+                        <tr>
+                            <td>XYZ</td>
+                            <td>{input?.sourceChangeKey_.target.projection.code_ ? input?.sourceChangeKey_.target.projection.code_ : "No data"}</td>
+                            <td>
+                                <button
+                                    onClick={() => onSelectLayer('XYZ')}>+
+                                </button>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
 
-            }
-            {/* {//show XYZ
-                <ul>
-                    <li>XYZ</li>
-                    <li>Projection Code: {input?.sourceChangeKey_.target.projection.code_}</li>
-                    <li>URLs: {input?.sourceChangeKey_.urls}</li>
-                </ul>}*/
-            }
+            }*/}
             {
                 false
             }

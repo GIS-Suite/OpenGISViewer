@@ -106,7 +106,7 @@ function Maps() {
 
             <div className={`bottom-container ${expanded ? 'bottom-expanded' : ''}`}>
 
-                <MapInfo key={maps} map={maps}/>
+                <MapInfo map={maps}/>
 
             </div>
 
