@@ -11,14 +11,18 @@
 
 .data {
     margin: 12px;
-    table-layout: fixed;
     text-align: left;
-  
+    border-collapse: collapse;
 }
 
 .data tbody tr {
     height: 50px;
 
+
+}
+
+.data tbody td {
+    border-radius: 12px;
 }
 
 .data thead {
@@ -36,14 +40,8 @@
     color: #ffffff;
 }
 
-.data tbody tr {
-    margin: 4px;
-
-}
-
 .data tbody tr:hover {
     background: rgba(65, 64, 64, 0.9);
-
 }
 
 .data td button {

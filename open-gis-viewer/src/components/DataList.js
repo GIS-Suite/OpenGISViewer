@@ -12,9 +12,9 @@ export default function DataList({input, onSelectLayer}) {
                 <thead>
                 <tr>
                     <th colSpan="1">Layers</th>
-                    <th colSpan="2">Abstract</th>
+                    <th colSpan="">Abstract</th>
                     <th> Projections</th>
-                    <th>Update Time</th>
+                    <th>Last Update</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -23,13 +23,13 @@ export default function DataList({input, onSelectLayer}) {
                 {input?.Capability?.Layer?.Layer?.map((layer) => (
                     <tr key={layer.Title}>
                         <td colSpan="1">{layer.Name}</td>
-                        <td colSpan='2'>{layer.Abstract ? layer.Abstract : "No Abstract available"}</td>
-                        <td>Projections...</td>
-                        <td><DataUpdateTime date={layer?.KeywordList.find((item) => {
+                        <td colSpan="1">{layer.Abstract ? layer.Abstract : "No Abstract available"}</td>
+                        <td>Projections.</td>
+                        <td><DataUpdateTime date={new Date(layer?.KeywordList.find((item) => {
                             return item.includes('Layer Update Time');
 
 
-                        })?.split('=')[1]?.trim()}/></td>
+                        })?.split('=')[1]?.trim())}/></td>
                         <td>
                             <button
                                 onClick={() => onSelectLayer(layer.Name, 'WMS', input.Capability.Request.GetCapabilities.DCPType[0].HTTP.Get.OnlineResource)}>
