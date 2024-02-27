@@ -5,6 +5,7 @@ import DataUpdateTime from "./DataUpdateTime";
 
 export default function DataList({input, onSelectLayer}) {
     //const isXYZLayer = input?.getSource() instanceof source.XYZ;
+
     return (
 //WMS
         <>{input?.Service?.Name === 'WMS' &&
@@ -14,7 +15,7 @@ export default function DataList({input, onSelectLayer}) {
                     <th colSpan="1">Layers</th>
                     <th colSpan="">Abstract</th>
                     <th> Projections</th>
-                    <th>Last Update</th>
+                    <th>Updated</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -24,7 +25,7 @@ export default function DataList({input, onSelectLayer}) {
                     <tr key={layer.Title}>
                         <td colSpan="1">{layer.Name}</td>
                         <td colSpan="1">{layer.Abstract ? layer.Abstract : "No Abstract available"}</td>
-                        <td>Projections.</td>
+                        <td>Projections..</td>
                         <td><DataUpdateTime date={new Date(layer?.KeywordList.find((item) => {
                             return item.includes('Layer Update Time');
 

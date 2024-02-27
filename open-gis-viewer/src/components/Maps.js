@@ -25,12 +25,10 @@ import {MapInfo} from "./MapInfo";
 function Maps() {
     const [maps, setMaps] = useState({});
     const mapElement = useRef();
-    const [layerType, setLayerType] = useState('XYZ');
-    const [layerUrl, setLayerUrl] = useState('');
     const [dataLayers, setDataLayers] = useState(null);
     const [expanded, setExpanded] = useState(false);
     const [searching, setSearching] = useState(false);
-    const [isValid, setIsValid] = useState(true);
+
 
     const toggleBottomBar = () => {
         setExpanded(!expanded);
@@ -93,9 +91,6 @@ function Maps() {
         }
         initMap();
     }, []);
-
-    //handle adding layers based on user input
-
 
     return (
         <>

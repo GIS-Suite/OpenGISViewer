@@ -17,19 +17,27 @@ export const MapInfo = ({map}) => {
     const [selectedTab, setSelectedTab] = useState('Import');
     const [dataLayer, setDataLayer] = useState(null);
     const [showData, setShowData] = useState(false);
+    const [opacity, setOpacity] = useState('');
+    const [zIndex, setZIndex] = useState(0);
+    const [visibleLayer, setVisibleLayer] = useState(true);
 
+    const data = {};
 
-    function selectedLayerHandler(dataLayer) {
-        if (dataLayer) {
+    function selectedLayerHandler(data) {
+        if (data) {
             setShowData(true);
         }
 
-        setDataLayer(dataLayer);
+        setDataLayer(data);
     }
 
-    console.log(showData);
-    console.log("INFO:", dataLayer);
-    console.log("INFOMAP:", map);
+    console.log(map);
+    console.log("INFO:", data);
+    useEffect(() => {
+        console.log("INFOMAP:", map);
+
+    }, [map, dataLayer])
+
 
     function onSelectLayerHandler(name, type, url) {
         const baseUrl = new URL(url).origin + new URL(url).pathname.split('/').slice(0, 3).join('/');
@@ -47,7 +55,7 @@ export const MapInfo = ({map}) => {
 
             })
             map.addLayer(newLayer);
-            // console.log(maps.getLayers());}
+            // console.log(map.getLayers());
 
         }
 
@@ -95,6 +103,7 @@ export const MapInfo = ({map}) => {
 
     let infoContent = <p className="mapinfo-section-no-data">No data available</p>;
 
+
     if (selectedTab === "Import") {
         infoContent = (
             <div className="mapinfo-content">
@@ -107,13 +116,92 @@ export const MapInfo = ({map}) => {
             </div>
         );
     } else if (selectedTab === "Layers") {
-        infoContent = {}
+        console.log("L", map.getLayers().getArray());
+        const layer = map.getLayers().getArray();
+
+        function handleVisibilityChange(layer, checked) {
+            setVisibleLayer(checked);
+            layer.setVisible(checked);
+        }
+
+        function handleOpacityChange(layer, number, index) {
+            console.log("Layer:", layer);
+            setOpacity(number);
+            layer.setOpacity(number);
+
+        }
+
+        function handleZIndexChange(layer, number) {
+            setZIndex(number);
+            layer.setZIndex(number);
+        }
+
+        function removeLayerHandler(layer, index) {
+            console.log("Remove", layer.getSource());
+
+            map.removeLayer(layer);
+
+        }
+
+        infoContent = (
+
+
+            <>
+                <table className="map-table">
+                    <thead>
+                    <tr>
+                        <th>Layer Name</th>
+                        <th>Visible</th>
+                        <th>Opacity</th>
+                        <th>ZIndex</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {layer.map((layer, index) => (
+                        <tr key={index} className="map-row">
+                            <td> {index + 1}{layer.values_.source.params_.LAYERS}</td>
+                            <td><input
+                                type="checkbox"
+                                checked={visibleLayer}
+                                onChange={(e) => handleVisibilityChange(layer, e.target.checked)}
+                            /></td>
+                            <td><input
+                                id="opacity"
+                                type="range"
+                                min="0"
+                                max="1"
+                                step="0.01"
+                                value={opacity}
+                                onChange={(e) => handleOpacityChange(layer, parseFloat(e.target.value), index)}
+                            /></td>
+                            <td><input
+                                type="number"
+                                min="0"
+                                value={zIndex}
+                                onChange={(e) => handleZIndexChange(layer, parseInt(e.target.value))}
+                            /></td>
+                            <td>
+                                <button onClick={() => {
+                                    removeLayerHandler(layer, index)
+                                }}>-
+                                </button>
+                            </td>
+                        </tr>))}
+                    </tbody>
+                </table>
+
+            </>
+
+        );
 
     }
 
     return (
         <Section className="mapinfo-section">
             <SectionItem
+
                 items={
                     <>
                         <NavItemButton

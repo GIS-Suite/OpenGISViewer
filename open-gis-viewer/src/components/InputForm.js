@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import "./MapInfo.css";
-import {isNotEmpty} from "../utils/vaidateInputUrl";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
 import {fetchWmsService} from "../utils/fetchParseWMS";
@@ -15,18 +14,13 @@ export const InputForm = ({onHandleAddLayer}) => {
     const [layerUrl, setLayerUrl] = useState('');
     const [dataLayers, setDataLayers] = useState(null);
     useEffect(() => {
-        console.log("Input_form Layer", dataLayers);
+        console.log("Input_Form Layer:", dataLayers);
         onHandleAddLayer(dataLayers);
     }, [dataLayers]);
     const handleAddLayer = (e, layerType, layerUrl) => {
         e.preventDefault();
-        const check = (isNotEmpty(layerUrl));
 
         let layerToAdd;
-        if (!check) {
-            console.log("Invalid data");
-            return;
-        }
         switch (layerType) {//support XYZ here
             case 'XYZ':
                 layerToAdd = new TileLayer({

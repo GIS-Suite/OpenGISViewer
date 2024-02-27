@@ -9,6 +9,10 @@
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataUpdateTime.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataUpdateTime.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/InputForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/InputForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,7 +130,9 @@
       <workItem from="1708782669319" duration="789000" />
       <workItem from="1708835784692" duration="9557000" />
       <workItem from="1708916145738" duration="16894000" />
-      <workItem from="1708957707316" duration="1374000" />
+      <workItem from="1708957707316" duration="1651000" />
+      <workItem from="1708968722605" duration="3485000" />
+      <workItem from="1708993745607" duration="16601000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />

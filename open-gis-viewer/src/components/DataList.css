@@ -12,7 +12,7 @@
 .data {
     margin: 12px;
     text-align: left;
-    border-collapse: collapse;
+    /*border-collapse: collapse;*/
 }
 
 .data tbody tr {
