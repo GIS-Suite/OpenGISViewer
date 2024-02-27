@@ -1,0 +1,151 @@
+.mapinfo-section {
+    margin: 0;
+    width: 100vw;
+    color: whitesmoke;
+    background: rgba(0, 0, 0, 0.9);
+
+}
+
+.mapinfo-section h2 {
+    text-align: center;
+}
+
+.mapinfo-section menu {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 3.5rem;
+    list-style: none;
+    justify-content: space-evenly;
+}
+
+.mapinfo-section-no-data {
+    margin: 12rem;
+    text-align: center;
+}
+
+.mapinfo-section menu button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    background-color: transparent;
+    color: #dededc;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.mapinfo-section menu button:hover {
+    background-color: #0331ad;
+    color: #ebe7ef;
+}
+
+.mapinfo-section menu button.active {
+    background-color: #0b1f46;
+    color: #ebe7ef;
+}
+
+.mapinfo-content {
+    padding: 1rem;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-snap-type: y proximity;
+    scroll-behavior: smooth;
+}
+
+
+/*//////////////////////     INPUT-FORM CSS*/
+.input-form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 12px;
+}
+
+.form-hide {
+    display: none;
+}
+
+.input-label-wrapper {
+    margin: 2rem;
+}
+
+.input-form-container label {
+    color: whitesmoke;
+    margin: 2rem 2rem;
+}
+
+.input-urls {
+    width: 100%;
+    max-width: 700px;
+    padding: 12px;
+    margin: 0px;
+    border-radius: 40px;
+}
+
+.input-btn {
+    padding: 8px 16px;
+    margin: 2rem;
+    width: 200px;
+    background-color: rgb(124, 106, 6);;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+
+}
+
+.input-btn:hover {
+    background-color: #cc9a1f;
+}
+
+/*/////////////// Updated time compnent Css*/
+.update-date {
+    display: flex;
+    flex-direction: column;
+    width: 5.5rem;
+    height: 5.5rem;
+    color: white;
+    border-radius: 12px;
+    align-items: center;
+    justify-content: center;
+}
+
+.update-date__month {
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+/*
+map
+*/
+.map-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.map-table th, td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.map-row:hover {
+    background-color: #575858;
+    color: white;
+}
+
+.map-table button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #8c0000;
+    color: white;
+    cursor: pointer;
+}
+
+.map-table button:hover {
+    background-color: #520303;
+}

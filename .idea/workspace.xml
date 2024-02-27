@@ -5,11 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2360d212-7ba0-4b4f-b9f7-d63ccf4b4e70" name="Changes" comment="wip">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/open-gis-viewer/src/UI/Section.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/open-gis-viewer/src/UI/SectionItem.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataUpdateTime.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/InputForm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/NavItemButton.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/forge.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/forge.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/main.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -57,7 +66,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "Merging geotiffv2merge",
     "javascript.nodejs.core.library.configured.version": "21.1.0",
     "javascript.nodejs.core.library.typings.version": "20.11.16",
     "last_opened_file_path": "C:/Users/jakeh/source/OpenGISViewer",
@@ -75,6 +84,11 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\vasyl\SELU Univ\411CMPS\OpenGISViewer\open-gis-viewer\src\UI" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
@@ -114,7 +128,18 @@
       <workItem from="1708319479667" duration="7057000" />
       <workItem from="1708399002753" duration="18343000" />
       <workItem from="1708477373471" duration="3496000" />
-      <workItem from="1708485947624" duration="7198000" />
+      <workItem from="1708485947624" duration="7661000" />
+      <workItem from="1708573174060" duration="10523000" />
+      <workItem from="1708584454009" duration="679000" />
+      <workItem from="1708643062273" duration="2722000" />
+      <workItem from="1708661100509" duration="6575000" />
+      <workItem from="1708749963066" duration="5151000" />
+      <workItem from="1708782669319" duration="789000" />
+      <workItem from="1708835784692" duration="9557000" />
+      <workItem from="1708916145738" duration="16894000" />
+      <workItem from="1708957707316" duration="1651000" />
+      <workItem from="1708968722605" duration="3485000" />
+      <workItem from="1708993745607" duration="16601000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
