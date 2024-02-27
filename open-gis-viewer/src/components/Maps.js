@@ -19,7 +19,7 @@ import {fetchWmtsService} from "../utils/fetchParseWMTS";
 import {getTopLeft, getWidth} from "ol/extent";
 import {get} from "ol/proj";
 import WMTSTileGrid from "ol/tilegrid/WMTS";
-import GeoTIFF from 'geotiff';
+import GeoTIFF from 'ol/source/GeoTIFF';
 import {addGeoTIFFLayer, readGeoTIFF} from '../utils/fetchParseGeoTIFFs';
 import ImageLayer from 'ol/layer/Image';
 import ImageCanvasSource from 'ol/source/ImageCanvas';
@@ -32,6 +32,7 @@ function handleFileSelect(event) {
     const reader = new FileReader();
     reader.onload = async (event) => {
         try {
+            console.log(event.target.result);
             const arrayBuffer = event.target.result;
             const tiff = await GeoTIFF.fromArrayBuffer(arrayBuffer);
             //fromArrayBuffer is "unresolved" even though its in geotiff and geotiff is imported
