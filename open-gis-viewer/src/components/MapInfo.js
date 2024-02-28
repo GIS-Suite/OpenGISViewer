@@ -3,7 +3,6 @@ import {Section} from "../UI/Section";
 import {SectionItem} from "../UI/SectionItem";
 import {NavItemButton} from "./NavItemButton";
 import "./MapInfo.css";
-
 import {InputForm} from "./InputForm";
 import TileLayer from "ol/layer/Tile";
 import {TileWMS, WMTS} from "ol/source";
@@ -96,13 +95,10 @@ export const MapInfo = ({map}) => {
 
 
     function handleSelect(selectedButton) {
-
         setSelectedTab(selectedButton);
-
     }
 
     let infoContent = <p className="mapinfo-section-no-data">No data available</p>;
-
 
     if (selectedTab === "Import") {
         infoContent = (
@@ -110,9 +106,7 @@ export const MapInfo = ({map}) => {
                 {!showData && <InputForm onHandleAddLayer={selectedLayerHandler}/>}
                 {showData &&
                     <DataList input={dataLayer} onSelectLayer={onSelectLayerHandler}/>
-
                 }
-
             </div>
         );
     } else if (selectedTab === "Layers") {
@@ -120,32 +114,28 @@ export const MapInfo = ({map}) => {
         const layer = map.getLayers().getArray();
 
         function handleVisibilityChange(layer, checked) {
-            setVisibleLayer(checked);
+
             layer.setVisible(checked);
+            setVisibleLayer(layer.getVisible());
         }
 
         function handleOpacityChange(layer, number, index) {
             console.log("Layer:", layer);
-            setOpacity(number);
             layer.setOpacity(number);
-
+            setOpacity(layer.getOpacity());
         }
 
         function handleZIndexChange(layer, number) {
-            setZIndex(number);
             layer.setZIndex(number);
+            setZIndex(layer.getZIndex());
         }
 
         function removeLayerHandler(layer, index) {
             console.log("Remove", layer.getSource());
 
             map.removeLayer(layer);
-
         }
-
         infoContent = (
-
-
             <>
                 <table className="map-table">
                     <thead>
@@ -191,17 +181,12 @@ export const MapInfo = ({map}) => {
                         </tr>))}
                     </tbody>
                 </table>
-
             </>
-
         );
-
     }
-
     return (
         <Section className="mapinfo-section">
             <SectionItem
-
                 items={
                     <>
                         <NavItemButton

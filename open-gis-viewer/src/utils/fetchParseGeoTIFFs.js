@@ -52,3 +52,54 @@ export const addGeoTIFFLayer = async (map, file) => {
         console.error('Error adding GeoTIFF layer:', error);
     }
 };
+
+export function handleFileSelect(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+        try {
+            console.log(event.target.result);
+            const arrayBuffer = event.target.result;
+            const tiff = await GeoTIFF.fromArrayBuffer(arrayBuffer);
+            //fromArrayBuffer is "unresolved" even though its in geotiff and geotiff is imported
+
+            const image = await tiff.getImage();
+
+            const data = await image.readRasters();
+
+            const layer = new ImageLayer({
+                source: new ImageCanvasSource({
+                    canvasFunction: function (extent, resolution, pixelRatio, size, projection) {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = size[0];
+                        canvas.height = size[1];
+                        const ctx = canvas.getContext('2d');
+
+                        //draw raster
+                        data.forEach((row, y) => {
+                            row.forEach((value, x) => {
+                                //pixel value to color
+                                const color = `rgba(${value}, ${value}, ${value}, 1)`;
+                                ctx.fillStyle = color;
+                                ctx.fillRect(x, y, 1, 1);
+                            });
+                        });
+
+                        return canvas;
+                    },
+                }),
+            });
+
+            map.addLayer(layer);
+
+        } catch (error) {
+            console.error('Error reading or processing file:', error);
+        }
+    };
+    reader.onerror = (error) => {
+        console.error('Error reading file:', error);
+    };
+    reader.readAsArrayBuffer(file);
+}

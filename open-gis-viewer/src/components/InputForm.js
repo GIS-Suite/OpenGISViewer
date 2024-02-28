@@ -3,16 +3,15 @@ import "./MapInfo.css";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
 import {fetchWmsService} from "../utils/fetchParseWMS";
-import VectorLayer from "ol/layer/Vector";
-import VectorSource from "ol/source/Vector";
-import {GeoJSON} from "ol/format";
-import {bbox as bboxStrategy} from "ol/loadingstrategy";
 import {fetchWmtsService} from "../utils/fetchParseWMTS";
+import {handleFileSelect} from "../utils/fetchParseGeoTIFFs";
 
 export const InputForm = ({onHandleAddLayer}) => {
     const [layerType, setLayerType] = useState('XYZ');
     const [layerUrl, setLayerUrl] = useState('');
     const [dataLayers, setDataLayers] = useState(null);
+
+
     useEffect(() => {
         console.log("Input_Form Layer:", dataLayers);
         onHandleAddLayer(dataLayers);
@@ -49,21 +48,7 @@ export const InputForm = ({onHandleAddLayer}) => {
                 getWMS();
                 break;
             case 'WFS':// suport for WFS TODOS
-                layerToAdd = new VectorLayer({
-                    source: new VectorSource({
-                        format: new GeoJSON(),
-                        url: function (extent) {
-                            return (layerUrl +
-                                'version=1.1.0&request=GetFeature&typename=osm:water_areas&' +
-                                'outputFormat=application/json&srsname=EPSG:3857&' +
-                                'bbox=' +
-                                extent.join(',') +
-                                ',EPSG:3857'
-                            );
-                        },
-                        strategy: bboxStrategy,
-                    })
-                });
+                //COLLECT WFS INPUT
                 break;
             case 'WMTS'://support for WMTS
                 const getWMTS = async () => {
@@ -89,14 +74,13 @@ export const InputForm = ({onHandleAddLayer}) => {
                         const tiffData = await readGeoTIFF(layerUrl);
                         //add layer
                         const geoTIFFLayer = await addGeoTIFFLayer(tiffData);
-                        maps.addLayer(geoTIFFLayer);
-                        setDataLayers(geoTIFFLayer);
+                        //  map.addLayer(geoTIFFLayer);
+                        setDataLayers(geoTIFFLayer); //Collect just input from user in this file
                     } catch (error) {
                         console.error('Error handling GeoTIFF:', error);
                     }
                 };
                 handleGeoTIFF();
-                setLayerUrl('');
                 break;
             default:
                 console.error('Invalid layer type');
@@ -151,7 +135,6 @@ export const InputForm = ({onHandleAddLayer}) => {
                         WMTS
                     </label>
                     <label>
-
                         <input
                             type="radio"
                             value="GeoTIFF"
@@ -161,18 +144,26 @@ export const InputForm = ({onHandleAddLayer}) => {
                         GeoTIFF
                     </label>
                 </div>
-
-                <input
+                {layerType === 'GeoTIFF' ? (
+                    <input
+                        type="file"
+                        className="input-file"
+                        accept=".tif, .tiff"
+                        value=''
+                        onChange={handleFileSelect}
+                        required
+                    />) : (<><input
                     id="url"
                     type="url"
                     className="input-urls"
-                    value={layerUrl}
                     onChange={(e) => setLayerUrl(e.target.value)}
                     placeholder="Enter layer URL"
                     required
                 />
-                <button className="input-btn">Import Layer
-                </button>
+                    <button className="input-btn">Import Layer
+                    </button>
+                </>)}
+
             </form>
         </>)
 
