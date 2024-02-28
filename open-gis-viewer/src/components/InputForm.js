@@ -82,6 +82,22 @@ export const InputForm = ({onHandleAddLayer}) => {
                 console.log(dataLayers);
 
                 break;
+            case 'GeoTIFF': // Handle GeoTIFF files
+                const handleGeoTIFF = async () => {
+                    try {
+                        //read file
+                        const tiffData = await readGeoTIFF(layerUrl);
+                        //add layer
+                        const geoTIFFLayer = await addGeoTIFFLayer(tiffData);
+                        maps.addLayer(geoTIFFLayer);
+                        setDataLayers(geoTIFFLayer);
+                    } catch (error) {
+                        console.error('Error handling GeoTIFF:', error);
+                    }
+                };
+                handleGeoTIFF();
+                setLayerUrl('');
+                break;
             default:
                 console.error('Invalid layer type');
                 return;
@@ -133,6 +149,16 @@ export const InputForm = ({onHandleAddLayer}) => {
                             onChange={() => setLayerType('WMTS')}
                         />
                         WMTS
+                    </label>
+                    <label>
+
+                        <input
+                            type="radio"
+                            value="GeoTIFF"
+                            checked={layerType === 'GeoTIFF'}
+                            onChange={() => setLayerType('GeoTIFF')}
+                        />
+                        GeoTIFF
                     </label>
                 </div>
 
