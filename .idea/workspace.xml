@@ -5,14 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2360d212-7ba0-4b4f-b9f7-d63ccf4b4e70" name="Changes" comment="wip">
+      <change afterPath="$PROJECT_DIR$/open-gis-viewer/src/UI/Section.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/open-gis-viewer/src/UI/SectionItem.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataUpdateTime.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/InputForm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/NavItemButton.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/forge.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/forge.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataUpdateTime.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataUpdateTime.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/InputForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/InputForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/main.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,28 +62,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;21.1.0&quot;,
-    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.11.16&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/jakeh/source/OpenGISViewer&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.electron.executor&quot;: &quot;Run&quot;,
-    &quot;npm.start (1).executor&quot;: &quot;Run&quot;,
-    &quot;npm.start.executor&quot;: &quot;Run&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.prettier&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2023.3.3\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Merging geotiffv2merge",
+    "javascript.nodejs.core.library.configured.version": "21.1.0",
+    "javascript.nodejs.core.library.typings.version": "20.11.16",
+    "last_opened_file_path": "C:/Users/jakeh/source/OpenGISViewer",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.electron.executor": "Run",
+    "npm.start (1).executor": "Run",
+    "npm.start.executor": "Run",
+    "settings.editor.selected.configurable": "settings.javascript.prettier",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2023.3.3\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\vasyl\SELU Univ\411CMPS\OpenGISViewer\open-gis-viewer\src\UI" />
