@@ -13,6 +13,10 @@ import {GeoJSON, WMSCapabilities, WMTSCapabilities} from "ol/format";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import {bbox as bboxStrategy} from 'ol/loadingstrategy';
+import { fetchWmtsCapabilities, createWmtsLayer } from './WMTSHandler';
+
+
+
 function Maps() {
     const [maps, setMaps] = useState({});
     const mapElement = useRef();
@@ -87,7 +91,7 @@ function Maps() {
         initMap();
     }, []);
     //handle adding layers based on user input
-    const handleAddLayer = () => {
+    const handleAddLayer = async () => {
         console.log("Main map", maps);
         let layerToAdd;
 
@@ -125,23 +129,26 @@ function Maps() {
                     })
                 });
                 break;
-            case 'WMTS'://support for WMTS
-                const attribution = new Attribution({
-                    collapsible: false,
-                });
-                const parser = new WMTSCapabilities();
-
-
-                break;
-            default:
-                console.error('Invalid layer type');
-                return;
-        }
-        if (maps) {
-            //add layers to main map
-            maps.addLayer(layerToAdd);
-            console.log("maps: ", maps.getLayers());
-            setLayerUrl('');
+                case 'WMTS':
+            try {
+                const wmtsLayer = await createWmtsLayer('https://geoint.nrlssc.org/nrltileserver/wmts');
+                if (maps && wmtsLayer) {
+                    maps.addLayer(wmtsLayer);
+                    console.log("maps: ", maps.getLayers());
+                    setLayerUrl('');
+                }
+            } catch (error) {
+                console.error('Error adding WMTS layer:', error);
+            }
+            break;
+                default:
+                    console.error('Invalid layer type');
+                    return;
+            }
+            if (maps && layerToAdd) {
+                maps.addLayer(layerToAdd);
+                console.log("maps: ", maps.getLayers());
+                setLayerUrl('');
         }
     };
 
