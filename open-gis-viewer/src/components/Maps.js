@@ -11,6 +11,7 @@ import {fetchWmsService} from "../utils/fetchParseWMS";
 import {MapInfo} from "./MapInfo";
 
 
+
 function Maps() {
     const [maps, setMaps] = useState({});
     const mapElement = useRef();
@@ -78,6 +79,69 @@ function Maps() {
         }
         initMap();
     }, []);
+
+    //handle adding layers based on user input
+    const handleAddLayer = async () => {
+        console.log("Main map", maps);
+        let layerToAdd;
+
+        switch (layerType) {//support XYZ here
+            case 'XYZ':
+                layerToAdd = new TileLayer({
+                    source: new XYZ({
+                        url: layerUrl,
+
+                    }),
+                });
+                break;
+            case 'WMS'://add WMS layeres suport, TileWMS , todos ImageWMS
+                layerToAdd = new TileLayer({
+                    source: new TileWMS({
+                        url: layerUrl,
+                        serverType: 'geoserver',
+                    })
+                });
+                break;
+            case 'WFS':// suport for WFS TODOS
+                layerToAdd = new VectorLayer({
+                    source: new VectorSource({
+                        format: new GeoJSON(),
+                        url: function(extent) {
+                            return ( layerUrl +
+                                'version=1.1.0&request=GetFeature&typename=osm:water_areas&' +
+                                'outputFormat=application/json&srsname=EPSG:3857&' +
+                                'bbox=' +
+                                extent.join(',') +
+                                ',EPSG:3857'
+                            );
+                        },
+                        strategy: bboxStrategy,
+                    })
+                });
+                break;
+                case 'WMTS':
+            try {
+                const wmtsLayer = await createWmtsLayer('https://geoint.nrlssc.org/nrltileserver/wmts');
+                if (maps && wmtsLayer) {
+                    maps.addLayer(wmtsLayer);
+                    console.log("maps: ", maps.getLayers());
+                    setLayerUrl('');
+                }
+            } catch (error) {
+                console.error('Error adding WMTS layer:', error);
+            }
+            break;
+                default:
+                    console.error('Invalid layer type');
+                    return;
+            }
+            if (maps && layerToAdd) {
+                maps.addLayer(layerToAdd);
+                console.log("maps: ", maps.getLayers());
+                setLayerUrl('');
+        }
+    };
+
 
     return (
         <>
