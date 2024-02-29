@@ -4,10 +4,9 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 
 contextBridge.exposeInMainWorld(
-    // Object containing the APIs to expose
     'electron',
     {
-        // Example API to send a message to the main process
+
         send: (channel, data) => {
             ipcRenderer.send(channel, data);
         }
