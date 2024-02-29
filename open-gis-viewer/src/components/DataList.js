@@ -5,10 +5,20 @@ import DataUpdateTime from "./DataUpdateTime";
 
 export default function DataList({input, onSelectLayer}) {
     //const isXYZLayer = input?.getSource() instanceof source.XYZ;
+    let isLayer;
+    if (input?.Service?.Name === 'WMS') {
+        isLayer = "WMS";
+    } else if (input?.ServiceIdentification?.ServiceType === 'WMTS') {
+        isLayer = "WMTS";
+    } else if (input?.getSource() instanceof source.XYZ) {
+
+        isLayer = "XYZ";
+    }
+
 
     return (
 //WMS   MWS
-        <>{input?.Service?.Name === 'WMS' &&
+        <>{isLayer === 'WMS' &&
             <table className="data">
                 <thead>
                 <tr>
@@ -47,7 +57,7 @@ export default function DataList({input, onSelectLayer}) {
 
         }
             {//WMTS    WMTS
-                input?.ServiceIdentification?.ServiceType === 'WMTS' &&
+                isLayer === "WMTS" &&
 
                 <table className="data">
                     <thead>
@@ -76,34 +86,34 @@ export default function DataList({input, onSelectLayer}) {
                 </table>
 
             }
-            {/*   {isXYZLayer &&
-                <div className="data-scroll">
-                    <table className="data">
-                        <thead>
-                        <tr>
-                            <th>Source</th>
-                            <th>Projections</th>
-                            <th>Urls</th>
+            {isLayer === 'XYZ' &&
 
-                        </tr>
-                        </thead>
-                        <tbody>
+                <table className="data">
+                    <thead>
+                    <tr>
+                        <th>Source</th>
+                        <th>Projections</th>
+                        <th>Urls</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
 
 
-                        <tr>
-                            <td>XYZ</td>
-                            <td>{input?.sourceChangeKey_.target.projection.code_ ? input?.sourceChangeKey_.target.projection.code_ : "No data"}</td>
-                            <td>
-                                <button
-                                    onClick={() => onSelectLayer('XYZ')}>+
-                                </button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+                    <tr>
+                        <td>XYZ</td>
+                        <td>{input?.sourceChangeKey_.target.projection.code_ ? input?.sourceChangeKey_.target.projection.code_ : "No data"}</td>
+                        <td>
+                            <button
+                                onClick={() => onSelectLayer('', "XYZ", "")}>+
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
 
-            }*/}
+
+            }
             {
                 false
             }

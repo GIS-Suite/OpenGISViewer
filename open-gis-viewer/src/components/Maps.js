@@ -83,9 +83,9 @@ function Maps() {
         <>
             <div id='map' className="map" ref={mapElement}/>
             <button className="menu-btn" onClick={toggleBottomBar}>{expanded ? "Hide" : "Map"} </button>
-            <button className="search-btn" onClick={toggleSearchUrl}>{searching ? "Hide" : "Import"}</button>
+            {/*<button className="search-btn" onClick={toggleSearchUrl}>{searching ? "Hide" : "Import"}</button>*/}
             <div className={`bottom-container ${expanded ? 'bottom-expanded' : ''}`}>
-                <MapInfo map={maps}/>
+                <MapInfo map={maps} onToogleBottomMenu={toggleBottomBar}/>
             </div>
 
         </>

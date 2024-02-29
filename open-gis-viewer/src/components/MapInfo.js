@@ -10,7 +10,7 @@ import DataList from "./DataList";
 import {createWmtsLayer} from "../utils/WMTSHandler";
 
 
-export const MapInfo = ({map}) => {
+export const MapInfo = ({map, onToogleBottomMenu}) => {
     const [selectedTab, setSelectedTab] = useState('Import');
     const [dataLayer, setDataLayer] = useState(null);
     const [showData, setShowData] = useState(false);
@@ -36,15 +36,20 @@ export const MapInfo = ({map}) => {
 
     }, [map, dataLayer])
 
+    function handleFormPopup() {
+
+        setShowData(!showData);
+
+    }
 
     function onSelectLayerHandler(name, type, url) {
-        const baseUrl = new URL(url).origin + new URL(url).pathname.split('/').slice(0, 3).join('/');
+        //  const baseUrl = new URL(url).origin + new URL(url).pathname.split('/').slice(0, 3).join('/');
         if (type === 'WMS') {
             const newLayer = new TileLayer({
                 source: new TileWMS({
 
                     // url: 'https://geoint.nrlssc.org/nrltileserver/wms',
-                    url: baseUrl,
+                    url: url,
                     params: {
                         'LAYERS': name,
                     },
@@ -63,8 +68,9 @@ export const MapInfo = ({map}) => {
             //map?.addLayer(newLayer); //ad layer  to map that u get from creatWMTS func
         }
         if (type === 'XYZ') {
+            console.log("xyz", dataLayer);
             map.addLayer(dataLayer);
-            console.log(map.getLayer());
+            console.log(map?.getLayers().getArray());
         }
     }
 
@@ -88,6 +94,7 @@ export const MapInfo = ({map}) => {
         // console.log("Remove", layer.getSource());
 
         map.removeLayer(layer);
+
     }
 
     function handleSelect(selectedButton) {
@@ -99,7 +106,7 @@ export const MapInfo = ({map}) => {
     if (selectedTab === "Import") {
         infoContent = (
             <div className="mapinfo-content">
-                {!showData && <InputForm onHandleAddLayer={selectedLayerHandler}/>}
+                {!showData && <InputForm onHandleAddLayer={selectedLayerHandler} onAddXYZLayer={onSelectLayerHandler}/>}
                 {showData &&
                     <DataList input={dataLayer} onSelectLayer={onSelectLayerHandler}/>
                 }
@@ -127,7 +134,7 @@ export const MapInfo = ({map}) => {
                     <tbody>
                     {layer.map((layer, index) => (
                         <tr key={index} className="map-row">
-                            <td> {index + 1}{layer.values_.source.params_.LAYERS}</td>
+                            <td> {index + 1}{layer.values_.source.key_}</td>
                             <td><input
                                 type="checkbox"
                                 checked={layer.values_.visible}
@@ -165,6 +172,12 @@ export const MapInfo = ({map}) => {
             <SectionItem
                 items={
                     <>
+                        <div>
+                            <button onClick={handleFormPopup}>
+                                Form
+                            </button>
+                            <button onClick={onToogleBottomMenu}>Hide</button>
+                        </div>
                         <NavItemButton
                             isSelected={selectedTab === 'Import'}
                             onClick={() => handleSelect('Import')}
