@@ -7,7 +7,7 @@ export default function DataList({input, onSelectLayer}) {
     //const isXYZLayer = input?.getSource() instanceof source.XYZ;
 
     return (
-//WMS
+//WMS   MWS
         <>{input?.Service?.Name === 'WMS' &&
             <table className="data">
                 <thead>
@@ -46,7 +46,7 @@ export default function DataList({input, onSelectLayer}) {
         } {
 
         }
-            {//WMTS
+            {//WMTS    WMTS
                 input?.ServiceIdentification?.ServiceType === 'WMTS' &&
 
                 <table className="data">
@@ -65,7 +65,7 @@ export default function DataList({input, onSelectLayer}) {
                                 <td>{layer.Identifier}</td>
                                 <td>{layer.Title ? layer.Title : "No Abstract available"}</td>
                                 <td>
-                                    <button
+                                    <button //(wmtsCapabilities, layerIdentifier, tileMatrixSet, format, projection
                                         onClick={() => onSelectLayer(layer.Identifier, 'WMTS', input.OperationsMetadata.GetCapabilities.DCP.HTTP.Get[0].href)}>+
                                     </button>
                                 </td>

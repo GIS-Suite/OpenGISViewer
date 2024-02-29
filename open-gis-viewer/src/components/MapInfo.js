@@ -6,10 +6,8 @@ import "./MapInfo.css";
 import {InputForm} from "./InputForm";
 import TileLayer from "ol/layer/Tile";
 import {TileWMS, WMTS} from "ol/source";
-import {get} from "ol/proj";
-import {getTopLeft, getWidth} from "ol/extent";
-import WMTSTileGrid from "ol/tilegrid/WMTS";
 import DataList from "./DataList";
+import {createWmtsLayer} from "../utils/WMTSHandler";
 
 
 export const MapInfo = ({map}) => {
@@ -23,6 +21,7 @@ export const MapInfo = ({map}) => {
     const data = {};
 
     function selectedLayerHandler(data) {
+
         if (data) {
             setShowData(true);
         }
@@ -30,8 +29,8 @@ export const MapInfo = ({map}) => {
         setDataLayer(data);
     }
 
-    console.log(map);
-    console.log("INFO:", data);
+    console.log("InfoMap: ", map);
+    console.log("layer to add:", data);
     useEffect(() => {
         console.log("INFOMAP:", map);
 
@@ -59,33 +58,9 @@ export const MapInfo = ({map}) => {
         }
 
         if (type === 'WMTS') {
-            console.log(url);
-            const projection = get('EPSG:3857');
-            const projectionExtent = projection.getExtent();
-            const size = getWidth(projectionExtent) / 256;
-            const resolutions = new Array(19);
-            const matrixIds = new Array(19);
-            for (let z = 0; z < 19; ++z) {
-                // generate resolutions and matrixIds arrays for this WMTS
-                resolutions[z] = size / Math.pow(2, z);
-                matrixIds[z] = z;
-            }
-            const newLayer = new TileLayer({
-                source: new WMTS({
-                    url: url,
-                    params: {
-                        'layer': name,
-                    },
-                    format: 'image/png',
-                    projection: projection,
-                    tileGrid: new WMTSTileGrid({
-                        origin: getTopLeft(projectionExtent),
-                        resolutions: resolutions,
-                        matrixIds: matrixIds,
-                    }),
-                }),
-            })
-            map?.addLayer(newLayer);
+            // const newLayer = createWmtsLayer(wmtsCapabilities, layerIdentifier, tileMatrixSet, format, projection);
+
+            //map?.addLayer(newLayer); //ad layer  to map that u get from creatWMTS func
         }
         if (type === 'XYZ') {
             map.addLayer(dataLayer);
@@ -93,6 +68,27 @@ export const MapInfo = ({map}) => {
         }
     }
 
+    function handleVisibilityChange(layer, checked) {
+
+        layer.setVisible(checked);
+        setVisibleLayer(layer.getVisible());
+    }
+
+    function handleOpacityChange(layer, number, index) {
+        layer.setOpacity(number);
+        setOpacity(layer.getOpacity());
+    }
+
+    function handleZIndexChange(layer, number) {
+        layer.setZIndex(number);
+        setZIndex(layer.getZIndex());
+    }
+
+    function removeLayerHandler(layer) {
+        // console.log("Remove", layer.getSource());
+
+        map.removeLayer(layer);
+    }
 
     function handleSelect(selectedButton) {
         setSelectedTab(selectedButton);
@@ -111,30 +107,10 @@ export const MapInfo = ({map}) => {
         );
     } else if (selectedTab === "Layers") {
         console.log("L", map.getLayers().getArray());
-        const layer = map.getLayers().getArray();
 
-        function handleVisibilityChange(layer, checked) {
+        let layer = map.getLayers().getArray();
 
-            layer.setVisible(checked);
-            setVisibleLayer(layer.getVisible());
-        }
 
-        function handleOpacityChange(layer, number, index) {
-            console.log("Layer:", layer);
-            layer.setOpacity(number);
-            setOpacity(layer.getOpacity());
-        }
-
-        function handleZIndexChange(layer, number) {
-            layer.setZIndex(number);
-            setZIndex(layer.getZIndex());
-        }
-
-        function removeLayerHandler(layer, index) {
-            console.log("Remove", layer.getSource());
-
-            map.removeLayer(layer);
-        }
         infoContent = (
             <>
                 <table className="map-table">
@@ -154,7 +130,7 @@ export const MapInfo = ({map}) => {
                             <td> {index + 1}{layer.values_.source.params_.LAYERS}</td>
                             <td><input
                                 type="checkbox"
-                                checked={visibleLayer}
+                                checked={layer.values_.visible}
                                 onChange={(e) => handleVisibilityChange(layer, e.target.checked)}
                             /></td>
                             <td><input
@@ -163,13 +139,13 @@ export const MapInfo = ({map}) => {
                                 min="0"
                                 max="1"
                                 step="0.01"
-                                value={opacity}
+                                value={layer.values_.opacity}
                                 onChange={(e) => handleOpacityChange(layer, parseFloat(e.target.value), index)}
                             /></td>
                             <td><input
                                 type="number"
                                 min="0"
-                                value={zIndex}
+                                value={layer.values_.zIndex}
                                 onChange={(e) => handleZIndexChange(layer, parseInt(e.target.value))}
                             /></td>
                             <td>

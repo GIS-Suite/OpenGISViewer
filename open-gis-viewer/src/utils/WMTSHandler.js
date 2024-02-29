@@ -1,23 +1,23 @@
-import { WMTSCapabilities } from 'ol/format';
+import {WMTSCapabilities} from 'ol/format';
 import TileGrid from 'ol/tilegrid/TileGrid';
 import TileLayer from 'ol/layer/Tile'; // Corrected import for TileLayer
-import { TileWMS, WMTS } from 'ol/source';
+import {WMTS} from 'ol/source';
 
 
-async function fetchWmtsCapabilities(url) {
+export default async function fetchWmtsCapabilities(url) {
+
     try {
         const response = await fetch(url);
         const text = await response.text();
         const parser = new WMTSCapabilities();
-        const capabilities = parser.read(text);
-        return capabilities;
+        return parser.read(text);
     } catch (error) {
         console.error('Error fetching or parsing WMTS capabilities:', error);
         return null;
     }
 }
 
-function createWmtsLayer(wmtsCapabilities, layerIdentifier, tileMatrixSet, format, projection) {
+export function createWmtsLayer(wmtsCapabilities, layerIdentifier, tileMatrixSet, format, projection) {
     const matrixSet = wmtsCapabilities.Contents.TileMatrixSet.find(set => set.Identifier === tileMatrixSet);
 
     if (!matrixSet) {
@@ -45,11 +45,9 @@ function createWmtsLayer(wmtsCapabilities, layerIdentifier, tileMatrixSet, forma
         tileGrid: tileGrid,
     });
 
-    const wmtsLayer = new TileLayer({
+    return new TileLayer({
         source: wmtsSource,
     });
-
-    return wmtsLayer;
 }
 
-export { fetchWmtsCapabilities, createWmtsLayer };
+
