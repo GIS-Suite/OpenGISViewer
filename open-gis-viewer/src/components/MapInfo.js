@@ -19,6 +19,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     const [opacity, setOpacity] = useState('');
     const [zIndex, setZIndex] = useState(0);
     const [visibleLayer, setVisibleLayer] = useState(true);
+    const [layerRemoved, setLayerRemoved] = useState(false);
 
     const data = {};
 
@@ -96,7 +97,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
         // console.log("Remove", layer.getSource());
 
         map.removeLayer(layer);
-
+        setLayerRemoved(prevState => !prevState);
     }
 
     function handleSelect(selectedButton) {
@@ -122,7 +123,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
         infoContent = (
             <>
-                <table key={map} className="map-table">
+                <table className="map-table">
                     <thead>
                     <tr>
                         <th>Layer Name</th>
