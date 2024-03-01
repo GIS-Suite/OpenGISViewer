@@ -8,6 +8,8 @@ import TileLayer from "ol/layer/Tile";
 import {TileWMS, WMTS} from "ol/source";
 import DataList from "./DataList";
 import {createWmtsLayer} from "../utils/WMTSHandler";
+import * as source from "ol/source";
+import {WFS} from "ol/format";
 
 
 export const MapInfo = ({map, onToogleBottomMenu}) => {
@@ -134,7 +136,21 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                     <tbody>
                     {layer.map((layer, index) => (
                         <tr key={index} className="map-row">
-                            <td> {index + 1}{layer.values_.source.key_}</td>
+                            {/*{layer.getSource() instanceof source.XYZ ? 'XYZ' : layer.values_.source.params_.LAYERS}*/}
+                            <td>   {(() => {
+                                if (layer.getSource() instanceof WMTS) {
+                                    return 'WMTS ';
+                                } else if (layer.getSource() instanceof source.TileWMS) {
+                                    return 'WMS ';
+                                } else if (layer.getSource() instanceof WFS) {
+                                    return 'WFS ';
+                                } else if (layer.getSource() instanceof source.XYZ) {
+                                    return 'XYZ';
+                                } else {
+                                    return 'Unknown ';
+                                }
+                            })()}
+                                {(layer.getSource() instanceof source.XYZ) ? '' : layer.values_.source.params_.LAYERS}</td>
                             <td><input
                                 type="checkbox"
                                 checked={layer.values_.visible}
