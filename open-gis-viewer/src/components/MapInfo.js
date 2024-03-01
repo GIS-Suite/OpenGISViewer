@@ -41,7 +41,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     function handleFormPopup() {
 
         setShowData(!showData);
-
+        setSelectedTab('Import');
     }
 
     function onSelectLayerHandler(name, type, url) {
@@ -122,7 +122,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
         infoContent = (
             <>
-                <table className="map-table">
+                <table key={map} className="map-table">
                     <thead>
                     <tr>
                         <th>Layer Name</th>

@@ -93,7 +93,7 @@ export default function DataList({input, onSelectLayer}) {
                     <tr>
                         <th>Source</th>
                         <th>Projections</th>
-                        <th>Urls</th>
+                        <th>Action</th>
 
                     </tr>
                     </thead>
