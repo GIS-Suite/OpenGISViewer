@@ -16,21 +16,23 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     const [selectedTab, setSelectedTab] = useState('Import');
     const [dataLayer, setDataLayer] = useState(null);
     const [showData, setShowData] = useState(false);
-    const [opacity, setOpacity] = useState('');
-    const [zIndex, setZIndex] = useState(0);
-    const [visibleLayer, setVisibleLayer] = useState(true);
-    const [layerRemoved, setLayerRemoved] = useState(false);
-
+    const [layerChanged, setLayerChanged] = useState(false);
+    const [mapLayer, setMapLayer] = useState();
     const data = {};
 
     function selectedLayerHandler(data) {
-
         if (data) {
             setShowData(true);
         }
-
         setDataLayer(data);
     }
+
+    useEffect(() => {
+        if (map && typeof map.getLayers === 'function') {
+            setMapLayer(map.getLayers().getArray());
+        }
+    }, [map]);
+
 
     console.log("InfoMap: ", map);
     console.log("layer to add:", data);
@@ -58,7 +60,6 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                     },
                     serverType: 'geoserver',
                 }),
-
             })
             map.addLayer(newLayer);
             // console.log(map.getLayers());
@@ -78,26 +79,25 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     }
 
     function handleVisibilityChange(layer, checked) {
-
+        setLayerChanged(prevState => !prevState);
         layer.setVisible(checked);
-        setVisibleLayer(layer.getVisible());
+
     }
 
-    function handleOpacityChange(layer, number, index) {
+    function handleOpacityChange(layer, number) {
         layer.setOpacity(number);
-        setOpacity(layer.getOpacity());
+        setLayerChanged(prevState => !prevState);
     }
 
     function handleZIndexChange(layer, number) {
         layer.setZIndex(number);
-        setZIndex(layer.getZIndex());
+        setLayerChanged(prevState => !prevState);
     }
 
     function removeLayerHandler(layer) {
         // console.log("Remove", layer.getSource());
-
         map.removeLayer(layer);
-        setLayerRemoved(prevState => !prevState);
+        setLayerChanged(prevState => !prevState);
     }
 
     function handleSelect(selectedButton) {
@@ -118,7 +118,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     } else if (selectedTab === "Layers") {
         console.log("L", map.getLayers().getArray());
 
-        let layer = map.getLayers().getArray();
+        // let layer = map.getLayers().getArray();
 
 
         infoContent = (
@@ -135,7 +135,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                     </thead>
 
                     <tbody>
-                    {layer.map((layer, index) => (
+                    {mapLayer?.map((layer, index) => (
                         <tr key={index} className="map-row">
                             {/*{layer.getSource() instanceof source.XYZ ? 'XYZ' : layer.values_.source.params_.LAYERS}*/}
                             <td>   {(() => {
@@ -169,7 +169,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                             <td><input
                                 type="number"
                                 min="0"
-                                value={layer.values_.zIndex}
+                                value={layer.values_.zIndex ?? ''}
                                 onChange={(e) => handleZIndexChange(layer, parseInt(e.target.value))}
                             /></td>
                             <td>

@@ -77,7 +77,9 @@ function Maps() {
             setMaps(initialMap);
         }
         initMap();
+
     }, []);
+
 
     return (
         <>

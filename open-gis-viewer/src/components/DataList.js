@@ -35,7 +35,7 @@ export default function DataList({input, onSelectLayer}) {
                     <tr key={layer.Title}>
                         <td colSpan="1">{layer.Name}</td>
                         <td colSpan="1">{layer.Abstract ? layer.Abstract : "No Abstract available"}</td>
-                        <td>Projections..</td>
+                        <td>Projections</td>
                         <td><DataUpdateTime date={new Date(layer?.KeywordList.find((item) => {
                             return item.includes('Layer Update Time');
 

@@ -50,10 +50,12 @@ export const InputForm = ({onHandleAddLayer}) => {
                 //COLLECT WFS INPUT
                 break;
             case 'WMTS'://support for WMTS
+
                 const getWMTS = async () => {
                     try {
 
                         const wmtsLayer = await fetchWmtsCapabilities(layerUrl);
+                        console.log(wmtsLayer);
                         setDataLayers(wmtsLayer);
                     } catch (error) {
                         console.error('Error adding WMTS layer:', error);
