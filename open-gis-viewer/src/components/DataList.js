@@ -24,7 +24,7 @@ export default function DataList({input, onSelectLayer}) {
                 <tr>
                     <th colSpan="1">Layers</th>
                     <th colSpan="">Abstract</th>
-                    <th> Projections</th>
+                    <th>Projections</th>
                     <th>Updated</th>
                     <th>Action</th>
                 </tr>
@@ -38,7 +38,6 @@ export default function DataList({input, onSelectLayer}) {
                         <td>Projections</td>
                         <td><DataUpdateTime date={new Date(layer?.KeywordList.find((item) => {
                             return item.includes('Layer Update Time');
-
 
                         })?.split('=')[1]?.trim())}/></td>
                         <td>

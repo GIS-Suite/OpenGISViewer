@@ -14,17 +14,11 @@ import {MapInfo} from "./MapInfo";
 function Maps() {
     const [maps, setMaps] = useState({});
     const mapElement = useRef();
-    const [dataLayers, setDataLayers] = useState(null);
     const [expanded, setExpanded] = useState(false);
-    const [searching, setSearching] = useState(false);
-
     const toggleBottomBar = () => {
         setExpanded(!expanded);
     };
 
-    function toggleSearchUrl() {
-        setSearching(!searching);
-    }
 
     useEffect(() => {
         //initialize a  main Map

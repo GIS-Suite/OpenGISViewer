@@ -34,12 +34,10 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     }, [map]);
 
 
-    console.log("InfoMap: ", map);
-    console.log("layer to add:", data);
     useEffect(() => {
         console.log("INFOMAP:", map);
 
-    }, [map, dataLayer])
+    }, [map, dataLayer, layerChanged])
 
     function handleFormPopup() {
 
@@ -116,13 +114,9 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
             </div>
         );
     } else if (selectedTab === "Layers") {
-        console.log("L", map.getLayers().getArray());
-
         // let layer = map.getLayers().getArray();
-
-
         infoContent = (
-            <>
+            <div className="map-table-scroll">
                 <table className="map-table">
                     <thead>
                     <tr>
@@ -181,7 +175,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                         </tr>))}
                     </tbody>
                 </table>
-            </>
+            </div>
         );
     }
     return (

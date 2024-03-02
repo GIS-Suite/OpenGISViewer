@@ -3,7 +3,7 @@ import "./MapInfo.css";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
 import {fetchWmsService} from "../utils/fetchParseWMS";
-import {handleFileSelect} from "../utils/fetchParseGeoTIFFs";
+import {addGeoTIFFLayer, handleFileSelect, readGeoTIFF} from "../utils/fetchParseGeoTIFFs";
 import fetchWmtsCapabilities from "../utils/WMTSHandler";
 
 export const InputForm = ({onHandleAddLayer}) => {
@@ -37,7 +37,6 @@ export const InputForm = ({onHandleAddLayer}) => {
 
                     try {
                         const data = await fetchWmsService(layerUrl);
-                        console.log(data);
                         setDataLayers(data);
                     } catch (error) {
                         console.error('Error fetching data:', error);
@@ -55,7 +54,6 @@ export const InputForm = ({onHandleAddLayer}) => {
                     try {
 
                         const wmtsLayer = await fetchWmtsCapabilities(layerUrl);
-                        console.log(wmtsLayer);
                         setDataLayers(wmtsLayer);
                     } catch (error) {
                         console.error('Error adding WMTS layer:', error);
@@ -97,8 +95,7 @@ export const InputForm = ({onHandleAddLayer}) => {
                 console.error('Invalid layer type');
                 return;
         }
-
-
+        
     };
     return (
         < >
