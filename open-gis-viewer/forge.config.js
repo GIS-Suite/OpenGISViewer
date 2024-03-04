@@ -30,7 +30,7 @@ module.exports = {
             name: '@electron-forge/plugin-webpack',
             config: {
                 mainConfig: './webpack.main.config.js',
-                devContentSecurityPolicy: "default-src  https://tile.openstreetmap.org; style-src-elem 'self' https://openlayers.org/api/theme/default/style.css 'unsafe-inline';script-src-elem 'self' 'unsafe-eval' 'unsafe-inline' https://openlayers.org https://openlayers.org/api/OpenLayers.js; img-src 'self' * data:; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://geoint.nrlssc.org  https://openlayers.org https://openlayers.org/api/OpenLayers.js; connect-src 'self' https://geoint.nrlssc.org https://ahocevar.com;",
+                devContentSecurityPolicy: "default-src  https://tile.openstreetmap.org; style-src-elem 'self' https://openlayers.org/api/theme/default/style.css 'unsafe-inline';script-src-elem 'self' 'unsafe-eval' 'unsafe-inline' https://openlayers.org https://openlayers.org/api/OpenLayers.js; img-src 'self' * data:; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://geoint.nrlssc.org  https://openlayers.org https://openlayers.org/api/OpenLayers.js; connect-src 'self' https://geoint.nrlssc.org https://mrdata.usgs.gov https://ahocevar.com;",
                 renderer: {
                     config: './webpack.renderer.config.js',
                     entryPoints: [

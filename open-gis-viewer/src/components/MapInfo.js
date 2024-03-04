@@ -10,7 +10,8 @@ import DataList from "./DataList";
 import {createWmtsLayer} from "../utils/WMTSHandler";
 import * as source from "ol/source";
 import {WFS} from "ol/format";
-
+import {addGeoTIFFLayer} from "../utils/fetchParseGeoTIFFs";
+import {optionsFromCapabilities} from "ol/source/WMTS";
 
 export const MapInfo = ({map, onToogleBottomMenu}) => {
     const [selectedTab, setSelectedTab] = useState('Import');
@@ -45,7 +46,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
         setSelectedTab('Import');
     }
 
-    function onSelectLayerHandler(name, type, url) {
+    function onSelectLayerHandler(name, type, url, input) {
         //  const baseUrl = new URL(url).origin + new URL(url).pathname.split('/').slice(0, 3).join('/');
         if (type === 'WMS') {
             const newLayer = new TileLayer({
@@ -65,9 +66,16 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
         }
 
         if (type === 'WMTS') {
-            // const newLayer = createWmtsLayer(wmtsCapabilities, layerIdentifier, tileMatrixSet, format, projection);
+            // const newLayer = createWmtsLayer(name, tileMatrixSet, format, projection);
+            const options = optionsFromCapabilities(input, {
+                layer: name,
+            });
+            const newLayer = new TileLayer({
 
-            //map?.addLayer(newLayer); //ad layer  to map that u get from creatWMTS func
+                source: new WMTS(options),
+            })
+            console.log(newLayer);
+            map?.addLayer(newLayer); //ad layer  to map that u get from creatWMTS func
         }
         if (type === 'XYZ') {
             console.log("xyz", dataLayer);
@@ -107,7 +115,8 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     if (selectedTab === "Import") {
         infoContent = (
             <div className="mapinfo-content">
-                {!showData && <InputForm onHandleAddLayer={selectedLayerHandler} onAddXYZLayer={onSelectLayerHandler}/>}
+                {!showData && <InputForm onHandleAddLayer={selectedLayerHandler}
+                                         onAddXYZLayer={onSelectLayerHandler}/>}
                 {showData &&
                     <DataList input={dataLayer} onSelectLayer={onSelectLayerHandler}/>
                 }
@@ -145,7 +154,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                                     return 'Unknown ';
                                 }
                             })()}
-                                {(layer.getSource() instanceof source.XYZ) ? '' : layer.values_.source.params_.LAYERS}</td>
+                                {((layer.getSource() instanceof source.XYZ) ? '' : layer.values_.source.params_?.LAYERS) ?? layer.values_.source.layer_}</td>
                             <td><input
                                 type="checkbox"
                                 checked={layer.values_.visible}

@@ -6,9 +6,9 @@ import DataUpdateTime from "./DataUpdateTime";
 export default function DataList({input, onSelectLayer}) {
     //const isXYZLayer = input?.getSource() instanceof source.XYZ;
     let isLayer;
-    if (input?.Service?.Name === 'WMS') {
+    if (input?.Service?.Name.includes('WMS')) {
         isLayer = "WMS";
-    } else if (input?.ServiceIdentification?.ServiceType === 'WMTS') {
+    } else if (input?.ServiceIdentification?.ServiceType.includes('WMTS')) {
         isLayer = "WMTS";
     } else if (input?.getSource() instanceof source.XYZ) {
 
@@ -39,7 +39,8 @@ export default function DataList({input, onSelectLayer}) {
                         <td><DataUpdateTime date={new Date(layer?.KeywordList.find((item) => {
                             return item.includes('Layer Update Time');
 
-                        })?.split('=')[1]?.trim())}/></td>
+                        })?.split('=')[1]?.trim())}/>
+                        </td>
                         <td>
                             <button
                                 onClick={() => onSelectLayer(layer.Name, 'WMS', input.Capability.Request.GetCapabilities.DCPType[0].HTTP.Get.OnlineResource)}>
@@ -75,7 +76,7 @@ export default function DataList({input, onSelectLayer}) {
                                 <td>{layer.Title ? layer.Title : "No Abstract available"}</td>
                                 <td>
                                     <button //(wmtsCapabilities, layerIdentifier, tileMatrixSet, format, projection
-                                        onClick={() => onSelectLayer(layer.Identifier, 'WMTS', input.OperationsMetadata.GetCapabilities.DCP.HTTP.Get[0].href)}>+
+                                        onClick={() => onSelectLayer(layer.Identifier, 'WMTS', input.OperationsMetadata.GetCapabilities.DCP.HTTP.Get[0].href, input)}>+
                                     </button>
                                 </td>
                             </tr>
