@@ -1,49 +1,40 @@
 import React, {useEffect, useRef, useState} from 'react';
-import  "./ControlMenu.css";
+import "./Maps.css";
 import 'ol/ol.css';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import OSM from 'ol/source/OSM';
-import {MousePosition, defaults as defaultControls, ZoomSlider, Attribution, OverviewMap} from 'ol/control';
-import { ScaleLine } from 'ol/control';
+import {defaults as defaultControls, MousePosition, OverviewMap, ScaleLine, ZoomSlider} from 'ol/control';
 import TileLayer from "ol/layer/Tile";
-import XYZ from "ol/source/XYZ";
-import {ImageWMS, TileJSON, TileWMS, WMTS} from "ol/source";
-import {GeoJSON, WMSCapabilities, WMTSCapabilities} from "ol/format";
-import VectorLayer from "ol/layer/Vector";
-import VectorSource from "ol/source/Vector";
-import {bbox as bboxStrategy} from 'ol/loadingstrategy';
-import { fetchWmtsCapabilities, createWmtsLayer } from './WMTSHandler';
+import {TileWMS, WMTS} from "ol/source";
+import {fetchWmsService} from "../utils/fetchParseWMS";
+import {MapInfo} from "./MapInfo";
 
 
 
 function Maps() {
     const [maps, setMaps] = useState({});
     const mapElement = useRef();
+    const [dataLayers, setDataLayers] = useState(null);
+    const [expanded, setExpanded] = useState(false);
+    const [searching, setSearching] = useState(false);
     const [layerType, setLayerType] = useState('XYZ');
     const [layerUrl, setLayerUrl] = useState('');
     const [savedLayers, setSavedLayers] = useState([]); // New state to store saved layers
 
-    //parser for WMS xml
-    const parser = new WMSCapabilities();
-    const fetchWms = async () => {//fetch bluemarble layer or else from url
-        try {
-            const response = await fetch('https://geoint.nrlssc.org/nrltileserver/wms?REQUEST=GetCapabilities&SERVICE=WMS&VERSION=1.3.0');
-            const text = await response.text();
-            const result = parser.read(text);
-            const marble = result.Capability.Layer.Layer.find(layer => layer.Name === 'bluemarble');
-            return marble;
-
-        } catch (error) {
-            console.error('Error fetching or parsing WMS capabilities:', error);
-        }
+    const toggleBottomBar = () => {
+        setExpanded(!expanded);
     };
 
-    useEffect( () => {
+    function toggleSearchUrl() {
+        setSearching(!searching);
+    }
+
+    useEffect(() => {
         //initialize a  main Map
         const initMap = async () => {
-            let res = await fetchWms();
-            console.log("marble;", res);
+            const res = await fetchWmsService('https://geoint.nrlssc.org/nrltileserver/wms/layername?REQUEST=GetCapabilities&SERVICE=WMS');
+            const marble = res.Capability.Layer.Layer.find(layer => layer.Name === 'bluemarble');
             const initialMap = new Map({
 
                 target: mapElement.current,
@@ -52,7 +43,7 @@ function Maps() {
                         source: new TileWMS({
                             url: 'https://geoint.nrlssc.org/nrltileserver/wms',
                             params: {
-                                'LAYERS': res.Name,
+                                'LAYERS': marble.Name,
                             },
                             serverType: 'geoserver',
                         }),
@@ -69,7 +60,7 @@ function Maps() {
                             return `Coordinates: ${coordinate[0].toFixed(2)}, ${coordinate[1].toFixed(2)}`;
                         },
                         projection: 'EPSG:4326',
-                        className: 'cursor-map-controls',
+                        className: 'cursor-map-controls',// css for map cursor Maps.css
                         //  target: document.getElementById('mouse-position'),
 
                         undefinedHTML: '&nbsp;'
@@ -91,6 +82,7 @@ function Maps() {
         }
         initMap();
     }, []);
+
     //handle adding layers based on user input
     const handleAddLayer = async () => {
         console.log("Main map", maps);
@@ -159,9 +151,14 @@ function Maps() {
         console.log("Saved Layers:", savedLayers);
     };
 
+
     return (
         <>
             <div id='map' className="map" ref={mapElement}/>
+            <button className="menu-btn" onClick={toggleBottomBar}>{expanded ? "Hide" : "Map"} </button>
+            <button className="search-btn" onClick={toggleSearchUrl}>{searching ? "Hide" : "Import"}</button>
+            <div className={`bottom-container ${expanded ? 'bottom-expanded' : ''}`}>
+                <MapInfo map={maps}/>
             <div id="mouse-position" className="mouse-position"/>
             <div className='content'>
     
@@ -186,6 +183,7 @@ function Maps() {
                     Show Saved Layers
                 </button>
             </div>
+
         </>
     );
     

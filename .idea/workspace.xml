@@ -6,9 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="2360d212-7ba0-4b4f-b9f7-d63ccf4b4e70" name="Changes" comment="wip">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/forge.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/forge.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/ControlMenu.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/ControlMenu.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/InputForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/InputForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/utils/fetchParseGeoTIFFs.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/utils/fetchParseGeoTIFFs.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +26,9 @@
         <option value="JavaScript File" />
       </list>
     </option>
+  </component>
+  <component name="FormatOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -52,7 +59,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Merging geotiffv2merge&quot;,
     &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;21.1.0&quot;,
     &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.11.16&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/jakeh/source/OpenGISViewer&quot;,
@@ -65,11 +72,16 @@
     &quot;npm.electron.executor&quot;: &quot;Run&quot;,
     &quot;npm.start (1).executor&quot;: &quot;Run&quot;,
     &quot;npm.start.executor&quot;: &quot;Run&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.prettier&quot;,
     &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2023.3.3\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\vasyl\SELU Univ\411CMPS\OpenGISViewer\open-gis-viewer\src\UI" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
@@ -106,6 +118,22 @@
       <workItem from="1708054174023" duration="7055000" />
       <workItem from="1708061754836" duration="4927000" />
       <workItem from="1708066754277" duration="193000" />
+      <workItem from="1708319479667" duration="7057000" />
+      <workItem from="1708399002753" duration="18343000" />
+      <workItem from="1708477373471" duration="3496000" />
+      <workItem from="1708485947624" duration="7661000" />
+      <workItem from="1708573174060" duration="10523000" />
+      <workItem from="1708584454009" duration="679000" />
+      <workItem from="1708643062273" duration="2722000" />
+      <workItem from="1708661100509" duration="6575000" />
+      <workItem from="1708749963066" duration="5151000" />
+      <workItem from="1708782669319" duration="789000" />
+      <workItem from="1708835784692" duration="9557000" />
+      <workItem from="1708916145738" duration="16894000" />
+      <workItem from="1708957707316" duration="1651000" />
+      <workItem from="1708968722605" duration="3485000" />
+      <workItem from="1708993745607" duration="16601000" />
+      <workItem from="1709091297852" duration="6466000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />

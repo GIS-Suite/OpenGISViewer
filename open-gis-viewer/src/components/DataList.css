@@ -1,0 +1,50 @@
+
+.data-scroll {
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-snap-type: y proximity;
+    scroll-behavior: smooth;
+}
+
+.data {
+    text-align: center;
+    border-collapse: collapse;
+    margin-bottom: 4rem;
+}
+
+.data tbody tr {
+    height: 50px;
+}
+
+.data thead {
+    height: 75px;
+    font-size: 1.2rem;
+    color: #ffffff;
+    margin: 2rem;
+    border-bottom: 1px solid #575757;
+}
+
+.data tbody {
+    padding: 6px;
+    margin: 4px 8px;
+    font-size: 1rem;
+    color: #ffffff;
+}
+
+.data tbody tr:hover {
+    background: rgba(79, 79, 79, 0.9);
+}
+
+.data td button {
+    background-color: #d7a831;
+    color: #fff;
+    margin-left: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+.data td button:hover {
+    background-color: #fcce67;
+}
