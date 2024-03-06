@@ -22,6 +22,7 @@ function Maps() {
     const mapElement = useRef();
     const [layerType, setLayerType] = useState('XYZ');
     const [layerUrl, setLayerUrl] = useState('');
+    const [savedLayers, setSavedLayers] = useState([]); // New state to store saved layers
 
     //parser for WMS xml
     const parser = new WMSCapabilities();
@@ -130,6 +131,7 @@ function Maps() {
                 });
                 break;
                 case 'WMTS':
+                    //adding a wmts layer
             try {
                 const wmtsLayer = await createWmtsLayer('https://geoint.nrlssc.org/nrltileserver/wmts');
                 if (maps && wmtsLayer) {
@@ -146,19 +148,23 @@ function Maps() {
                     return;
             }
             if (maps && layerToAdd) {
+                // Save the layer to the state
+                setSavedLayers(prevLayers => [...prevLayers, layerToAdd]);
                 maps.addLayer(layerToAdd);
-                console.log("maps: ", maps.getLayers());
                 setLayerUrl('');
         }
+    };
+    // Function to log saved layers to the console
+    const showSavedLayers = () => {
+        console.log("Saved Layers:", savedLayers);
     };
 
     return (
         <>
-            <div id='map' className="map"
-                 ref={mapElement}/>
+            <div id='map' className="map" ref={mapElement}/>
             <div id="mouse-position" className="mouse-position"/>
             <div className='content'>
-
+    
                 <select value={layerType} onChange={(e) => setLayerType(e.target.value)}>
                     <option value="XYZ">XYZ (Tile) Layer</option>
                     <option value="WFS">WFS Layer</option>
@@ -171,12 +177,18 @@ function Maps() {
                     onChange={(e) => setLayerUrl(e.target.value)}
                     placeholder="Enter layer URL"
                 />
-                <button className="control-btn"
-                        onClick={handleAddLayer}>Add Layer
+                <button className="control-btn" onClick={handleAddLayer}>
+                    Add Layer
+                </button>
+    
+                {/* Button to show saved layers */}
+                <button className="control-btn" onClick={showSavedLayers}>
+                    Show Saved Layers
                 </button>
             </div>
         </>
     );
+    
 }
 
 export default Maps;
