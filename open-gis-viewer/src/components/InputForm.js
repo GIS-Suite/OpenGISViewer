@@ -1,16 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import "./MapInfo.css";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
-import {fetchWmsService} from "../utils/fetchParseWMS";
-/*import {addGeoTIFFLayer, handleFileSelect, readGeoTIFF} from "../utils/fetchParseGeoTIFFs";*/
+import { fetchWmsService } from "../utils/fetchParseWMS";
+import { handleFileSelect, addGeoTIFFLayer } from '../utils/fetchParseGeoTIFFs'; 
+import GeoTIFF from 'geotiff';
+
 import fetchWmtsCapabilities from "../utils/WMTSHandler";
 
-
-export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
+export const InputForm = ({onHandleAddLayer}) => {
     const [layerType, setLayerType] = useState('XYZ');
     const [layerUrl, setLayerUrl] = useState('');
     const [dataLayers, setDataLayers] = useState(null);
+
 
     useEffect(() => {
         console.log("Input_Form Layer:", dataLayers);
@@ -37,6 +39,7 @@ export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
 
                     try {
                         const data = await fetchWmsService(layerUrl);
+                        console.log(data);
                         setDataLayers(data);
                     } catch (error) {
                         console.error('Error fetching data:', error);
@@ -49,7 +52,6 @@ export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
                 //COLLECT WFS INPUT
                 break;
             case 'WMTS'://support for WMTS
-
                 const getWMTS = async () => {
                     try {
 
@@ -76,25 +78,33 @@ export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
                  console.log(dataLayers);*/
 
                 break;
-            case 'GeoTIFF': // Handle GeoTIFF files
-                const handleGeoTIFF = async () => {
-                    try {
-                        //read file
-                        const tiffData = await readGeoTIFF(layerUrl);
-                        //add layer
-                        const geoTIFFLayer = await addGeoTIFFLayer(tiffData);
-                        //  map.addLayer(geoTIFFLayer);
-                        setDataLayers(geoTIFFLayer); //Collect just input from user in this file
-                    } catch (error) {
-                        console.error('Error handling GeoTIFF:', error);
-                    }
-                };
-                handleGeoTIFF();
-                break;
+                case 'GeoTIFF':
+    const handleGeoTIFF = async () => {
+        try {
+            const fileInput = document.getElementById("fileInput");
+            const file = fileInput.files[0];
+
+            if (!file) {
+                console.error('No GeoTIFF file selected');
+                return;
+            }
+
+            // Pass the file information, not the map
+            setDataLayers({
+                type: 'GeoTIFF',
+                file: file,
+            });
+        } catch (error) {
+            console.error('Error handling GeoTIFF:', error);
+        }
+    };
+    handleGeoTIFF();
+    break;
             default:
                 console.error('Invalid layer type');
                 return;
         }
+
 
     };
     return (
@@ -155,12 +165,13 @@ export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
                 {layerType === 'GeoTIFF' ? (
                     <input
                         type="file"
+                        id="fileInput" // Add an ID to the file input
                         className="input-file"
                         accept=".tif, .tiff"
                         value=''
                         onChange={handleFileSelect}
                         required
-                    />) : (<><input
+                />) : (<><input
                     id="url"
                     type="url"
                     className="input-urls"

@@ -1,15 +1,15 @@
-import GeoTIFF from 'geotiff';
 import ImageLayer from 'ol/layer/Image';
-import ImageCanvasSource from 'ol/source/ImageCanvas';
+import ImageSource from 'ol/source/Image';
+import { createCanvasContext2D } from 'ol/dom';
+import { fromArrayBuffer } from 'geotiff'; // Update this line
 
-export const readGeoTIFF = async (file) => {
+const readGeoTIFF = async (file) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = async (event) => {
             try {
                 const arrayBuffer = event.target.result;
-                const tiff = await GeoTIFF.fromArrayBuffer(arrayBuffer);
-                //fromArrayBuffer is "unresolved" even though its in geotiff and geotiff is imported
+                const tiff = await fromArrayBuffer(arrayBuffer); // Update this line
                 resolve(tiff);
             } catch (error) {
                 reject(error);
@@ -22,84 +22,53 @@ export const readGeoTIFF = async (file) => {
     });
 };
 
-export const addGeoTIFFLayer = async (map, file) => {
+const createImageLayer = (data, size, extent, projection) => {
+    const canvas = createCanvasContext2D(size[0], size[1]);
+    const imageData = canvas.createImageData(size[0], size[1]);
+    imageData.data.set(data.flat());
+    canvas.putImageData(imageData, 0, 0);
+
+    return new ImageLayer({
+        source: new ImageSource({
+            imageExtent: extent,
+            projection: projection,
+            imageFunction: function (extent, resolution, pixelRatio, size, projection) {
+                const image = new Image();
+                image.src = canvas.canvas.toDataURL('image/png');
+                return image;
+            },
+        }),
+    });
+};
+
+const addGeoTIFFLayer = async (file, map) => {
     try {
-        const tiff = await readGeoTIFF(file);
+        const response = await fetch(file);
+        const arrayBuffer = await response.arrayBuffer();
+        const tiff = await GeoTIFF.fromArrayBuffer(arrayBuffer);
         const image = await tiff.getImage();
         const data = await image.readRasters();
+        const size = image.getImage().size;
+        const extent = image.getBoundingBox();
+        const projection = image.getProjection();
 
-        const imageLayer = new ImageLayer({
-            source: new ImageCanvasSource({
-                canvasFunction: function (extent, resolution, pixelRatio, size, projection) {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = size[0];
-                    canvas.height = size[1];
-                    const context = canvas.getContext('2d');
-
-                    const imageData = context.createImageData(size[0], size[1]);
-                    imageData.data.set(data.flat());
-                    context.putImageData(imageData, 0, 0);
-
-                    return canvas;
-                },
-                projection: 'EPSG:3857', // change projection if necessary
-                imageExtent: map.getView().calculateExtent(map.getSize()), // adjust extent if necessary
-            }),
-        });
-
+        const imageLayer = createImageLayer(data, size, extent, projection);
         map.addLayer(imageLayer);
     } catch (error) {
         console.error('Error adding GeoTIFF layer:', error);
     }
 };
 
-export function handleFileSelect(event) {
+const handleFileSelect = async (event, map) => {
     const file = event.target.files[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = async (event) => {
-        try {
-            console.log(event.target.result);
-            const arrayBuffer = event.target.result;
-            const tiff = await GeoTIFF.fromArrayBuffer(arrayBuffer);
-            //fromArrayBuffer is "unresolved" even though its in geotiff and geotiff is imported
+    await addGeoTIFFLayer(file, map);
+};
 
-            const image = await tiff.getImage();
-
-            const data = await image.readRasters();
-
-            const layer = new ImageLayer({
-                source: new ImageCanvasSource({
-                    canvasFunction: function (extent, resolution, pixelRatio, size, projection) {
-                        const canvas = document.createElement('canvas');
-                        canvas.width = size[0];
-                        canvas.height = size[1];
-                        const ctx = canvas.getContext('2d');
-
-                        //draw raster
-                        data.forEach((row, y) => {
-                            row.forEach((value, x) => {
-                                //pixel value to color
-                                const color = `rgba(${value}, ${value}, ${value}, 1)`;
-                                ctx.fillStyle = color;
-                                ctx.fillRect(x, y, 1, 1);
-                            });
-                        });
-
-                        return canvas;
-                    },
-                }),
-            });
-
-            map.addLayer(layer);
-
-        } catch (error) {
-            console.error('Error reading or processing file:', error);
-        }
-    };
-    reader.onerror = (error) => {
-        console.error('Error reading file:', error);
-    };
-    reader.readAsArrayBuffer(file);
-}
+export {
+    readGeoTIFF,
+    createImageLayer,
+    addGeoTIFFLayer,
+    handleFileSelect,
+};
