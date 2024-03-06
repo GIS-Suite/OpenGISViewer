@@ -79,11 +79,43 @@ function Maps() {
         initMap();
     }, []);
 
+        // Button click event handler
+        const handleButtonClick = () => {
+    // Clear the map layers
+    maps.getLayers().clear();
+        // Reinitialize and add all initial layers back to the map
+        const initialLayers = [
+            new TileLayer({
+                source: new TileWMS({
+                url: 'https://geoint.nrlssc.org/nrltileserver/wms',
+                    params: {
+                        'LAYERS': 'your_first_layer_name',
+                    },
+                    serverType: 'geoserver',
+                }),
+            }),
+            new TileLayer({
+                source: new TileWMS({
+                    url: 'https://geoint.nrlssc.org/nrltileserver/wms',
+                    params: {
+                        'LAYERS': 'your_second_layer_name',
+                    },
+                    serverType: 'geoserver',
+                }),
+            }),
+            // Add more layers as needed
+        ];
+        initialLayers.forEach(layer => {
+            maps.addLayer(layer);
+        });
+    }
+
     return (
         <>
             <div id='map' className="map" ref={mapElement}/>
             <button className="menu-btn" onClick={toggleBottomBar}>{expanded ? "Hide" : "Map"} </button>
             <button className="search-btn" onClick={toggleSearchUrl}>{searching ? "Hide" : "Import"}</button>
+            <button className="redraw-btn" onClick={handleButtonClick}>Refresh</button>
             <div className={`bottom-container ${expanded ? 'bottom-expanded' : ''}`}>
                 <MapInfo map={maps}/>
             </div>
