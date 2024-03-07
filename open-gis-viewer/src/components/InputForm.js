@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import "./MapInfo.css";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
-import { fetchWmsService } from "../utils/fetchParseWMS";
-import { handleFileSelect, addGeoTIFFLayer } from '../utils/fetchParseGeoTIFFs'; 
-import GeoTIFF from 'geotiff';
+import {fetchWmsService} from "../utils/fetchParseWMS";
+import {handleFileSelect, addGeoTIFFLayer} from '../utils/fetchParseGeoTIFFs';
+import {readGeoTIFF} from '../utils/fetchParseGeoTIFFs'
+import GeoTIFF from 'ol/source/GeoTIFF.js';
 
 import fetchWmtsCapabilities from "../utils/WMTSHandler";
 
@@ -78,28 +79,26 @@ export const InputForm = ({onHandleAddLayer}) => {
                  console.log(dataLayers);*/
 
                 break;
-                case 'GeoTIFF':
-    const handleGeoTIFF = async () => {
-        try {
-            const fileInput = document.getElementById("fileInput");
-            const file = fileInput.files[0];
+            case 'GeoTIFF':
+                const handleGeoTIFF = async () => {
+                    try {
+                        const fileInput = document.getElementById("fileInput");
+                        const file = fileInput.files[0];
 
-            if (!file) {
-                console.error('No GeoTIFF file selected');
-                return;
-            }
+                        if (!file) {
+                            console.error('No GeoTIFF file selected');
+                            return;
+                        }
 
-            // Pass the file information, not the map
-            setDataLayers({
-                type: 'GeoTIFF',
-                file: file,
-            });
-        } catch (error) {
-            console.error('Error handling GeoTIFF:', error);
-        }
-    };
-    handleGeoTIFF();
-    break;
+                        // Read the GeoTIFF file and set the data layers
+                        const tiffData = await readGeoTIFF(file);
+                        setDataLayers(tiffData);
+                    } catch (error) {
+                        console.error('Error handling GeoTIFF:', error);
+                    }
+                };
+                handleGeoTIFF();
+                break;
             default:
                 console.error('Invalid layer type');
                 return;
@@ -171,7 +170,7 @@ export const InputForm = ({onHandleAddLayer}) => {
                         value=''
                         onChange={handleFileSelect}
                         required
-                />) : (<><input
+                    />) : (<><input
                     id="url"
                     type="url"
                     className="input-urls"

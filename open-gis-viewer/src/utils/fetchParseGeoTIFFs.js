@@ -1,15 +1,16 @@
 import ImageLayer from 'ol/layer/Image';
 import ImageSource from 'ol/source/Image';
-import { createCanvasContext2D } from 'ol/dom';
-import { fromArrayBuffer } from 'geotiff'; // Update this line
+import GeoTIFF from 'ol/source/GeoTIFF';
+import {createCanvasContext2D} from 'ol/dom';
+import {fromArrayBuffer} from 'geotiff'; // Update this line
 
 const readGeoTIFF = async (file) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = async (event) => {
             try {
-                const arrayBuffer = event.target.result;
-                const tiff = await fromArrayBuffer(arrayBuffer); // Update this line
+                const arrayBuffer = event.target.result; // This should already be an ArrayBuffer
+                const tiff = await fromArrayBuffer(arrayBuffer);
                 resolve(tiff);
             } catch (error) {
                 reject(error);
@@ -21,6 +22,7 @@ const readGeoTIFF = async (file) => {
         reader.readAsArrayBuffer(file);
     });
 };
+
 
 const createImageLayer = (data, size, extent, projection) => {
     const canvas = createCanvasContext2D(size[0], size[1]);
