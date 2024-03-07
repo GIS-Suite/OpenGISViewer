@@ -48,27 +48,13 @@ export const InputForm = ({ onHandleAddLayer }) => {
         };
         getWMS();
         break;
-      case "WFS": // suport for WFS TODOS
-        /*layerToAdd = new VectorLayer({
-                    source: new VectorSource({
-                        format: new GeoJSON(),
-                        url: function (extent) {
-                            return (layerUrl +
-                                'version=1.1.0&request=GetFeature&typename=osm:water_areas&' +
-                                'outputFormat=application/json&srsname=EPSG:3857&' +
-                                'bbox=' +
-                                extent.join(',') +
-                                ',EPSG:3857'
-                            );
-                        },
-                        strategy: bboxStrategy,
-                    })
-                });*/
 
+      case "WFS": // suport for WFS TODOS
         const getWFS = async () => {
           try {
             const data = await fetchWfsService(layerUrl);
             console.log("Entered Url: ", layerUrl);
+            console.log("URL Data: ", data);
             setDataLayers(data);
           } catch (error) {
             console.error("Error fetching WFS: ", error);
