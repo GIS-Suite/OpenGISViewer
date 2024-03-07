@@ -9,7 +9,12 @@ const readGeoTIFF = async (file) => {
         const reader = new FileReader();
         reader.onload = async (event) => {
             try {
+                // Log the result to see its content and type
+                console.log('FileReader result:', event.target.result);
+
                 const arrayBuffer = event.target.result; // This should already be an ArrayBuffer
+                console.log('ArrayBuffer:', arrayBuffer);
+
                 const tiff = await fromArrayBuffer(arrayBuffer);
                 resolve(tiff);
             } catch (error) {
@@ -45,8 +50,7 @@ const createImageLayer = (data, size, extent, projection) => {
 
 const addGeoTIFFLayer = async (file, map) => {
     try {
-        const response = await fetch(file);
-        const arrayBuffer = await response.arrayBuffer();
+        const arrayBuffer = await readGeoTIFF(file); // Use readGeoTIFF function to read the file
         const tiff = await GeoTIFF.fromArrayBuffer(arrayBuffer);
         const image = await tiff.getImage();
         const data = await image.readRasters();
@@ -60,6 +64,7 @@ const addGeoTIFFLayer = async (file, map) => {
         console.error('Error adding GeoTIFF layer:', error);
     }
 };
+
 
 const handleFileSelect = async (event, map) => {
     const file = event.target.files[0];
