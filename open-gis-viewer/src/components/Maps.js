@@ -80,35 +80,33 @@ function Maps() {
     }, []);
 
         // Button click event handler
-        const handleButtonClick = () => {
+  const handleButtonClick = () => {
     // Clear the map layers
     maps.getLayers().clear();
-        // Reinitialize and add all initial layers back to the map
-        const initialLayers = [
-            new TileLayer({
-                source: new TileWMS({
-                url: 'https://geoint.nrlssc.org/nrltileserver/wms',
-                    params: {
-                        'LAYERS': 'your_first_layer_name',
-                    },
-                    serverType: 'geoserver',
-                }),
-            }),
-            new TileLayer({
-                source: new TileWMS({
-                    url: 'https://geoint.nrlssc.org/nrltileserver/wms',
-                    params: {
-                        'LAYERS': 'your_second_layer_name',
-                    },
-                    serverType: 'geoserver',
-                }),
-            }),
-            // Add more layers as needed
-        ];
-        initialLayers.forEach(layer => {
-            maps.addLayer(layer);
-        });
-    }
+    // Reinitialize and add all initial layers back to the map
+    const initMap = async () => {
+      const res = await fetchWmsService(
+        'https://geoint.nrlssc.org/nrltileserver/wms/layername?REQUEST=GetCapabilities&SERVICE=WMS'
+      );
+      const marble = res.Capability.Layer.Layer.find(layer => layer.Name === 'bluemarble');
+      const initialLayers = [
+        new TileLayer({
+          source: new TileWMS({
+            url: 'https://geoint.nrlssc.org/nrltileserver/wms/layername?REQUEST=GetCapabilities&SERVICE=WMS',
+            params: {
+              LAYERS: marble.Name
+            },
+            serverType: 'geoserver'
+          })
+        })
+        // Add more layers as needed
+      ];
+      initialLayers.forEach(layer => {
+        maps.addLayer(layer);
+      });
+    };
+initMap();
+};
 
     return (
         <>
