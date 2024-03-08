@@ -55,6 +55,7 @@ function Maps() {
 
                         undefinedHTML: '&nbsp;'
                     }),
+
                     new ScaleLine({units: 'us'}),
                     new ZoomSlider(),
                     new OverviewMap({

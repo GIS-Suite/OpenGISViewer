@@ -5,6 +5,7 @@ import XYZ from "ol/source/XYZ";
 import {fetchWmsService} from "../utils/fetchParseWMS";
 /*import {addGeoTIFFLayer, handleFileSelect, readGeoTIFF} from "../utils/fetchParseGeoTIFFs";*/
 import fetchWmtsCapabilities from "../utils/WMTSHandler";
+import {handleFileSelect} from "../utils/fetchParseGeoTIFFs";
 
 
 export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
