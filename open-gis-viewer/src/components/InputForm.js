@@ -3,14 +3,15 @@ import "./MapInfo.css";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
 import {fetchWmsService} from "../utils/fetchParseWMS";
-import {handleFileSelect} from "../utils/fetchParseGeoTIFFs";
+/*import {addGeoTIFFLayer, handleFileSelect, readGeoTIFF} from "../utils/fetchParseGeoTIFFs";*/
 import fetchWmtsCapabilities from "../utils/WMTSHandler";
+import {handleFileSelect} from "../utils/fetchParseGeoTIFFs";
 
-export const InputForm = ({onHandleAddLayer}) => {
+
+export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
     const [layerType, setLayerType] = useState('XYZ');
     const [layerUrl, setLayerUrl] = useState('');
     const [dataLayers, setDataLayers] = useState(null);
-
 
     useEffect(() => {
         console.log("Input_Form Layer:", dataLayers);
@@ -37,7 +38,6 @@ export const InputForm = ({onHandleAddLayer}) => {
 
                     try {
                         const data = await fetchWmsService(layerUrl);
-                        console.log(data);
                         setDataLayers(data);
                     } catch (error) {
                         console.error('Error fetching data:', error);
@@ -50,6 +50,7 @@ export const InputForm = ({onHandleAddLayer}) => {
                 //COLLECT WFS INPUT
                 break;
             case 'WMTS'://support for WMTS
+
                 const getWMTS = async () => {
                     try {
 
@@ -95,7 +96,6 @@ export const InputForm = ({onHandleAddLayer}) => {
                 console.error('Invalid layer type');
                 return;
         }
-
 
     };
     return (

@@ -10,34 +10,35 @@ import DataList from "./DataList";
 import {createWmtsLayer} from "../utils/WMTSHandler";
 import * as source from "ol/source";
 import {WFS} from "ol/format";
-
+import {addGeoTIFFLayer} from "../utils/fetchParseGeoTIFFs";
+import {optionsFromCapabilities} from "ol/source/WMTS";
 
 export const MapInfo = ({map, onToogleBottomMenu}) => {
     const [selectedTab, setSelectedTab] = useState('Import');
     const [dataLayer, setDataLayer] = useState(null);
     const [showData, setShowData] = useState(false);
-    const [opacity, setOpacity] = useState('');
-    const [zIndex, setZIndex] = useState(0);
-    const [visibleLayer, setVisibleLayer] = useState(true);
-    const [layerRemoved, setLayerRemoved] = useState(false);
-
+    const [layerChanged, setLayerChanged] = useState(false);
+    const [mapLayer, setMapLayer] = useState();
     const data = {};
 
     function selectedLayerHandler(data) {
-
         if (data) {
             setShowData(true);
         }
-
         setDataLayer(data);
     }
 
-    console.log("InfoMap: ", map);
-    console.log("layer to add:", data);
+    useEffect(() => {
+        if (map && typeof map.getLayers === 'function') {
+            setMapLayer(map.getLayers().getArray());
+        }
+    }, [map]);
+
+
     useEffect(() => {
         console.log("INFOMAP:", map);
 
-    }, [map, dataLayer])
+    }, [map, dataLayer, layerChanged])
 
     function handleFormPopup() {
 
@@ -45,7 +46,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
         setSelectedTab('Import');
     }
 
-    function onSelectLayerHandler(name, type, url) {
+    function onSelectLayerHandler(name, type, url, input) {
         //  const baseUrl = new URL(url).origin + new URL(url).pathname.split('/').slice(0, 3).join('/');
         if (type === 'WMS') {
             const newLayer = new TileLayer({
@@ -58,7 +59,6 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                     },
                     serverType: 'geoserver',
                 }),
-
             })
             map.addLayer(newLayer);
             // console.log(map.getLayers());
@@ -66,9 +66,16 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
         }
 
         if (type === 'WMTS') {
-            // const newLayer = createWmtsLayer(wmtsCapabilities, layerIdentifier, tileMatrixSet, format, projection);
+            // const newLayer = createWmtsLayer(name, tileMatrixSet, format, projection);
+            const options = optionsFromCapabilities(input, {
+                layer: name,
+            });
+            const newLayer = new TileLayer({
 
-            //map?.addLayer(newLayer); //ad layer  to map that u get from creatWMTS func
+                source: new WMTS(options),
+            })
+            console.log(newLayer);
+            map?.addLayer(newLayer); //ad layer  to map that u get from creatWMTS func
         }
         if (type === 'XYZ') {
             console.log("xyz", dataLayer);
@@ -78,26 +85,25 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     }
 
     function handleVisibilityChange(layer, checked) {
-
+        setLayerChanged(prevState => !prevState);
         layer.setVisible(checked);
-        setVisibleLayer(layer.getVisible());
+
     }
 
-    function handleOpacityChange(layer, number, index) {
+    function handleOpacityChange(layer, number) {
         layer.setOpacity(number);
-        setOpacity(layer.getOpacity());
+        setLayerChanged(prevState => !prevState);
     }
 
     function handleZIndexChange(layer, number) {
         layer.setZIndex(number);
-        setZIndex(layer.getZIndex());
+        setLayerChanged(prevState => !prevState);
     }
 
     function removeLayerHandler(layer) {
         // console.log("Remove", layer.getSource());
-
         map.removeLayer(layer);
-        setLayerRemoved(prevState => !prevState);
+        setLayerChanged(prevState => !prevState);
     }
 
     function handleSelect(selectedButton) {
@@ -109,20 +115,17 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     if (selectedTab === "Import") {
         infoContent = (
             <div className="mapinfo-content">
-                {!showData && <InputForm onHandleAddLayer={selectedLayerHandler} onAddXYZLayer={onSelectLayerHandler}/>}
+                {!showData && <InputForm onHandleAddLayer={selectedLayerHandler}
+                                         onAddXYZLayer={onSelectLayerHandler}/>}
                 {showData &&
                     <DataList input={dataLayer} onSelectLayer={onSelectLayerHandler}/>
                 }
             </div>
         );
     } else if (selectedTab === "Layers") {
-        console.log("L", map.getLayers().getArray());
-
-        let layer = map.getLayers().getArray();
-
-
+        // let layer = map.getLayers().getArray();
         infoContent = (
-            <>
+            <div className="map-table-scroll">
                 <table className="map-table">
                     <thead>
                     <tr>
@@ -135,7 +138,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                     </thead>
 
                     <tbody>
-                    {layer.map((layer, index) => (
+                    {mapLayer?.map((layer, index) => (
                         <tr key={index} className="map-row">
                             {/*{layer.getSource() instanceof source.XYZ ? 'XYZ' : layer.values_.source.params_.LAYERS}*/}
                             <td>   {(() => {
@@ -151,7 +154,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                                     return 'Unknown ';
                                 }
                             })()}
-                                {(layer.getSource() instanceof source.XYZ) ? '' : layer.values_.source.params_.LAYERS}</td>
+                                {((layer.getSource() instanceof source.XYZ) ? '' : layer.values_.source.params_?.LAYERS) ?? layer.values_.source.layer_}</td>
                             <td><input
                                 type="checkbox"
                                 checked={layer.values_.visible}
@@ -169,7 +172,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                             <td><input
                                 type="number"
                                 min="0"
-                                value={layer.values_.zIndex}
+                                value={layer.values_.zIndex ?? ''}
                                 onChange={(e) => handleZIndexChange(layer, parseInt(e.target.value))}
                             /></td>
                             <td>
@@ -181,7 +184,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                         </tr>))}
                     </tbody>
                 </table>
-            </>
+            </div>
         );
     }
     return (
