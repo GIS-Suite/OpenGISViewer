@@ -62,7 +62,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 4rem;
 }
 
 .form-hide {
@@ -105,8 +104,7 @@
 .input-file {
     display: flex;
     align-items: center;
-    margin-top: 40px;
-    margin-bottom: 4rem;
+    margin-bottom: 6.3rem;
     border-radius: 10px;
     background: rgb(114, 113, 113);
 

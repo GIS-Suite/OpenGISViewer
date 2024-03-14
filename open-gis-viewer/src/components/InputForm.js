@@ -7,6 +7,7 @@ import { handleFileSelect, addGeoTIFFLayer } from '../utils/fetchParseGeoTIFFs';
 import GeoTIFF from 'geotiff';
 
 import fetchWmtsCapabilities from "../utils/WMTSHandler";
+import {handleFileSelect} from "../utils/fetchParseGeoTIFFs";
 
 export const InputForm = ({onHandleAddLayer}) => {
     const [layerType, setLayerType] = useState('XYZ');
