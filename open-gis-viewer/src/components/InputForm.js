@@ -5,9 +5,8 @@ import XYZ from "ol/source/XYZ";
 import { fetchWmsService } from "../utils/fetchParseWMS";
 import { handleFileSelect, addGeoTIFFLayer } from '../utils/fetchParseGeoTIFFs'; 
 import GeoTIFF from 'geotiff';
-
+//import {handleKMZFileSelectKMZ} from "../utils/KMZImport";
 import fetchWmtsCapabilities from "../utils/WMTSHandler";
-import {handleFileSelect} from "../utils/fetchParseGeoTIFFs";
 
 export const InputForm = ({onHandleAddLayer}) => {
     const [layerType, setLayerType] = useState('XYZ');
@@ -98,16 +97,36 @@ export const InputForm = ({onHandleAddLayer}) => {
         } catch (error) {
             console.error('Error handling GeoTIFF:', error);
         }
+        
+        
     };
     handleGeoTIFF();
     break;
+case 'KMZ':
+                const handleKMZ = async () => {
+                    try {
+                        const fileInput = document.getElementById("fileInput");
+                        const file = fileInput.files[0];
+
+                        if (!file) {
+                            console.error('No KMZ file selected');
+                            return;
+                        }
+
+                        const kmzLayer = await addKMZLayer(file);
+                        setDataLayers(kmzLayer);
+                    } catch (error) {
+                        console.error('Error handling KMZ:', error);
+                    }
+                };
+                handleKMZ();
+                break;
             default:
                 console.error('Invalid layer type');
-                return;
+                break;
         }
-
-
     };
+
     return (
         < >
             <form className='input-form-container' onSubmit={
