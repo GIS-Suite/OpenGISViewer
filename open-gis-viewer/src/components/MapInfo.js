@@ -7,10 +7,8 @@ import {InputForm} from "./InputForm";
 import TileLayer from "ol/layer/Tile";
 import {TileWMS, WMTS} from "ol/source";
 import DataList from "./DataList";
-import {createWmtsLayer} from "../utils/WMTSHandler";
 import * as source from "ol/source";
 import {WFS} from "ol/format";
-import {addGeoTIFFLayer} from "../utils/fetchParseGeoTIFFs";
 import {optionsFromCapabilities} from "ol/source/WMTS";
 
 export const MapInfo = ({map, onToogleBottomMenu}) => {
@@ -42,8 +40,14 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
     function handleFormPopup() {
 
-        setShowData(!showData);
+        setShowData(prev => !prev);
         setSelectedTab('Import');
+    }
+
+    function onHandleAddTiff(tiff) {
+        console.log("tiff:", tiff);
+        map.addLayer(tiff);
+
     }
 
     function onSelectLayerHandler(name, type, url, input) {
@@ -51,8 +55,6 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
         if (type === 'WMS') {
             const newLayer = new TileLayer({
                 source: new TileWMS({
-
-                    // url: 'https://geoint.nrlssc.org/nrltileserver/wms',
                     url: url,
                     params: {
                         'LAYERS': name,
@@ -62,9 +64,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
             })
             map.addLayer(newLayer);
             // console.log(map.getLayers());
-
         }
-
         if (type === 'WMTS') {
             // const newLayer = createWmtsLayer(name, tileMatrixSet, format, projection);
             const options = optionsFromCapabilities(input, {
@@ -113,17 +113,17 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     let infoContent = <p className="mapinfo-section-no-data">No data available</p>;
 
     if (selectedTab === "Import") {
+
         infoContent = (
             <div className="mapinfo-content">
                 {!showData && <InputForm onHandleAddLayer={selectedLayerHandler}
-                                         onAddXYZLayer={onSelectLayerHandler}/>}
+                                         onHandleTiff={onHandleAddTiff}/>}
                 {showData &&
                     <DataList input={dataLayer} onSelectLayer={onSelectLayerHandler}/>
                 }
             </div>
         );
     } else if (selectedTab === "Layers") {
-        // let layer = map.getLayers().getArray();
         infoContent = (
             <div className="map-table-scroll">
                 <table className="map-table">

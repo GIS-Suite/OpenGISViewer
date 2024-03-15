@@ -4,7 +4,6 @@ import * as source from "ol/source";
 import DataUpdateTime from "./DataUpdateTime";
 
 export default function DataList({input, onSelectLayer}) {
-    //const isXYZLayer = input?.getSource() instanceof source.XYZ;
     let isLayer;
     if (input?.Service?.Name.includes('WMS')) {
         isLayer = "WMS";
@@ -14,7 +13,6 @@ export default function DataList({input, onSelectLayer}) {
 
         isLayer = "XYZ";
     }
-
 
     return (
 //WMS   MWS
@@ -35,7 +33,7 @@ export default function DataList({input, onSelectLayer}) {
                     <tr key={layer.Title}>
                         <td colSpan="1">{layer.Name}</td>
                         <td colSpan="1">{layer.Abstract ? layer.Abstract : "No Abstract available"}</td>
-                        <td>N/A</td>
+                        <td>{layer.CRS ?? "N/A"} </td>
                         <td><DataUpdateTime date={new Date(layer?.KeywordList.find((item) => {
                             return item.includes('Layer Update Time');
 
@@ -115,7 +113,7 @@ export default function DataList({input, onSelectLayer}) {
 
             }
             {
-                false
+                !isLayer && <p>No data imported</p>
             }
         </>
     )

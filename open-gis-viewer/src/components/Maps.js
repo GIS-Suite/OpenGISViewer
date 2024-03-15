@@ -6,19 +6,18 @@ import View from 'ol/View';
 import OSM from 'ol/source/OSM';
 import {defaults as defaultControls, MousePosition, OverviewMap, ScaleLine, ZoomSlider} from 'ol/control';
 import TileLayer from "ol/layer/Tile";
-import {TileWMS, WMTS} from "ol/source";
+import {TileWMS} from "ol/source";
 import {fetchWmsService} from "../utils/fetchParseWMS";
 import {MapInfo} from "./MapInfo";
-
 
 function Maps() {
     const [maps, setMaps] = useState({});
     const mapElement = useRef();
     const [expanded, setExpanded] = useState(false);
+
     const toggleBottomBar = () => {
         setExpanded(!expanded);
     };
-
 
     useEffect(() => {
         //initialize a  main Map

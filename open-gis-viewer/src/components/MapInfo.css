@@ -163,8 +163,16 @@
 
 .map-table th, td {
     padding: 8px;
-    border-bottom: 1px solid #ddd;
+    /*border-bottom: 1px solid #595959;*/
     text-align: center;
+}
+
+.map-table tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.map-table tbody tr:nth-child(odd) {
+    background-color: rgba(255, 255, 255, 0.14);
 }
 
 .map-row:hover {
