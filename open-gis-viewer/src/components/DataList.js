@@ -1,10 +1,23 @@
-import React from 'react';
-import "./DataList.css";
+import React, {useState} from 'react';
 import * as source from "ol/source";
 import DataUpdateTime from "./DataUpdateTime";
+import {SectionItem} from "../UI/SectionItem";
+import "./DataList.css";
 
 export default function DataList({input, onSelectLayer}) {
+    const [items, setItems] = useState([]);
+    const [query, setQuery] = useState("");
+
     let isLayer;
+    let filter = <div>
+        Filter:
+        <input
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            type="search"
+        />
+
+    </div>
     if (input?.Service?.Name.includes('WMS')) {
         isLayer = "WMS";
     } else if (input?.ServiceIdentification?.ServiceType.includes('WMTS')) {
@@ -14,44 +27,43 @@ export default function DataList({input, onSelectLayer}) {
         isLayer = "XYZ";
     }
 
-    return (
-//WMS   MWS
-        <>{isLayer === 'WMS' &&
-            <table className="data">
-                <thead>
-                <tr>
-                    <th>Layers</th>
-                    <th>Abstract</th>
-                    <th>Projections</th>
-                    <th>Updated</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                {input?.Capability?.Layer?.Layer?.map((layer) => (
-                    <tr key={layer.Title}>
-                        <td colSpan="1">{layer.Name}</td>
-                        <td colSpan="1">{layer.Abstract ? layer.Abstract : "No Abstract available"}</td>
-                        <td>{layer.CRS ?? "N/A"} </td>
-                        <td><DataUpdateTime date={new Date(layer?.KeywordList.find((item) => {
-                            return item.includes('Layer Update Time');
-
-                        })?.split('=')[1]?.trim())}/>
-                        </td>
-                        <td>
-                            <button
-                                onClick={() => onSelectLayer(layer.Name, 'WMS', input.Capability.Request.GetCapabilities.DCPType[0].HTTP.Get.OnlineResource)}>
-
-                                +
-                            </button>
-                        </td>
+    return (<SectionItem items={input ? filter : null} SectionContainer="div">
+            {isLayer === 'WMS' &&
+                <table className="data">
+                    <thead>
+                    <tr>
+                        <th>Layers</th>
+                        <th>Abstract</th>
+                        <th>Projections</th>
+                        <th>Updated</th>
+                        <th>Action</th>
                     </tr>
-                ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
 
-        } {
+                    {input?.Capability?.Layer?.Layer?.map((layer) => (
+                        <tr key={layer.Title}>
+                            <td>{layer.Name}</td>
+                            <td>{layer.Abstract ? layer.Abstract : "No Abstract available"}</td>
+                            <td>{layer.CRS ?? "N/A"} </td>
+                            <td><DataUpdateTime date={new Date(layer?.KeywordList.find((item) => {
+                                return item.includes('Layer Update Time');
+
+                            })?.split('=')[1]?.trim())}/>
+                            </td>
+                            <td>
+                                <button
+                                    onClick={() => onSelectLayer(layer.Name, 'WMS', input.Capability.Request.GetCapabilities.DCPType[0].HTTP.Get.OnlineResource)}>
+
+                                    +
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+
+            } {
 
         }
             {//WMTS    WMTS
@@ -115,7 +127,8 @@ export default function DataList({input, onSelectLayer}) {
             {
                 !isLayer && <p>No data imported</p>
             }
-        </>
-    )
-        ;
+        </SectionItem>
+
+
+    );
 }

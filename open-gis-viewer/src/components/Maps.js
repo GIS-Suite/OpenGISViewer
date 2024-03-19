@@ -15,6 +15,15 @@ function Maps() {
     const mapElement = useRef();
     const [expanded, setExpanded] = useState(false);
 
+    function redraw(l) {
+        const layers = [...l];
+        //maps.getLayers().clear();
+        maps.setLayers(layers);
+        maps.getLayers().forEach(layer => {
+            layer.getSource().refresh();
+        });
+    }
+
     const toggleBottomBar = () => {
         setExpanded(!expanded);
     };
@@ -79,6 +88,8 @@ function Maps() {
         <>
             <div id='map' className="map" ref={mapElement}/>
             <button className="menu-btn" onClick={toggleBottomBar}>{expanded ? "Hide" : "Map"} </button>
+            <button className="redraw-btn" onClick={() => redraw(maps.getLayers().getArray())
+            }></button>
             {/*<button className="search-btn" onClick={toggleSearchUrl}>{searching ? "Hide" : "Import"}</button>*/}
             <div className={`bottom-container ${expanded ? 'bottom-expanded' : ''}`}>
                 <MapInfo map={maps} onToogleBottomMenu={toggleBottomBar}/>

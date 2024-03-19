@@ -194,7 +194,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                     <>
                         <div>
                             <button onClick={handleFormPopup}>
-                                Form
+                                Search
                             </button>
                             <button onClick={onToogleBottomMenu}>Hide</button>
                         </div>

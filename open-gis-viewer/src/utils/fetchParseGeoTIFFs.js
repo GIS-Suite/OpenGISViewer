@@ -1,6 +1,9 @@
 import {fromArrayBuffer, fromBlob} from "geotiff";
 import ImageCanvasSource from "ol/source/ImageCanvas";
 import ImageLayer from "ol/layer/Image";
+import WebGLTileLayer from "ol/layer/WebGLTile";
+import GeoTIFF from "ol/source/GeoTIFF";
+import GeoTIFFSource from "ol/source/GeoTIFF";
 
 
 export async function handleFileSelect(file) {
@@ -16,28 +19,40 @@ export async function handleFileSelect(file) {
     const samplesPerPixel = image.getSamplesPerPixel();
     const resolution = image.getResolution();
     const extent = image.getBoundingBox();
-    console.log(image);
 
+    const dataurl = URL.createObjectURL(file);
+    console.log("Local file URL:", dataurl, image);
 
-    const source = new ImageCanvasSource({
-        canvasFunction: function () {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = tileWidth;
-            canvas.height = tileHeight;
-            return canvas;
-        },
-        interpolate: false,
-        ratio: 1,
-        resolutions: resolution,
+    return new WebGLTileLayer({
+        source: new GeoTIFF({
+            sources: [{
+                url: dataurl,
+                //  blob: file,
 
-        extent: extent,
+            }],
+        }),
     });
-    //console.log("Data", data, image, imgurl);
-    return new ImageLayer({
-        source: source,
+    /*
 
-    });
+        const source = new ImageCanvasSource({
+            canvasFunction: function () {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = tileWidth;
+                canvas.height = tileHeight;
+                return canvas;
+            },
+            interpolate: false,
+            ratio: 1,
+            resolutions: resolution,
+
+            extent: extent,
+        });
+        //console.log("Data", data, image, imgurl);
+        return new ImageLayer({
+            source: source,
+
+        });*/
 }
 
 /*
