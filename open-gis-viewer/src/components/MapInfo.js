@@ -10,6 +10,8 @@ import DataList from "./DataList";
 import * as source from "ol/source";
 import {WFS} from "ol/format";
 import {optionsFromCapabilities} from "ol/source/WMTS";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faSync} from '@fortawesome/free-solid-svg-icons';
 
 export const MapInfo = ({map, onToogleBottomMenu}) => {
     const [selectedTab, setSelectedTab] = useState('Import');
@@ -17,6 +19,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     const [showData, setShowData] = useState(false);
     const [layerChanged, setLayerChanged] = useState(false);
     const [mapLayer, setMapLayer] = useState();
+    const [draggedIndex, setDraggedIndex] = useState(null);
     const data = {};
 
     function selectedLayerHandler(data) {
@@ -132,6 +135,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                         <th>Layer Name</th>
                         <th>Visible</th>
                         <th>Opacity</th>
+                        <th>Refresh</th>
                         <th>ZIndex</th>
                         <th>Delete</th>
                     </tr>
@@ -139,8 +143,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
                     <tbody>
                     {mapLayer?.map((layer, index) => (
-                        <tr key={index} className="map-row">
-                            {/*{layer.getSource() instanceof source.XYZ ? 'XYZ' : layer.values_.source.params_.LAYERS}*/}
+                        <tr key={index}>
                             <td>   {(() => {
                                 if (layer.getSource() instanceof WMTS) {
                                     return 'WMTS ';
@@ -169,6 +172,10 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                                 value={layer.values_.opacity}
                                 onChange={(e) => handleOpacityChange(layer, parseFloat(e.target.value), index)}
                             /></td>
+                            <td>
+                                <FontAwesomeIcon icon={faSync} className='refresh-icon'
+                                                 onClick={() => layer.getSource().refresh()}/>
+                            </td>
                             <td><input
                                 type="number"
                                 min="0"
@@ -176,7 +183,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                                 onChange={(e) => handleZIndexChange(layer, parseInt(e.target.value))}
                             /></td>
                             <td>
-                                <button onClick={() => {
+                                <button className='delete-btn' onClick={() => {
                                     removeLayerHandler(layer, index)
                                 }}>-
                                 </button>

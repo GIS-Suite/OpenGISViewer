@@ -6,11 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="2360d212-7ba0-4b4f-b9f7-d63ccf4b4e70" name="Changes" comment="wip">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/forge.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/forge.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/utils/fetchParseGeoTIFFs.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/utils/fetchParseGeoTIFFs.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,6 +162,9 @@
       <workItem from="1710508535631" duration="2867000" />
       <workItem from="1710816497043" duration="9974000" />
       <workItem from="1710826962925" duration="2770000" />
+      <workItem from="1710829895418" duration="311000" />
+      <workItem from="1710853559394" duration="2663000" />
+      <workItem from="1710890970231" duration="12570000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
