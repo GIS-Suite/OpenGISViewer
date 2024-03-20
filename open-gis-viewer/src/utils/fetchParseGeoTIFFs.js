@@ -1,15 +1,21 @@
 import ImageLayer from 'ol/layer/Image';
 import ImageSource from 'ol/source/Image';
-import { createCanvasContext2D } from 'ol/dom';
-import { fromArrayBuffer } from 'geotiff'; // Update this line
+import GeoTIFF from 'ol/source/GeoTIFF';
+import {createCanvasContext2D} from 'ol/dom';
+import {fromArrayBuffer} from 'geotiff'; // Update this line
 
 const readGeoTIFF = async (file) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = async (event) => {
             try {
-                const arrayBuffer = event.target.result;
-                const tiff = await fromArrayBuffer(arrayBuffer); // Update this line
+                // Log the result to see its content and type
+                console.log('FileReader result:', event.target.result);
+
+                const arrayBuffer = event.target.result; // This should already be an ArrayBuffer
+                console.log('ArrayBuffer:', arrayBuffer);
+
+                const tiff = await fromArrayBuffer(arrayBuffer);
                 resolve(tiff);
             } catch (error) {
                 reject(error);
@@ -21,6 +27,7 @@ const readGeoTIFF = async (file) => {
         reader.readAsArrayBuffer(file);
     });
 };
+
 
 const createImageLayer = (data, size, extent, projection) => {
     const canvas = createCanvasContext2D(size[0], size[1]);
@@ -43,8 +50,7 @@ const createImageLayer = (data, size, extent, projection) => {
 
 const addGeoTIFFLayer = async (file, map) => {
     try {
-        const response = await fetch(file);
-        const arrayBuffer = await response.arrayBuffer();
+        const arrayBuffer = await readGeoTIFF(file); // Use readGeoTIFF function to read the file
         const tiff = await GeoTIFF.fromArrayBuffer(arrayBuffer);
         const image = await tiff.getImage();
         const data = await image.readRasters();
@@ -58,6 +64,7 @@ const addGeoTIFFLayer = async (file, map) => {
         console.error('Error adding GeoTIFF layer:', error);
     }
 };
+
 
 const handleFileSelect = async (event, map) => {
     const file = event.target.files[0];

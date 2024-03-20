@@ -19,7 +19,6 @@ function Maps() {
         setExpanded(!expanded);
     };
 
-
     useEffect(() => {
         //initialize a  main Map
         const initMap = async () => {

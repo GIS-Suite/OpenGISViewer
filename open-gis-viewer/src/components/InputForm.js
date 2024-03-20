@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import "./MapInfo.css";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
@@ -78,48 +78,25 @@ export const InputForm = ({onHandleAddLayer}) => {
                  console.log(dataLayers);*/
 
                 break;
-                case 'GeoTIFF':
-    const handleGeoTIFF = async () => {
-        try {
-            const fileInput = document.getElementById("fileInput");
-            const file = fileInput.files[0];
-
-            if (!file) {
-                console.error('No GeoTIFF file selected');
-                return;
-            }
-
-            // Pass the file information, not the map
-            setDataLayers({
-                type: 'GeoTIFF',
-                file: file,
-            });
-        } catch (error) {
-            console.error('Error handling GeoTIFF:', error);
-        }
-        
-        
-    };
-    handleGeoTIFF();
-    break;
-case 'KMZ':
-                const handleKMZ = async () => {
+            case 'GeoTIFF':
+                const handleGeoTIFF = async () => {
                     try {
                         const fileInput = document.getElementById("fileInput");
                         const file = fileInput.files[0];
 
                         if (!file) {
-                            console.error('No KMZ file selected');
+                            console.error('No GeoTIFF file selected');
                             return;
                         }
 
-                        const kmzLayer = await addKMZLayer(file);
-                        setDataLayers(kmzLayer);
+                        // Read the GeoTIFF file and set the data layers
+                        const tiffData = await readGeoTIFF(file);
+                        setDataLayers(tiffData);
                     } catch (error) {
-                        console.error('Error handling KMZ:', error);
+                        console.error('Error handling GeoTIFF:', error);
                     }
                 };
-                handleKMZ();
+                handleGeoTIFF();
                 break;
             default:
                 console.error('Invalid layer type');
@@ -191,7 +168,7 @@ case 'KMZ':
                         value=''
                         onChange={handleFileSelect}
                         required
-                />) : (<><input
+                    />) : (<><input
                     id="url"
                     type="url"
                     className="input-urls"
