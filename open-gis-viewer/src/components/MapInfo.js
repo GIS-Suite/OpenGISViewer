@@ -7,11 +7,11 @@ import {InputForm} from "./InputForm";
 import TileLayer from "ol/layer/Tile";
 import {TileWMS, WMTS} from "ol/source";
 import DataList from "./DataList";
-import {createWmtsLayer} from "../utils/WMTSHandler";
 import * as source from "ol/source";
 import {WFS} from "ol/format";
-import {addGeoTIFFLayer} from "../utils/fetchParseGeoTIFFs";
 import {optionsFromCapabilities} from "ol/source/WMTS";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faSync} from '@fortawesome/free-solid-svg-icons';
 
 export const MapInfo = ({map, onToogleBottomMenu}) => {
     const [selectedTab, setSelectedTab] = useState('Import');
@@ -19,6 +19,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     const [showData, setShowData] = useState(false);
     const [layerChanged, setLayerChanged] = useState(false);
     const [mapLayer, setMapLayer] = useState();
+    const [draggedIndex, setDraggedIndex] = useState(null);
     const data = {};
 
     function selectedLayerHandler(data) {
@@ -42,8 +43,14 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
     function handleFormPopup() {
 
-        setShowData(!showData);
+        setShowData(prev => !prev);
         setSelectedTab('Import');
+    }
+
+    function onHandleAddTiff(tiff) {
+        console.log("tiff:", tiff);
+        map.addLayer(tiff);
+
     }
 
     function onSelectLayerHandler(name, type, url, input) {
@@ -51,8 +58,6 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
         if (type === 'WMS') {
             const newLayer = new TileLayer({
                 source: new TileWMS({
-
-                    // url: 'https://geoint.nrlssc.org/nrltileserver/wms',
                     url: url,
                     params: {
                         'LAYERS': name,
@@ -62,9 +67,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
             })
             map.addLayer(newLayer);
             // console.log(map.getLayers());
-
         }
-
         if (type === 'WMTS') {
             // const newLayer = createWmtsLayer(name, tileMatrixSet, format, projection);
             const options = optionsFromCapabilities(input, {
@@ -113,17 +116,17 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     let infoContent = <p className="mapinfo-section-no-data">No data available</p>;
 
     if (selectedTab === "Import") {
+
         infoContent = (
             <div className="mapinfo-content">
                 {!showData && <InputForm onHandleAddLayer={selectedLayerHandler}
-                                         onAddXYZLayer={onSelectLayerHandler}/>}
+                                         onHandleTiff={onHandleAddTiff}/>}
                 {showData &&
                     <DataList input={dataLayer} onSelectLayer={onSelectLayerHandler}/>
                 }
             </div>
         );
     } else if (selectedTab === "Layers") {
-        // let layer = map.getLayers().getArray();
         infoContent = (
             <div className="map-table-scroll">
                 <table className="map-table">
@@ -132,6 +135,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                         <th>Layer Name</th>
                         <th>Visible</th>
                         <th>Opacity</th>
+                        <th>Refresh</th>
                         <th>ZIndex</th>
                         <th>Delete</th>
                     </tr>
@@ -139,8 +143,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
                     <tbody>
                     {mapLayer?.map((layer, index) => (
-                        <tr key={index} className="map-row">
-                            {/*{layer.getSource() instanceof source.XYZ ? 'XYZ' : layer.values_.source.params_.LAYERS}*/}
+                        <tr key={index}>
                             <td>   {(() => {
                                 if (layer.getSource() instanceof WMTS) {
                                     return 'WMTS ';
@@ -169,6 +172,10 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                                 value={layer.values_.opacity}
                                 onChange={(e) => handleOpacityChange(layer, parseFloat(e.target.value), index)}
                             /></td>
+                            <td>
+                                <FontAwesomeIcon icon={faSync} className='refresh-icon'
+                                                 onClick={() => layer.getSource().refresh()}/>
+                            </td>
                             <td><input
                                 type="number"
                                 min="0"
@@ -176,7 +183,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                                 onChange={(e) => handleZIndexChange(layer, parseInt(e.target.value))}
                             /></td>
                             <td>
-                                <button onClick={() => {
+                                <button className='delete-btn' onClick={() => {
                                     removeLayerHandler(layer, index)
                                 }}>-
                                 </button>
@@ -194,7 +201,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                     <>
                         <div>
                             <button onClick={handleFormPopup}>
-                                Form
+                                Search
                             </button>
                             <button onClick={onToogleBottomMenu}>Hide</button>
                         </div>

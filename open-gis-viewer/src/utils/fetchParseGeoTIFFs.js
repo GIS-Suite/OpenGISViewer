@@ -1,81 +1,38 @@
-import ImageLayer from 'ol/layer/Image';
-import ImageSource from 'ol/source/Image';
-import GeoTIFF from 'ol/source/GeoTIFF';
-import {createCanvasContext2D} from 'ol/dom';
-import {fromArrayBuffer} from 'geotiff'; // Update this line
+import {fromBlob} from "geotiff";
+import WebGLTileLayer from "ol/layer/WebGLTile";
+import GeoTIFF from "ol/source/GeoTIFF";
 
-const readGeoTIFF = async (file) => {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = async (event) => {
-            try {
-                // Log the result to see its content and type
-                console.log('FileReader result:', event.target.result);
-
-                const arrayBuffer = event.target.result; // This should already be an ArrayBuffer
-                console.log('ArrayBuffer:', arrayBuffer);
-
-                const tiff = await fromArrayBuffer(arrayBuffer);
-                resolve(tiff);
-            } catch (error) {
-                reject(error);
-            }
-        };
-        reader.onerror = (error) => {
-            reject(error);
-        };
-        reader.readAsArrayBuffer(file);
-    });
-};
+export async function handleFileSelect(file) {
 
 
-const createImageLayer = (data, size, extent, projection) => {
-    const canvas = createCanvasContext2D(size[0], size[1]);
-    const imageData = canvas.createImageData(size[0], size[1]);
-    imageData.data.set(data.flat());
-    canvas.putImageData(imageData, 0, 0);
+    const tiff = await fromBlob(file);
+    const image = await tiff.getImage();
+    const data = await image.readRasters();
+    const width = image.getWidth();
+    const height = image.getHeight();
+    const tileWidth = image.getTileWidth();
+    const tileHeight = image.getTileHeight();
+    const samplesPerPixel = image.getSamplesPerPixel();
+    const resolution = image.getResolution();
+    const extent = image.getBoundingBox();
+    const dataurl = URL.createObjectURL(file);
+    console.log("Local file URL:", dataurl, image);
 
-    return new ImageLayer({
-        source: new ImageSource({
-            imageExtent: extent,
-            projection: projection,
-            imageFunction: function (extent, resolution, pixelRatio, size, projection) {
-                const image = new Image();
-                image.src = canvas.canvas.toDataURL('image/png');
-                return image;
-            },
+    return new WebGLTileLayer({
+        source: new GeoTIFF({
+            sources: [{
+                url: dataurl,
+                //  blob: file,
+                min: 0,
+                max: 255,
+
+            }],
+            transition: 0,
+            wrapX: true,
+            normalize: true,
+            interpolate: true,
+
         }),
+
     });
-};
-
-const addGeoTIFFLayer = async (file, map) => {
-    try {
-        const arrayBuffer = await readGeoTIFF(file); // Use readGeoTIFF function to read the file
-        const tiff = await GeoTIFF.fromArrayBuffer(arrayBuffer);
-        const image = await tiff.getImage();
-        const data = await image.readRasters();
-        const size = image.getImage().size;
-        const extent = image.getBoundingBox();
-        const projection = image.getProjection();
-
-        const imageLayer = createImageLayer(data, size, extent, projection);
-        map.addLayer(imageLayer);
-    } catch (error) {
-        console.error('Error adding GeoTIFF layer:', error);
-    }
-};
-
-
-const handleFileSelect = async (event, map) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    await addGeoTIFFLayer(file, map);
-};
-
-export {
-    readGeoTIFF,
-    createImageLayer,
-    addGeoTIFFLayer,
-    handleFileSelect,
-};
+}

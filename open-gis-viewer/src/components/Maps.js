@@ -6,10 +6,9 @@ import View from 'ol/View';
 import OSM from 'ol/source/OSM';
 import {defaults as defaultControls, MousePosition, OverviewMap, ScaleLine, ZoomSlider} from 'ol/control';
 import TileLayer from "ol/layer/Tile";
-import {TileWMS, WMTS} from "ol/source";
+import {TileWMS} from "ol/source";
 import {fetchWmsService} from "../utils/fetchParseWMS";
 import {MapInfo} from "./MapInfo";
-
 
 function Maps() {
     const [maps, setMaps] = useState({});
@@ -79,7 +78,6 @@ function Maps() {
         <>
             <div id='map' className="map" ref={mapElement}/>
             <button className="menu-btn" onClick={toggleBottomBar}>{expanded ? "Hide" : "Map"} </button>
-            {/*<button className="search-btn" onClick={toggleSearchUrl}>{searching ? "Hide" : "Import"}</button>*/}
             <div className={`bottom-container ${expanded ? 'bottom-expanded' : ''}`}>
                 <MapInfo map={maps} onToogleBottomMenu={toggleBottomBar}/>
             </div>

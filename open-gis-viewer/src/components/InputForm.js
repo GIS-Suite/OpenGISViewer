@@ -12,8 +12,19 @@ export const InputForm = ({onHandleAddLayer}) => {
     const [layerType, setLayerType] = useState('XYZ');
     const [layerUrl, setLayerUrl] = useState('');
     const [dataLayers, setDataLayers] = useState(null);
+    const handleGeotiffCreation = (e) => {
+
+        handleFileSelect(e.target.files[0])
+            .then(layer => {
+                console.log("TIFF DATA:", layer);
+                onHandleTiff(layer);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
 
 
+    }
     useEffect(() => {
         console.log("Input_Form Layer:", dataLayers);
         onHandleAddLayer(dataLayers);
@@ -166,7 +177,7 @@ export const InputForm = ({onHandleAddLayer}) => {
                         className="input-file"
                         accept=".tif, .tiff"
                         value=''
-                        onChange={handleFileSelect}
+                        onChange={handleGeotiffCreation}
                         required
                     />) : (<><input
                     id="url"
