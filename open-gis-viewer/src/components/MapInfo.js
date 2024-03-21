@@ -96,29 +96,36 @@ export const MapInfo = ({ map }) => {
       console.log(map.getLayer());
     }
 
+    let test = "https://ahocevar.com/geoserver/wfs?service=WFS&";
+
     if (type == "WFS") {
-      const newLayer = new VectorLayer({
-        source: new VectorSource({
-          format: new GeoJSON(),
-          url: function (extent) {
-            return (
-              url +
-              "version=1.1.0&request=GetFeature&typename=osm:water_areas&" +
-              "outputFormat=application/json&srsname=EPSG:3857&" +
-              "bbox=" +
-              extent.join(",") +
-              ",EPSG:3857"
-            );
-          },
-          strategy: bboxStrategy,
-        }),
-        style: new Style({
-          stroke: new Stroke({
-            color: "FF0000",
-          }),
-        }),
+      console.log("Test URL: " + test);
+      const vectorSource = new VectorSource({
+        format: new GeoJSON(),
+        url: function (extent) {
+          return (
+            test +
+            "version=1.1.0&request=GetFeature&typename=osm:water_areas&" +
+            "outputFormat=application/json&srsname=EPSG:3857&" +
+            "bbox=" +
+            extent.join(",") +
+            ",EPSG:3857"
+          );
+        },
+        strategy: bboxStrategy,
       });
-      map.addLayer(newLayer);
+
+      console.log("Vector Source:" + vectorSource);
+      const vector = new VectorLayer({
+        source: vectorSource,
+        style: {
+          "stroke-width": 1,
+          "stroke-color": "red",
+          "fill-color": "rgba(50,250,0, 1)",
+        },
+      });
+
+      map.addLayer(vector);
     }
   }
 
