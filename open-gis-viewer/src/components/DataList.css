@@ -8,6 +8,7 @@
 }
 
 .data {
+    display: block;
     text-align: center;
     border-collapse: collapse;
     margin-bottom: 4rem;

@@ -6,25 +6,17 @@ import View from 'ol/View';
 import OSM from 'ol/source/OSM';
 import {defaults as defaultControls, MousePosition, OverviewMap, ScaleLine, ZoomSlider} from 'ol/control';
 import TileLayer from "ol/layer/Tile";
-import {TileWMS, WMTS} from "ol/source";
+import {TileWMS} from "ol/source";
 import {fetchWmsService} from "../utils/fetchParseWMS";
 import {MapInfo} from "./MapInfo";
-
 
 function Maps() {
     const [maps, setMaps] = useState({});
     const mapElement = useRef();
-    const [dataLayers, setDataLayers] = useState(null);
     const [expanded, setExpanded] = useState(false);
-    const [searching, setSearching] = useState(false);
-
     const toggleBottomBar = () => {
         setExpanded(!expanded);
     };
-
-    function toggleSearchUrl() {
-        setSearching(!searching);
-    }
 
     useEffect(() => {
         //initialize a  main Map
@@ -61,6 +53,7 @@ function Maps() {
 
                         undefinedHTML: '&nbsp;'
                     }),
+
                     new ScaleLine({units: 'us'}),
                     new ZoomSlider(),
                     new OverviewMap({
@@ -77,6 +70,7 @@ function Maps() {
             setMaps(initialMap);
         }
         initMap();
+
     }, []);
 
         // Button click event handler
@@ -115,7 +109,7 @@ initMap();
             <button className="search-btn" onClick={toggleSearchUrl}>{searching ? "Hide" : "Import"}</button>
             <button className="redraw-btn" onClick={handleButtonClick}>Refresh</button>
             <div className={`bottom-container ${expanded ? 'bottom-expanded' : ''}`}>
-                <MapInfo map={maps}/>
+                <MapInfo map={maps} onToogleBottomMenu={toggleBottomBar}/>
             </div>
 
         </>

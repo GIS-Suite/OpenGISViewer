@@ -46,16 +46,19 @@
 }
 
 .mapinfo-content {
-    display: flex;
-    justify-content: center;
-    padding: 1rem;
+    /*  display: flex;
+     /* justify-content: center;
+      /* padding: 1rem;*/
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     scroll-snap-type: y proximity;
     scroll-behavior: smooth;
 }
 
+.mapinfo-content p {
+    text-align: center;
+}
 
 /*//////////////////////     INPUT-FORM CSS*/
 .input-form-container {
@@ -63,7 +66,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 4rem;
 }
 
 .form-hide {
@@ -106,8 +108,7 @@
 .input-file {
     display: flex;
     align-items: center;
-    margin-top: 40px;
-    margin-bottom: 4rem;
+    margin-bottom: 6.3rem;
     border-radius: 10px;
     background: rgb(114, 113, 113);
 
@@ -148,23 +149,47 @@
 /*
 /////////////////////////////////map display css
 */
+.map-table-scroll {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-snap-type: y proximity;
+    scroll-behavior: smooth;
+    margin-bottom: 4rem;
+}
+
+
 .map-table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
+    margin-bottom: 4rem;
 }
 
 .map-table th, td {
     padding: 8px;
-    border-bottom: 1px solid #ddd;
-    text-align: center;
+    /*border-bottom: 1px solid #595959;*/
+    text-align: -webkit-center;
 }
 
-.map-row:hover {
-    background-color: #575858;
+.map-table tbody tr {
+    height: 50px;
+}
+
+.map-table tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.map-table tbody tr:nth-child(odd) {
+    background-color: rgba(255, 255, 255, 0.14);
+}
+
+.map-table tbody tr:hover {
+    background: rgba(79, 79, 79, 0.9);
     color: white;
 }
 
-.map-table button {
+.delete-btn {
     padding: 8px 16px;
     border: none;
     border-radius: 4px;
@@ -173,6 +198,41 @@
     cursor: pointer;
 }
 
-.map-table button:hover {
+.add-btn {
+    background-color: #d7a831;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.add-btn:hover {
+    background-color: #fcce67;
+}
+
+.delete-btn:hover {
     background-color: #520303;
+}
+
+.map-table-filter {
+    display: flex;
+    justify-content: center;
+    margin: 12px;
+}
+
+.map-table-filter input {
+    margin-left: 12px;
+    padding: 4px;
+    border-radius: 24px;
+}
+
+.refresh-icon {
+    transition: transform 0.3s ease;
+    color: #2a61ea;
+}
+
+.refresh-icon:hover {
+    transform: rotate(360deg);
+    color: white;
 }

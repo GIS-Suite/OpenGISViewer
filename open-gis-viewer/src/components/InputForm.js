@@ -3,19 +3,33 @@ import "./MapInfo.css";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
 import {fetchWmsService} from "../utils/fetchParseWMS";
-import {fetchWmtsService} from "../utils/fetchParseWMTS";
+/*import {addGeoTIFFLayer, handleFileSelect, readGeoTIFF} from "../utils/fetchParseGeoTIFFs";*/
+import fetchWmtsCapabilities from "../utils/WMTSHandler";
 import {handleFileSelect} from "../utils/fetchParseGeoTIFFs";
 
-export const InputForm = ({onHandleAddLayer}) => {
+
+export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
     const [layerType, setLayerType] = useState('XYZ');
     const [layerUrl, setLayerUrl] = useState('');
     const [dataLayers, setDataLayers] = useState(null);
+    const handleGeotiffCreation = (e) => {
+
+        handleFileSelect(e.target.files[0])
+            .then(layer => {
+                console.log("TIFF DATA:", layer);
+                onHandleTiff(layer);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
 
 
+    }
     useEffect(() => {
         console.log("Input_Form Layer:", dataLayers);
         onHandleAddLayer(dataLayers);
     }, [dataLayers]);
+    //Only get input from user , send req to api get data ,here and pass data objct for further manipulations elswhere
     const handleAddLayer = (e, layerType, layerUrl) => {
         e.preventDefault();
 
@@ -28,8 +42,6 @@ export const InputForm = ({onHandleAddLayer}) => {
 
                     }),
                 });
-                // maps.addLayer(layerToAdd);
-                // console.log("maps: ", maps.getLayers());
                 setDataLayers(layerToAdd);
 
                 break;
@@ -38,7 +50,6 @@ export const InputForm = ({onHandleAddLayer}) => {
 
                     try {
                         const data = await fetchWmsService(layerUrl);
-                        console.log(data);
                         setDataLayers(data);
                     } catch (error) {
                         console.error('Error fetching data:', error);
@@ -51,20 +62,31 @@ export const InputForm = ({onHandleAddLayer}) => {
                 //COLLECT WFS INPUT
                 break;
             case 'WMTS'://support for WMTS
+
                 const getWMTS = async () => {
-
                     try {
-                        const data = await fetchWmtsService(layerUrl);
-                        // console.log(data);
-                        setDataLayers(data);
-                        console.log(dataLayers);
-                    } catch (error) {
-                        console.error('Error fetching data:', error);
-                    }
 
+                        const wmtsLayer = await fetchWmtsCapabilities(layerUrl);
+                        setDataLayers(wmtsLayer);
+                    } catch (error) {
+                        console.error('Error adding WMTS layer:', error);
+                    }
                 }
                 getWMTS();
-                console.log(dataLayers);
+                /* const getWMTS = async () => {
+
+                     try {
+                         const data = await fetchWmtsService(layerUrl);
+                         // console.log(data);
+                         setDataLayers(data);
+                         console.log(dataLayers);
+                     } catch (error) {
+                         console.error('Error fetching data:', error);
+                     }
+
+                 }
+                 getWMTS();
+                 console.log(dataLayers);*/
 
                 break;
             case 'GeoTIFF': // Handle GeoTIFF files
@@ -86,7 +108,6 @@ export const InputForm = ({onHandleAddLayer}) => {
                 console.error('Invalid layer type');
                 return;
         }
-
 
     };
     return (
@@ -150,7 +171,7 @@ export const InputForm = ({onHandleAddLayer}) => {
                         className="input-file"
                         accept=".tif, .tiff"
                         value=''
-                        onChange={handleFileSelect}
+                        onChange={handleGeotiffCreation}
                         required
                     />) : (<><input
                     id="url"
