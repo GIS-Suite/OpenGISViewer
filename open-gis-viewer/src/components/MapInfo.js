@@ -99,12 +99,13 @@ export const MapInfo = ({ map }) => {
     let test = "https://ahocevar.com/geoserver/wfs?service=WFS&";
 
     if (type == "WFS") {
+      console.log("Passed URL: " + url);
       console.log("Test URL: " + test);
       const vectorSource = new VectorSource({
         format: new GeoJSON(),
         url: function (extent) {
           return (
-            test +
+            url +
             "version=1.1.0&request=GetFeature&typename=osm:water_areas&" +
             "outputFormat=application/json&srsname=EPSG:3857&" +
             "bbox=" +

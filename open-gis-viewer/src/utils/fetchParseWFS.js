@@ -30,6 +30,4 @@ export const fetchWfsService = async (url) => {
       VectorSource.addFeatures(features);
       Map.getView().fit(vectorSource.getExtent());
     });
-
-  return data;
 };
