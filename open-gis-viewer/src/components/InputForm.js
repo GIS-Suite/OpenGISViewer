@@ -135,12 +135,8 @@ export const InputForm = ({onHandleAddLayer}) => {
     };
 
     return (
-        < >
-            <form className='input-form-container' onSubmit={
-                (e) => {
-                    handleAddLayer(e, layerType, layerUrl)
-                }
-            }>
+        <>
+            <form className='input-form-container' onSubmit={(e) => handleAddLayer(e, layerType, layerUrl)}>
                 <div className="input-label-wrapper">
                     <label>
                         <input
@@ -170,7 +166,6 @@ export const InputForm = ({onHandleAddLayer}) => {
                         WMS
                     </label>
                     <label>
-
                         <input
                             type="radio"
                             value="WMTS"
@@ -189,7 +184,7 @@ export const InputForm = ({onHandleAddLayer}) => {
                         GeoTIFF
                     </label>
                     <label>
-                    <input
+                        <input
                             type="radio"
                             value="KMZ"
                             checked={layerType === 'KMZ'}
@@ -207,17 +202,8 @@ export const InputForm = ({onHandleAddLayer}) => {
                         value=''
                         onChange={handleGeotiffCreation}
                         required
-                    />) : (<><input
-                    id="url"
-                    type="url"
-                    className="input-urls"
-                    onChange={(e) => setLayerUrl(e.target.value)}
-                    placeholder="Enter layer URL"
-                    required
-                />
-                    <button className="input-btn">Import Layer
-                    </button>
-                </>)}
+                    />
+                ) : null}
                 {layerType === 'KMZ' && 
                     <input
                         type="file"
@@ -227,10 +213,21 @@ export const InputForm = ({onHandleAddLayer}) => {
                         value=''
                         onChange={handleKMZCreation}
                         required
-                    /> }
-                
+                    />}
+                {layerType !== 'KMZ' && layerType !== 'GeoTIFF' && (
+                    <>
+                        <input
+                            id="url"
+                            type="url"
+                            className="input-urls"
+                            onChange={(e) => setLayerUrl(e.target.value)}
+                            placeholder="Enter layer URL"
+                            required
+                        />
+                        <button className="input-btn">Import Layer</button>
+                    </>
+                )}
             </form>
-        </>)
-
-
-}
+        </>
+    );
+ }    
