@@ -22,9 +22,12 @@ export const InputForm = ({onHandleAddLayer}) => {
             .catch(error => {
                 console.error('Error:', error);
             });
-
-
     }
+ const handleKMZCreation = (e) => {
+    //Create a function that will add the layer 
+    
+ }
+    
     useEffect(() => {
         console.log("Input_Form Layer:", dataLayers);
         onHandleAddLayer(dataLayers);
@@ -185,6 +188,15 @@ export const InputForm = ({onHandleAddLayer}) => {
                         />
                         GeoTIFF
                     </label>
+                    <label>
+                    <input
+                            type="radio"
+                            value="KMZ"
+                            checked={layerType === 'KMZ'}
+                            onChange={() => setLayerType('KMZ')}
+                        />
+                        KMZ
+                    </label>
                 </div>
                 {layerType === 'GeoTIFF' ? (
                     <input
@@ -206,7 +218,17 @@ export const InputForm = ({onHandleAddLayer}) => {
                     <button className="input-btn">Import Layer
                     </button>
                 </>)}
-
+                {layerType === 'KMZ' && 
+                    <input
+                        type="file"
+                        id="fileInput" // Add an ID to the file input
+                        className="input-file"
+                        accept=".kmz"
+                        value=''
+                        onChange={handleKMZCreation}
+                        required
+                    /> }
+                
             </form>
         </>)
 
