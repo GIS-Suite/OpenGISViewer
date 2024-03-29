@@ -1,19 +1,21 @@
-import React, {useEffect, useState} from 'react';
-import {Section} from "../UI/Section";
-import {SectionItem} from "../UI/SectionItem";
-import {NavItemButton} from "./NavItemButton";
+// MapInfo.js
+import React, { useEffect, useState } from 'react';
+import { Section } from "../UI/Section";
+import { SectionItem } from "../UI/SectionItem";
+import { NavItemButton } from "./NavItemButton";
 import "./MapInfo.css";
-import {InputForm} from "./InputForm";
+import { InputForm } from "./InputForm";
 import TileLayer from "ol/layer/Tile";
-import {TileWMS, WMTS} from "ol/source";
+import { TileWMS, WMTS } from "ol/source";
 import DataList from "./DataList";
 import * as source from "ol/source";
-import {WFS} from "ol/format";
-import {optionsFromCapabilities} from "ol/source/WMTS";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faSync} from '@fortawesome/free-solid-svg-icons';
+import { WFS } from "ol/format";
+import { optionsFromCapabilities } from "ol/source/WMTS";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSync } from '@fortawesome/free-solid-svg-icons';
+import WMSGetFeatureInfo from 'ol/format/WMSGetFeatureInfo'; // Import WMSGetFeatureInfo
 
-export const MapInfo = ({map, onToogleBottomMenu}) => {
+export const MapInfo = ({ map, onToogleBottomMenu }) => {
     const [selectedTab, setSelectedTab] = useState('Import');
     const [dataLayer, setDataLayer] = useState(null);
     const [showData, setShowData] = useState(false);
