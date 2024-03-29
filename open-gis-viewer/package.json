@@ -11,7 +11,7 @@
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
-    "keywords": [],
+  "keywords": [],
   "author": {
     "name": "JakeIsCodingAway",
     "email": "jake.s.held123@gmail.com"
@@ -35,7 +35,13 @@
     "style-loader": "^3.0.0"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "csp-html-webpack-plugin": "^5.1.0",
     "electron-squirrel-startup": "^1.0.0",
+    "geotiff": "^2.1.3",
+    "jszip": "^3.10.1",
     "ol": "^8.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

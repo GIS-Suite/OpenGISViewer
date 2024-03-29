@@ -1,12 +1,9 @@
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-import Maps from "./components/Maps";
+import AppContainer from "./components/AppContainer";
 
-const rootElement = document.getElementById("root");
-ReactDOM.render(
-    <React.StrictMode>
-        <Maps />
-    </React.StrictMode>,
-    rootElement
-    //
-);
+const mapNode  = document.getElementById('root');
+const root  = createRoot(mapNode);
+
+
+root.render(<><AppContainer/></>);

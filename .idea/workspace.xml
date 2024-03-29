@@ -6,9 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="2360d212-7ba0-4b4f-b9f7-d63ccf4b4e70" name="Changes" comment="wip">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/app.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/app.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/utils/fetchParseGeoTIFFs.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/utils/fetchParseGeoTIFFs.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,9 +22,13 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="CSS File" />
         <option value="JavaScript File" />
       </list>
     </option>
+  </component>
+  <component name="FormatOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -51,10 +59,11 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;v1&quot;,
-    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;20.11.0&quot;,
-    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.11.17&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Merging geotiffv2merge&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;21.1.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.11.16&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/jakeh/source/OpenGISViewer&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -63,14 +72,20 @@
     &quot;npm.electron.executor&quot;: &quot;Run&quot;,
     &quot;npm.start (1).executor&quot;: &quot;Run&quot;,
     &quot;npm.start.executor&quot;: &quot;Run&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\jakeh\\AppData\\Local\\Programs\\WebStorm\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.prettier&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2023.3.3\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\vasyl\SELU Univ\411CMPS\OpenGISViewer\open-gis-viewer\src\utils" />
+      <recent name="C:\Users\vasyl\SELU Univ\411CMPS\OpenGISViewer\open-gis-viewer\src\UI" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/open-gis-viewer/package.json" />
+      <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
         <script value="start" />
@@ -97,7 +112,59 @@
       <workItem from="1707006039962" duration="1735000" />
       <workItem from="1707356906660" duration="14613000" />
       <workItem from="1707419391336" duration="5091000" />
-      <workItem from="1707436263245" duration="1245000" />
+      <workItem from="1707883207882" duration="16204000" />
+      <workItem from="1707967336559" duration="13603000" />
+      <workItem from="1708023774405" duration="2098000" />
+      <workItem from="1708037399887" duration="2332000" />
+      <workItem from="1708054174023" duration="7055000" />
+      <workItem from="1708061754836" duration="4927000" />
+      <workItem from="1708066754277" duration="193000" />
+      <workItem from="1708319479667" duration="7057000" />
+      <workItem from="1708399002753" duration="18343000" />
+      <workItem from="1708477373471" duration="3496000" />
+      <workItem from="1708485947624" duration="7661000" />
+      <workItem from="1708573174060" duration="10523000" />
+      <workItem from="1708584454009" duration="679000" />
+      <workItem from="1708643062273" duration="2722000" />
+      <workItem from="1708661100509" duration="6575000" />
+      <workItem from="1708749963066" duration="5151000" />
+      <workItem from="1708782669319" duration="789000" />
+      <workItem from="1708835784692" duration="9557000" />
+      <workItem from="1708916145738" duration="16894000" />
+      <workItem from="1708957707316" duration="1651000" />
+      <workItem from="1708968722605" duration="3485000" />
+      <workItem from="1708993745607" duration="16601000" />
+      <workItem from="1709091297852" duration="6466000" />
+      <workItem from="1709186504290" duration="7463000" />
+      <workItem from="1709238402789" duration="3938000" />
+      <workItem from="1709253473844" duration="9473000" />
+      <workItem from="1709304587228" duration="3054000" />
+      <workItem from="1709349398811" duration="6932000" />
+      <workItem from="1709439761858" duration="3979000" />
+      <workItem from="1709478951255" duration="1023000" />
+      <workItem from="1709510631895" duration="1512000" />
+      <workItem from="1709522154550" duration="3426000" />
+      <workItem from="1709527272532" duration="729000" />
+      <workItem from="1709608145996" duration="606000" />
+      <workItem from="1709692469425" duration="1055000" />
+      <workItem from="1709770819713" duration="5890000" />
+      <workItem from="1709851756003" duration="1592000" />
+      <workItem from="1709872109480" duration="2529000" />
+      <workItem from="1710268628690" duration="1827000" />
+      <workItem from="1710288998496" duration="2924000" />
+      <workItem from="1710296995407" duration="10538000" />
+      <workItem from="1710334071306" duration="6743000" />
+      <workItem from="1710381801461" duration="10491000" />
+      <workItem from="1710424162297" duration="819000" />
+      <workItem from="1710439717694" duration="1622000" />
+      <workItem from="1710446465658" duration="1195000" />
+      <workItem from="1710467984232" duration="10816000" />
+      <workItem from="1710508535631" duration="2867000" />
+      <workItem from="1710816497043" duration="9974000" />
+      <workItem from="1710826962925" duration="2770000" />
+      <workItem from="1710829895418" duration="311000" />
+      <workItem from="1710853559394" duration="2663000" />
+      <workItem from="1710890970231" duration="12570000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
@@ -120,6 +187,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
