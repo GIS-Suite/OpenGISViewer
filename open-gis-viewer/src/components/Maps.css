@@ -104,24 +104,10 @@ slider container
     color: #fff;
     border-radius: 8px;
     cursor: pointer;
-
 }
 
 .menu-btn:hover {
     background-color: #164616;
-}
-
-.redraw-btn {
-    position: absolute;
-    top: 5rem;
-    right: 0;
-    padding: 8px 16px;
-    background-color: #045b04;
-    backdrop-filter: blur(25px);
-    color: #fff;
-    border-radius: 8px;
-    cursor: pointer;
-
 }
 
 .redraw-btn {
