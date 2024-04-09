@@ -184,7 +184,6 @@ export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
                     <button className="input-btn">Import Layer
                     </button>
                 </>)}
-
             </form>
         </>)
 
