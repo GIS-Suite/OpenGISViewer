@@ -232,6 +232,15 @@
     color: #2a61ea;
 }
 
+.ellipsisV-icon {
+    width: 50px;
+    border: none;
+    background: none;
+    padding: 4px;
+    cursor: grab;
+    color: gainsboro;
+}
+
 .refresh-icon:hover {
     transform: rotate(360deg);
     color: white;

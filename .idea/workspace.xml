@@ -6,7 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="2360d212-7ba0-4b4f-b9f7-d63ccf4b4e70" name="Changes" comment="wip">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/InputForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/InputForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/utils/WMTSHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/utils/WMTSHandler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,7 +168,8 @@
       <workItem from="1710990921233" duration="308000" />
       <workItem from="1711058466986" duration="3742000" />
       <workItem from="1711069807025" duration="1203000" />
-      <workItem from="1712627860829" duration="716000" />
+      <workItem from="1712627860829" duration="7406000" />
+      <workItem from="1712715774823" duration="9827000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />

@@ -11,7 +11,8 @@ import * as source from "ol/source";
 import {WFS} from "ol/format";
 import {optionsFromCapabilities} from "ol/source/WMTS";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faSync} from '@fortawesome/free-solid-svg-icons';
+import {faSync, faEllipsisV} from '@fortawesome/free-solid-svg-icons';
+import toKML from 'ol/format/KML';
 
 export const MapInfo = ({map, onToogleBottomMenu}) => {
     const [selectedTab, setSelectedTab] = useState('Import');
@@ -19,7 +20,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     const [showData, setShowData] = useState(false);
     const [layerChanged, setLayerChanged] = useState(false);
     const [mapLayer, setMapLayer] = useState();
-    const [draggedIndex, setDraggedIndex] = useState(null);
+    const [draggedIndex, setDraggedIndex] = useState(0);
     const data = {};
 
     function selectedLayerHandler(data) {
@@ -31,26 +32,35 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
     useEffect(() => {
         if (map && typeof map.getLayers === 'function') {
-            setMapLayer(map.getLayers().getArray());
+            // setMapLayer(map.getLayers().getArray());
+            const layers = map.getLayers().getArray();
+            layers.forEach((layer, index) => {
+
+                layer.setZIndex(index);
+
+            });
+            setMapLayer(layers);
         }
-    }, [map]);
+
+    }, [map, mapLayer]);
 
 
     useEffect(() => {
-        console.log("INFOMAP:", map);
+        console.log("INFO-MAP:", map);
 
     }, [map, dataLayer, layerChanged])
 
     function handleFormPopup() {
 
-        setShowData(prev => !prev);
-        setSelectedTab('Import');
+        setShowData(false);
+        if (selectedTab !== 'Import') {
+            setSelectedTab('Import');
+        }
     }
 
     function onHandleAddTiff(tiff) {
         console.log("tiff:", tiff);
         map.addLayer(tiff);
-
     }
 
     function onSelectLayerHandler(name, type, url, input) {
@@ -98,10 +108,11 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
         setLayerChanged(prevState => !prevState);
     }
 
-    function handleZIndexChange(layer, number) {
-        layer.setZIndex(number);
-        setLayerChanged(prevState => !prevState);
-    }
+    /*//set zindex function if enter on input
+     function handleZIndexChange(layer, number) {
+           layer.setZIndex(number);
+           setLayerChanged(prevState => !prevState);
+       }*/
 
     function removeLayerHandler(layer) {
         // console.log("Remove", layer.getSource());
@@ -115,8 +126,8 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
     let infoContent = <p className="mapinfo-section-no-data">No data available</p>;
 
-    if (selectedTab === "Import") {
 
+    if (selectedTab === "Import") {
         infoContent = (
             <div className="mapinfo-content">
                 {!showData && <InputForm onHandleAddLayer={selectedLayerHandler}
@@ -127,11 +138,37 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
             </div>
         );
     } else if (selectedTab === "Layers") {
+
+        const handleDragStart = (e, oldIndex) => {
+
+            setDraggedIndex(oldIndex);
+            console.log("BeforeUpdateArrayOrder", mapLayer);
+        };
+
+        const handleDragOver = (e, newIndex) => {
+            e.preventDefault();
+            const oldIndex = draggedIndex;
+
+            if (oldIndex !== newIndex) {
+                const updatedLayers = [...mapLayer];
+                const movedLayer = updatedLayers.splice(oldIndex, 1)[0];
+                updatedLayers.splice(newIndex, 0, movedLayer);
+
+                updatedLayers.forEach((layer, index) => {
+                    layer.setZIndex(index);
+                });
+                console.log("AfterUpdatedArrayOrder", updatedLayers);
+                //  setMapLayer(updatedLayers);
+                map.setLayers(updatedLayers);
+                setDraggedIndex(newIndex);
+            }
+        };
         infoContent = (
             <div className="map-table-scroll">
                 <table className="map-table">
                     <thead>
                     <tr>
+                        <th></th>
                         <th>Layer Name</th>
                         <th>Visible</th>
                         <th>Opacity</th>
@@ -144,20 +181,35 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                     <tbody>
                     {mapLayer?.map((layer, index) => (
                         <tr key={index}>
-                            <td>   {(() => {
-                                if (layer.getSource() instanceof WMTS) {
-                                    return 'WMTS ';
-                                } else if (layer.getSource() instanceof source.TileWMS) {
-                                    return 'WMS ';
-                                } else if (layer.getSource() instanceof WFS) {
-                                    return 'WFS ';
-                                } else if (layer.getSource() instanceof source.XYZ) {
-                                    return 'XYZ';
-                                } else {
-                                    return 'Unknown ';
-                                }
-                            })()}
-                                {((layer.getSource() instanceof source.XYZ) ? '' : layer.values_.source.params_?.LAYERS) ?? layer.values_.source.layer_}</td>
+                            <td style={{
+                                display: 'flex',
+                            }}>
+                                <button draggable className='ellipsisV-icon'
+                                        onDragStart={(e) => handleDragStart(e, index)}
+                                        onDragOver={(e) => handleDragOver(e, index)}><FontAwesomeIcon icon={faEllipsisV}
+                                />
+                                </button>
+                            </td>
+                            <td>
+
+                                {(() => {
+                                    if (layer.getSource() instanceof WMTS) {
+                                        return 'WMTS ';
+                                    } else if (layer.getSource() instanceof source.TileWMS) {
+                                        return 'WMS ';
+                                    } else if (layer.getSource() instanceof WFS) {
+                                        return 'WFS ';
+                                    } else if (layer.getSource() instanceof source.XYZ) {
+                                        return 'XYZ';
+                                    } else if (layer.getSource() instanceof source.GeoTIFF) {
+                                        return 'GeoTIFF';
+                                    } else {
+                                        return 'Unknown ';
+                                    }
+                                })()}
+                                {((layer.getSource() instanceof source.XYZ) ? '' : layer.values_.source.params_?.LAYERS) ?? layer.values_.source.layer_}
+
+                            </td>
                             <td><input
                                 type="checkbox"
                                 checked={layer.values_.visible}
@@ -176,12 +228,14 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                                 <FontAwesomeIcon icon={faSync} className='refresh-icon'
                                                  onClick={() => layer.getSource().refresh()}/>
                             </td>
-                            <td><input
+                            <td>{/* set up zindex manually
+                            <input
                                 type="number"
                                 min="0"
                                 value={layer.values_.zIndex ?? ''}
                                 onChange={(e) => handleZIndexChange(layer, parseInt(e.target.value))}
-                            /></td>
+                            />*/}
+                                {layer.values_.zIndex ?? ''}</td>
                             <td>
                                 <button className='delete-btn' onClick={() => {
                                     removeLayerHandler(layer, index)
@@ -193,7 +247,16 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                 </table>
             </div>
         );
+    } else if (selectedTab === "Export") {
+        infoContent = (<div>
+                <button>Export as PNG</button>
+                <button>Export KML</button>
+
+            </div>
+        )
     }
+
+
     return (
         <Section className="mapinfo-section">
             <SectionItem
