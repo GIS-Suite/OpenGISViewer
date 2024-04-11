@@ -189,6 +189,28 @@
     color: white;
 }
 
+.map-table-text {
+    max-width: 20ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+}
+
+.map-table-text:hover {
+    position: absolute;
+    max-width: 100ch;
+}
+
+/*.map-table-text-cnt .map-table-hover-text {
+    display: none;
+}
+
+.map-table-text-cnt:hover .map-table-hover-text {
+    position: absolute;
+    display: block;
+}*/
+
 .delete-btn {
     padding: 8px 16px;
     border: none;
@@ -233,7 +255,8 @@
 }
 
 .ellipsisV-icon {
-    width: 50px;
+    flex-basis: 8ch;
+    width: 75px;
     border: none;
     background: none;
     padding: 4px;

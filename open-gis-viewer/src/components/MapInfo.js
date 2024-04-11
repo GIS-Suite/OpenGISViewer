@@ -12,7 +12,7 @@ import {WFS} from "ol/format";
 import {optionsFromCapabilities} from "ol/source/WMTS";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSync, faEllipsisV} from '@fortawesome/free-solid-svg-icons';
-import toKML from 'ol/format/KML';
+
 
 export const MapInfo = ({map, onToogleBottomMenu}) => {
     const [selectedTab, setSelectedTab] = useState('Import');
@@ -168,7 +168,6 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                 <table className="map-table">
                     <thead>
                     <tr>
-                        <th></th>
                         <th>Layer Name</th>
                         <th>Visible</th>
                         <th>Opacity</th>
@@ -181,40 +180,44 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                     <tbody>
                     {mapLayer?.map((layer, index) => (
                         <tr key={index}>
+
                             <td style={{
                                 display: 'flex',
+
                             }}>
                                 <button draggable className='ellipsisV-icon'
                                         onDragStart={(e) => handleDragStart(e, index)}
                                         onDragOver={(e) => handleDragOver(e, index)}><FontAwesomeIcon icon={faEllipsisV}
                                 />
                                 </button>
-                            </td>
-                            <td>
+                                <div className='map-table-text-cnt'>
+                                    <div className='map-table-text'>  {(() => {
+                                        if (layer.getSource() instanceof WMTS) {
+                                            return 'WMTS ';
+                                        } else if (layer.getSource() instanceof source.TileWMS) {
+                                            return 'WMS ';
+                                        } else if (layer.getSource() instanceof WFS) {
+                                            return 'WFS ';
+                                        } else if (layer.getSource() instanceof source.XYZ) {
+                                            return 'XYZ';
+                                        } else if (layer.getSource() instanceof source.GeoTIFF) {
+                                            return 'GeoTIFF';
+                                        } else {
+                                            return 'Unknown ';
+                                        }
+                                    })()}
+                                        {((layer.getSource() instanceof source.XYZ) ? '' : layer.values_.source.params_?.LAYERS) ?? layer.values_.source.layer_}
+                                    </div>
 
-                                {(() => {
-                                    if (layer.getSource() instanceof WMTS) {
-                                        return 'WMTS ';
-                                    } else if (layer.getSource() instanceof source.TileWMS) {
-                                        return 'WMS ';
-                                    } else if (layer.getSource() instanceof WFS) {
-                                        return 'WFS ';
-                                    } else if (layer.getSource() instanceof source.XYZ) {
-                                        return 'XYZ';
-                                    } else if (layer.getSource() instanceof source.GeoTIFF) {
-                                        return 'GeoTIFF';
-                                    } else {
-                                        return 'Unknown ';
-                                    }
-                                })()}
-                                {((layer.getSource() instanceof source.XYZ) ? '' : layer.values_.source.params_?.LAYERS) ?? layer.values_.source.layer_}
-
+                                </div>
                             </td>
                             <td><input
+                                id='visible'
                                 type="checkbox"
                                 checked={layer.values_.visible}
                                 onChange={(e) => handleVisibilityChange(layer, e.target.checked)}
-                            /></td>
+                            />
+                            </td>
                             <td><input
                                 id="opacity"
                                 type="range"

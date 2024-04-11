@@ -1,19 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import "./Maps.css";
 import 'ol/ol.css';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import OSM from 'ol/source/OSM';
-import { defaults as defaultControls, MousePosition, OverviewMap, ScaleLine, ZoomSlider } from 'ol/control';
+import {defaults as defaultControls, MousePosition, OverviewMap, ScaleLine, ZoomSlider} from 'ol/control';
 import TileLayer from "ol/layer/Tile";
-import { TileWMS } from "ol/source";
-import { fetchWmsService } from "../utils/fetchParseWMS";
-import { MapInfo } from "./MapInfo";
+import {TileWMS} from "ol/source";
+import {fetchWmsService} from "../utils/fetchParseWMS";
+import {MapInfo} from "./MapInfo";
 
 function Maps() {
     const [maps, setMaps] = useState({});
     const mapElement = useRef();
     const [expanded, setExpanded] = useState(false);
+
 
     const toggleBottomBar = () => {
         setExpanded(!expanded);
@@ -49,7 +50,7 @@ function Maps() {
                         className: 'cursor-map-controls',
                         undefinedHTML: '&nbsp;'
                     }),
-                    new ScaleLine({ units: 'us' }),
+                    new ScaleLine({units: 'us'}),
                     new ZoomSlider(),
                     new OverviewMap({
                         layers: [
@@ -66,7 +67,14 @@ function Maps() {
         initMap();
     }, []);
 
-    const handleButtonClick = async () => {
+    const handleButtonClick = async (l) => {
+        /*  //another way of refresh btn
+         const layers = [...l];
+          maps.getLayers().clear();
+          maps.setLayers(layers);
+          maps.getLayers().forEach(layer => {
+              layer.getSource().refresh();
+          });*/
         const baseLayer = maps.getLayers().item(0); // Get the base layer
         const layers = Array.from(maps.getLayers().getArray()); // Get all layers from the map
         maps.getLayers().clear(); // Clear the map layers
@@ -93,15 +101,15 @@ function Maps() {
             }
         });
     };
-    
 
     return (
         <>
-            <div id='map' className="map" ref={mapElement} />
+            <div id='map' className="map" ref={mapElement}/>
             <button className="menu-btn" onClick={toggleBottomBar}>{expanded ? "Hide" : "Map"} </button>
-            <button className="redraw-btn" onClick={handleButtonClick}>Refresh</button>
+            <button className="redraw-btn" onClick={() => handleButtonClick(maps.getLayers().getArray())}>Refresh
+            </button>
             <div className={`bottom-container ${expanded ? 'bottom-expanded' : ''}`}>
-                <MapInfo map={maps} onToogleBottomMenu={toggleBottomBar} />
+                <MapInfo map={maps} onToogleBottomMenu={toggleBottomBar}/>
             </div>
         </>
     );
