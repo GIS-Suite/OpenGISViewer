@@ -8,22 +8,9 @@ import { defaults as defaultControls, MousePosition, OverviewMap, ScaleLine, Zoo
 import TileLayer from 'ol/layer/Tile';
 import { TileWMS } from 'ol/source';
 import { MapInfo } from './MapInfo';
-import WMSGetFeatureInfo from 'ol/format/WMSGetFeatureInfo.js'; // Import WMSGetFeatureInfo
-
-// Define the fetchWmsService function
-const fetchWmsService = async (url) => {
-    try {
-        const response = await fetch(url);
-        const data = await response.text(); // Get response as text
-        return data;
-    } catch (error) {
-        console.error('Error fetching WMS service:', error);
-        throw error; // Rethrow the error to handle it elsewhere if needed
-    }
-};
 
 function Maps() {
-    const [maps, setMaps] = useState({});
+    const [map, setMap] = useState(null);
     const mapElement = useRef();
     const [expanded, setExpanded] = useState(false);
     const toggleBottomBar = () => {
@@ -32,10 +19,6 @@ function Maps() {
 
     useEffect(() => {
         const initMap = async () => {
-            const xmlText = await fetchWmsService('https://geoint.nrlssc.org/nrltileserver/wms/layername?REQUEST=GetCapabilities&SERVICE=WMS');
-            // Handle XML response here
-            console.log(xmlText); // Log the XML response for debugging
-
             // Initialize map with default layers and controls
             const initialMap = new Map({
                 target: mapElement.current,
@@ -70,17 +53,60 @@ function Maps() {
                 ]),
             });
 
-            setMaps(initialMap);
+            // Add WMS layer to the map
+            const wmsSource = new TileWMS({
+                url: 'https://geoint.nrlssc.org/nrltileserver/wms/layername',
+                params: {'LAYERS': 'layername', 'TILED': true},
+                serverType: 'geoserver',
+                crossOrigin: 'anonymous',
+            });
+            const wmsLayer = new TileLayer({
+                source: wmsSource,
+            });
+            initialMap.addLayer(wmsLayer);
+
+            // Set the map object to state
+            setMap(initialMap);
         }
         initMap();
     }, []);
 
+    // Event listener for click on the map
+    const handleMapClick = (evt) => {
+        if (!map) return;
+        
+        // Get feature info URL
+        const viewResolution = map.getView().getResolution();
+        const url = map.getLayers().getArray()[1].getSource().getFeatureInfoUrl(
+            evt.coordinate,
+            viewResolution,
+            map.getView().getProjection(),
+            {'INFO_FORMAT': 'text/html'},
+        );
+        
+        console.log('Feature info URL:', url); // Log the feature info URL
+
+        // Fetch feature info
+        if (url) {
+            fetch(url)
+                .then((response) => response.text())
+                .then((html) => {
+                    console.log('Feature info HTML:', html); // Log the feature info HTML
+                    // Update UI with feature info
+                    // For example, you can set it in the state and display it in MapInfo component
+                })
+                .catch((error) => {
+                    console.error('Error fetching feature info:', error);
+                });
+        }
+    };
+
     return (
         <>
-            <div id='map' className="map" ref={mapElement}/>
+            <div id='map' className="map" ref={mapElement} onClick={handleMapClick}/>
             <button className="menu-btn" onClick={toggleBottomBar}>{expanded ? "Hide" : "Map"} </button>
             <div className={`bottom-container ${expanded ? 'bottom-expanded' : ''}`}>
-                <MapInfo map={maps} onToogleBottomMenu={toggleBottomBar}/>
+                <MapInfo map={map} onToogleBottomMenu={toggleBottomBar}/>
             </div>
         </>
     );
