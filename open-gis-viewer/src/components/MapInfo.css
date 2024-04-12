@@ -198,8 +198,9 @@
 }
 
 .map-table-text:hover {
-    position: absolute;
+    position: relative;
     max-width: 100ch;
+    cursor: pointer;
 }
 
 /*.map-table-text-cnt .map-table-hover-text {
@@ -255,6 +256,7 @@
 }
 
 .ellipsisV-icon {
+    display: flex;
     flex-basis: 8ch;
     width: 75px;
     border: none;

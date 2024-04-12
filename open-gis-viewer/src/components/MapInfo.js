@@ -190,7 +190,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                                         onDragOver={(e) => handleDragOver(e, index)}><FontAwesomeIcon icon={faEllipsisV}
                                 />
                                 </button>
-                                <div className='map-table-text-cnt'>
+                                <div>
                                     <div className='map-table-text'>  {(() => {
                                         if (layer.getSource() instanceof WMTS) {
                                             return 'WMTS ';
