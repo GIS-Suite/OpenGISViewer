@@ -44,7 +44,16 @@ export default function DataList({input, onSelectLayer}) {
                         <tr key={layer.Title}>
                             <td>{layer.Name}</td>
                             <td>{layer.Abstract ? layer.Abstract : "No Abstract available"}</td>
-                            <td>{layer.CRS ?? "N/A"} </td>
+                            <td>{<div className="map-table-scrollable-cnt">
+                                {layer.CRS?.map((crs) => (
+                                    crs.startsWith('CRS:') || crs.startsWith('EPSG:') ? (
+                                        <div className='map-table-projections-cell' key={crs}>{crs}</div>
+                                    ) : null
+                                )) || (
+                                    <div>N/A</div>
+                                )}
+
+                            </div>} </td>
                             <td>{layer.KeywordList ? <DataUpdateTime date={new Date(layer?.KeywordList.find((item) => {
                                 return item.includes('Layer Update Time');
 

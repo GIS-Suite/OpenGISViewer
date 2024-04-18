@@ -11,7 +11,8 @@ import * as source from "ol/source";
 import {WFS} from "ol/format";
 import {optionsFromCapabilities} from "ol/source/WMTS";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faSync, faEllipsisV} from '@fortawesome/free-solid-svg-icons';
+import {faSync, faEllipsisV, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
+import LayerGroup from "ol/layer/Group";
 
 
 export const MapInfo = ({map, onToogleBottomMenu}) => {
@@ -21,6 +22,10 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     const [layerChanged, setLayerChanged] = useState(false);
     const [mapLayer, setMapLayer] = useState();
     const [draggedIndex, setDraggedIndex] = useState(0);
+    const [selectedRows, setSelectedRows] = useState([]);
+    const [layerGroup, setLayerGroup] = useState({});
+
+
     const data = {};
 
     function selectedLayerHandler(data) {
@@ -47,6 +52,10 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
     useEffect(() => {
         console.log("INFO-MAP:", map);
+        if (map && typeof map.getLayerGroup === 'function') {
+            console.log("LayerGroup", map.getLayerGroup());
+        }
+
 
     }, [map, dataLayer, layerChanged])
 
@@ -108,11 +117,11 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
         setLayerChanged(prevState => !prevState);
     }
 
-    /*//set zindex function if enter on input
-     function handleZIndexChange(layer, number) {
-           layer.setZIndex(number);
-           setLayerChanged(prevState => !prevState);
-       }*/
+    //set zindex function if enter on input
+    function handleZIndexChange(layer, number) {
+        layer.setZIndex(number);
+        setLayerChanged(prevState => !prevState);
+    }
 
     function removeLayerHandler(layer) {
         // console.log("Remove", layer.getSource());
@@ -138,9 +147,28 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
             </div>
         );
     } else if (selectedTab === "Layers") {
+        const handleGroupLayers = (layer) => {
 
+            setSelectedRows(prevSelected => {
+                if (prevSelected.includes(layer)) {
+                    return prevSelected.filter(name => name !== layer);
+                } else {
+                    return [...prevSelected, layer];
+                }
+
+            });
+
+
+            console.log("Check group", layerGroup);
+        }
+        const handleCreateLayerGroup = () => {
+
+            const newLayerGroup = new LayerGroup();
+            setLayerGroup(newLayerGroup);
+            console.log("Create LayerGroup", newLayerGroup);
+
+        }
         const handleDragStart = (e, oldIndex) => {
-
             setDraggedIndex(oldIndex);
             console.log("BeforeUpdateArrayOrder", mapLayer);
         };
@@ -179,7 +207,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
                     <tbody>
                     {mapLayer?.map((layer, index) => (
-                        <tr key={index}>
+                        <tr key={index} onClick={() => handleGroupLayers(layer)}>
 
                             <td style={{
                                 display: 'flex',
@@ -231,14 +259,14 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                                 <FontAwesomeIcon icon={faSync} className='refresh-icon'
                                                  onClick={() => layer.getSource().refresh()}/>
                             </td>
-                            <td>{/* set up zindex manually
-                            <input
-                                type="number"
-                                min="0"
-                                value={layer.values_.zIndex ?? ''}
-                                onChange={(e) => handleZIndexChange(layer, parseInt(e.target.value))}
-                            />*/}
-                                {layer.values_.zIndex ?? ''}</td>
+                            <td>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    value={layer.values_.zIndex ?? ''}
+                                    onChange={(e) => handleZIndexChange(layer, parseInt(e.target.value))}
+                                />
+                            </td>
                             <td>
                                 <button className='delete-btn' onClick={() => {
                                     removeLayerHandler(layer, index)
@@ -246,8 +274,11 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                                 </button>
                             </td>
                         </tr>))}
+
                     </tbody>
                 </table>
+                <><FontAwesomeIcon title="Add Group" icon={faPlusCircle} className='add-group-layer-icon'
+                                   onClick={handleCreateLayerGroup}/></>
             </div>
         );
     } else if (selectedTab === "Export") {

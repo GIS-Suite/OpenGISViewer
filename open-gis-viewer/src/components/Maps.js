@@ -68,40 +68,14 @@ function Maps() {
     }, []);
 
     const handleButtonClick = async (l) => {
-        /*  //another way of refresh btn
-         const layers = [...l];
-          maps.getLayers().clear();
-          maps.setLayers(layers);
-          maps.getLayers().forEach(layer => {
-              layer.getSource().refresh();
-          });*/
-        const baseLayer = maps.getLayers().item(0); // Get the base layer
-        const layers = Array.from(maps.getLayers().getArray()); // Get all layers from the map
-        maps.getLayers().clear(); // Clear the map layers
-        const res = await fetchWmsService('https://geoint.nrlssc.org/nrltileserver/wms/layername?REQUEST=GetCapabilities&SERVICE=WMS');
-        const marble = res.Capability.Layer.Layer.find(layer => layer.Name === 'bluemarble');
-        const initialLayers = [
-            new TileLayer({
-                source: new TileWMS({
-                    url: 'https://geoint.nrlssc.org/nrltileserver/wms',
-                    params: {
-                        'LAYERS': marble.Name,
-                    },
-                    serverType: 'geoserver',
-                }),
-            })
-            // Add more layers as needed
-        ];
-        initialLayers.forEach(layer => {
-            maps.addLayer(layer); // Add the initial layers back to the map
-        });
-        layers.forEach(layer => {
-            if (layer !== baseLayer) {
-                maps.addLayer(layer); // Add the previously selected layers back to the map
-            }
+
+        const layers = [...l];
+        maps.getLayers().clear();
+        maps.setLayers(layers);
+        maps.getLayers().forEach(layer => {
+            layer.getSource().refresh();
         });
     };
-
     return (
         <>
             <div id='map' className="map" ref={mapElement}/>
