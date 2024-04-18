@@ -1,4 +1,3 @@
-// MapInfo.js
 import React, { useEffect, useState } from 'react';
 import { Section } from "../UI/Section";
 import { SectionItem } from "../UI/SectionItem";
@@ -114,8 +113,26 @@ export const MapInfo = ({ map, onToogleBottomMenu }) => {
     function handleSelect(selectedButton) {
         setSelectedTab(selectedButton);
     }
+    function handleAddPin() {
+        // Add logic for handling pin addition here
+    }
+    
+    function renderPins() {
+        // Add logic for rendering pins here
+    }
 
     let infoContent = <p className="mapinfo-section-no-data">No data available</p>;
+
+    if (selectedTab === "Pins") {
+        infoContent = (
+            <div className="pin-tab">
+                <button onClick={handleAddPin}>Add New Pin</button>
+                <div id="map" className="pin-map">
+                    {renderPins()}
+                </div>
+            </div>
+        );
+    }
 
     if (selectedTab === "Import") {
 
@@ -236,6 +253,12 @@ export const MapInfo = ({ map, onToogleBottomMenu }) => {
                             onClick={() => handleSelect('Interactions')}
                         >
                             Interactions
+                        </NavItemButton>
+                        <NavItemButton
+                            isSelected={selectedTab === 'Pins'}
+                            onClick={() => handleSelect('Pins')}
+                        >
+                            Pins
                         </NavItemButton>
                     </>
                 }

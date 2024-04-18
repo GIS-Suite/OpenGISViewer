@@ -78,7 +78,8 @@ function Maps() {
                     fetch(url)
                         .then((response) => response.text())
                         .then((html) => {
-                            console.log('Feature info:', html); // Need to Log the feature info HTML and Update UI with feature info
+                            console.log('Feature info:', html); 
+                            // Need to Log the feature info HTML and Update UI with feature info
                         })
                         .catch((error) => {
                             console.error('Error fetching feature info:', error);
