@@ -21,8 +21,7 @@ export const MapInfo = ({ map, onToogleBottomMenu }) => {
     const [layerChanged, setLayerChanged] = useState(false);
     const [mapLayer, setMapLayer] = useState();
     const [draggedIndex, setDraggedIndex] = useState(null);
-    const [pinCoordinates, setPinCoordinates] = useState(null);
-    const [pinInfo, setPinInfo] = useState(null);
+    const data = {};
 
     function selectedLayerHandler(data) {
         if (data) {
@@ -44,6 +43,7 @@ export const MapInfo = ({ map, onToogleBottomMenu }) => {
     }, [map, dataLayer, layerChanged])
 
     function handleFormPopup() {
+
         setShowData(prev => !prev);
         setSelectedTab('Import');
     }
@@ -51,9 +51,11 @@ export const MapInfo = ({ map, onToogleBottomMenu }) => {
     function onHandleAddTiff(tiff) {
         console.log("tiff:", tiff);
         map.addLayer(tiff);
+
     }
 
     function onSelectLayerHandler(name, type, url, input) {
+        //  const baseUrl = new URL(url).origin + new URL(url).pathname.split('/').slice(0, 3).join('/');
         if (type === 'WMS') {
             const newLayer = new TileLayer({
                 source: new TileWMS({
@@ -65,16 +67,19 @@ export const MapInfo = ({ map, onToogleBottomMenu }) => {
                 }),
             })
             map.addLayer(newLayer);
+            // console.log(map.getLayers());
         }
         if (type === 'WMTS') {
+            // const newLayer = createWmtsLayer(name, tileMatrixSet, format, projection);
             const options = optionsFromCapabilities(input, {
                 layer: name,
             });
             const newLayer = new TileLayer({
+
                 source: new WMTS(options),
             })
             console.log(newLayer);
-            map?.addLayer(newLayer);
+            map?.addLayer(newLayer); //ad layer  to map that u get from creatWMTS func
         }
         if (type === 'XYZ') {
             console.log("xyz", dataLayer);
@@ -86,6 +91,7 @@ export const MapInfo = ({ map, onToogleBottomMenu }) => {
     function handleVisibilityChange(layer, checked) {
         setLayerChanged(prevState => !prevState);
         layer.setVisible(checked);
+
     }
 
     function handleOpacityChange(layer, number) {
@@ -99,6 +105,7 @@ export const MapInfo = ({ map, onToogleBottomMenu }) => {
     }
 
     function removeLayerHandler(layer) {
+        // console.log("Remove", layer.getSource());
         map.removeLayer(layer);
         setLayerChanged(prevState => !prevState);
     }
@@ -106,37 +113,12 @@ export const MapInfo = ({ map, onToogleBottomMenu }) => {
     function handleSelect(selectedButton) {
         setSelectedTab(selectedButton);
     }
-
     function handleAddPin() {
-        // Enable click event listener on the map to add pin
-        map.on('click', handleMapClick);
+        // Add logic for handling pin addition here
     }
-
-    function handleMapClick(event) {
-        // Extract coordinates from the click event
-        const clickedCoordinate = event.coordinate;
-        // You can add additional logic here to extract more information about the clicked point if needed
-
-        // Store the coordinates of the clicked point
-        setPinCoordinates(clickedCoordinate);
-
-        // Disable click event listener after adding a pin
-        map.un('click', handleMapClick);
-    }
-
+    
     function renderPins() {
-        // Check if pin coordinates exist
-        if (pinCoordinates) {
-            // Render a pin at the pin coordinates
-            // You can use any method or library to render the pin
-            return (
-                <div className="pin">
-                    <div className="pin-icon">📍</div>
-                    <div className="pin-info">{/* Render pin information */}</div>
-                </div>
-            );
-        }
-        return null;
+        // Add logic for rendering pins here
     }
 
     let infoContent = <p className="mapinfo-section-no-data">No data available</p>;
@@ -153,10 +135,14 @@ export const MapInfo = ({ map, onToogleBottomMenu }) => {
     }
 
     if (selectedTab === "Import") {
+
         infoContent = (
             <div className="mapinfo-content">
-                {!showData && <InputForm onHandleAddLayer={selectedLayerHandler} onHandleTiff={onHandleAddTiff}/>}
-                {showData && <DataList input={dataLayer} onSelectLayer={onSelectLayerHandler}/>}
+                {!showData && <InputForm onHandleAddLayer={selectedLayerHandler}
+                                         onHandleTiff={onHandleAddTiff}/>}
+                {showData &&
+                    <DataList input={dataLayer} onSelectLayer={onSelectLayerHandler}/>
+                }
             </div>
         );
     } else if (selectedTab === "Layers") {
@@ -164,63 +150,64 @@ export const MapInfo = ({ map, onToogleBottomMenu }) => {
             <div className="map-table-scroll">
                 <table className="map-table">
                     <thead>
-                        <tr>
-                            <th>Layer Name</th>
-                            <th>Visible</th>
-                            <th>Opacity</th>
-                            <th>Refresh</th>
-                            <th>ZIndex</th>
-                            <th>Delete</th>
-                        </tr>
+                    <tr>
+                        <th>Layer Name</th>
+                        <th>Visible</th>
+                        <th>Opacity</th>
+                        <th>Refresh</th>
+                        <th>ZIndex</th>
+                        <th>Delete</th>
+                    </tr>
                     </thead>
+
                     <tbody>
-                        {mapLayer?.map((layer, index) => (
-                            <tr key={index}>
-                                <td>   {(() => {
-                                    if (layer.getSource() instanceof WMTS) {
-                                        return 'WMTS ';
-                                    } else if (layer.getSource() instanceof source.TileWMS) {
-                                        return 'WMS ';
-                                    } else if (layer.getSource() instanceof WFS) {
-                                        return 'WFS ';
-                                    } else if (layer.getSource() instanceof source.XYZ) {
-                                        return 'XYZ';
-                                    } else {
-                                        return 'Unknown ';
-                                    }
-                                })()}
-                                    {((layer.getSource() instanceof source.XYZ) ? '' : layer.values_.source.params_?.LAYERS) ?? layer.values_.source.layer_}</td>
-                                <td><input
-                                    type="checkbox"
-                                    checked={layer.values_.visible}
-                                    onChange={(e) => handleVisibilityChange(layer, e.target.checked)}
-                                /></td>
-                                <td><input
-                                    id="opacity"
-                                    type="range"
-                                    min="0"
-                                    max="1"
-                                    step="0.01"
-                                    value={layer.values_.opacity}
-                                    onChange={(e) => handleOpacityChange(layer, parseFloat(e.target.value), index)}
-                                /></td>
-                                <td>
-                                    <FontAwesomeIcon icon={faSync} className='refresh-icon'
-                                                        onClick={() => layer.getSource().refresh()}/>
-                                </td>
-                                <td><input
-                                    type="number"
-                                    min="0"
-                                    value={layer.values_.zIndex ?? ''}
-                                    onChange={(e) => handleZIndexChange(layer, parseInt(e.target.value))}
-                                /></td>
-                                <td>
-                                    <button className='delete-btn' onClick={() => {
-                                        removeLayerHandler(layer, index)
-                                    }}>-
-                                    </button>
-                                </td>
-                            </tr>))}
+                    {mapLayer?.map((layer, index) => (
+                        <tr key={index}>
+                            <td>   {(() => {
+                                if (layer.getSource() instanceof WMTS) {
+                                    return 'WMTS ';
+                                } else if (layer.getSource() instanceof source.TileWMS) {
+                                    return 'WMS ';
+                                } else if (layer.getSource() instanceof WFS) {
+                                    return 'WFS ';
+                                } else if (layer.getSource() instanceof source.XYZ) {
+                                    return 'XYZ';
+                                } else {
+                                    return 'Unknown ';
+                                }
+                            })()}
+                                {((layer.getSource() instanceof source.XYZ) ? '' : layer.values_.source.params_?.LAYERS) ?? layer.values_.source.layer_}</td>
+                            <td><input
+                                type="checkbox"
+                                checked={layer.values_.visible}
+                                onChange={(e) => handleVisibilityChange(layer, e.target.checked)}
+                            /></td>
+                            <td><input
+                                id="opacity"
+                                type="range"
+                                min="0"
+                                max="1"
+                                step="0.01"
+                                value={layer.values_.opacity}
+                                onChange={(e) => handleOpacityChange(layer, parseFloat(e.target.value), index)}
+                            /></td>
+                            <td>
+                                <FontAwesomeIcon icon={faSync} className='refresh-icon'
+                                                 onClick={() => layer.getSource().refresh()}/>
+                            </td>
+                            <td><input
+                                type="number"
+                                min="0"
+                                value={layer.values_.zIndex ?? ''}
+                                onChange={(e) => handleZIndexChange(layer, parseInt(e.target.value))}
+                            /></td>
+                            <td>
+                                <button className='delete-btn' onClick={() => {
+                                    removeLayerHandler(layer, index)
+                                }}>-
+                                </button>
+                            </td>
+                        </tr>))}
                     </tbody>
                 </table>
             </div>
@@ -271,7 +258,7 @@ export const MapInfo = ({ map, onToogleBottomMenu }) => {
                             isSelected={selectedTab === 'Pins'}
                             onClick={() => handleSelect('Pins')}
                         >
-                            Pins
+                              Pins
                         </NavItemButton>
                     </>
                 }
