@@ -101,29 +101,15 @@ export const MapInfo = ({ map }) => {
     if (type == "WFS") {
       console.log("Passed URL: " + url);
       console.log("Test URL: " + test);
-      const vectorSource = new VectorSource({
-        format: new GeoJSON(),
-        url: function (extent) {
-          return (
-            url +
-            "version=1.1.0&request=GetFeature&typename=osm:water_areas&" +
-            "outputFormat=application/json&srsname=EPSG:3857&" +
-            "bbox=" +
-            extent.join(",") +
-            ",EPSG:3857"
-          );
-        },
-        strategy: bboxStrategy,
-      });
-
-      console.log("Vector Source:" + vectorSource);
+      const vectorSource = new VectorSource();
       const vector = new VectorLayer({
         source: vectorSource,
-        style: {
-          "stroke-width": 1,
-          "stroke-color": "red",
-          "fill-color": "rgba(50,250,0, 1)",
-        },
+        style: new Style({
+          stroke: new Stroke({
+            color: "rgba(0, 0, 255, 1.0)",
+            width: 2,
+          }),
+        }),
       });
 
       map.addLayer(vector);
