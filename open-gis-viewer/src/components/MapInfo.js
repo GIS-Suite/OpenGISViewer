@@ -11,8 +11,9 @@ import * as source from "ol/source";
 import {WFS} from "ol/format";
 import {optionsFromCapabilities} from "ol/source/WMTS";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faSync, faEllipsisV, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
+import {faSync, faPlusCircle, faHamburger, faBarsStaggered} from '@fortawesome/free-solid-svg-icons';
 import LayerGroup from "ol/layer/Group";
+import {Collection} from "ol";
 
 
 export const MapInfo = ({map, onToogleBottomMenu}) => {
@@ -23,7 +24,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     const [mapLayer, setMapLayer] = useState();
     const [draggedIndex, setDraggedIndex] = useState(0);
     const [selectedRows, setSelectedRows] = useState([]);
-    const [layerGroup, setLayerGroup] = useState({});
+    const [layerGroup, setLayerGroup] = useState([]);
 
 
     const data = {};
@@ -35,6 +36,9 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
         setDataLayer(data);
     }
 
+    useEffect(() => {
+        console.log("Create LayerGroup", layerGroup);
+    }, [layerGroup]);
     useEffect(() => {
         if (map && typeof map.getLayers === 'function') {
             // setMapLayer(map.getLayers().getArray());
@@ -157,15 +161,15 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                 }
 
             });
+            if (layerGroup && typeof layerGroup.setLayers === 'function') {
+                layerGroup.setLayers(new Collection(selectedRows));
+            }
 
-
-            console.log("Check group", layerGroup);
+            console.log("Check group", layerGroup, "selectedRowslayers", selectedRows);
         }
         const handleCreateLayerGroup = () => {
-
             const newLayerGroup = new LayerGroup();
-            setLayerGroup(newLayerGroup);
-            console.log("Create LayerGroup", newLayerGroup);
+            setLayerGroup(prevLayerGroups => [...prevLayerGroups, newLayerGroup]);
 
         }
         const handleDragStart = (e, oldIndex) => {
@@ -209,35 +213,37 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                     {mapLayer?.map((layer, index) => (
                         <tr key={index} onClick={() => handleGroupLayers(layer)}>
 
-                            <td style={{
-                                display: 'flex',
-
-                            }}>
-                                <button draggable className='ellipsisV-icon'
-                                        onDragStart={(e) => handleDragStart(e, index)}
-                                        onDragOver={(e) => handleDragOver(e, index)}><FontAwesomeIcon icon={faEllipsisV}
-                                />
-                                </button>
-                                <div>
-                                    <div className='map-table-text'>  {(() => {
-                                        if (layer.getSource() instanceof WMTS) {
-                                            return 'WMTS ';
-                                        } else if (layer.getSource() instanceof source.TileWMS) {
-                                            return 'WMS ';
-                                        } else if (layer.getSource() instanceof WFS) {
-                                            return 'WFS ';
-                                        } else if (layer.getSource() instanceof source.XYZ) {
-                                            return 'XYZ';
-                                        } else if (layer.getSource() instanceof source.GeoTIFF) {
-                                            return 'GeoTIFF';
-                                        } else {
-                                            return 'Unknown ';
-                                        }
-                                    })()}
-                                        {((layer.getSource() instanceof source.XYZ) ? '' : layer.values_.source.params_?.LAYERS) ?? layer.values_.source.layer_}
+                            <td>
+                                <div className="map-table-draggable-cnt">
+                                    <button title="Drag" draggable className='hamV-icon'
+                                            onDragStart={(e) => handleDragStart(e, index)}
+                                            onDragOver={(e) => handleDragOver(e, index)}><FontAwesomeIcon
+                                        icon={faBarsStaggered}
+                                    />
+                                    </button>
+                                    <div>
+                                        <div className='map-table-text'>  {(() => {
+                                            if (layer.getSource() instanceof WMTS) {
+                                                return 'WMTS ';
+                                            } else if (layer.getSource() instanceof source.TileWMS) {
+                                                return 'WMS ';
+                                            } else if (layer.getSource() instanceof WFS) {
+                                                return 'WFS ';
+                                            } else if (layer.getSource() instanceof source.XYZ) {
+                                                return 'XYZ';
+                                            } else if (layer.getSource() instanceof source.GeoTIFF) {
+                                                return 'GeoTIFF';
+                                            } else {
+                                                return 'Unknown ';
+                                            }
+                                        })()}
+                                            {((layer.getSource() instanceof source.XYZ) ? '' : layer.values_.source.params_?.LAYERS) ?? layer.values_.source.layer_}
+                                        </div>
                                     </div>
 
                                 </div>
+
+
                             </td>
                             <td><input
                                 id='visible'
@@ -274,6 +280,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                                 </button>
                             </td>
                         </tr>))}
+
 
                     </tbody>
                 </table>

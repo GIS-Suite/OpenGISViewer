@@ -207,6 +207,7 @@
 }
 
 .map-table-text {
+    display: inline-block;
     max-width: 20ch;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -218,6 +219,8 @@
     position: relative;
     max-width: 100ch;
     cursor: pointer;
+    overflow-clip-margin: content-box;
+    transition: max-width 3s;
 }
 
 /*.map-table-text-cnt .map-table-hover-text {
@@ -228,6 +231,10 @@
     position: absolute;
     display: block;
 }*/
+.map-table-draggable-cnt {
+    display: flex;
+}
+
 .map-table-scrollable-cnt {
     display: flex;
     flex-direction: column;
@@ -238,7 +245,7 @@
     white-space: nowrap;
     scroll-snap-type: y mandatory;
 
-    &::-webkit-scrollbar { /* hide scrollbar bar*/
+    &::-webkit-scrollbar { /* hide scrollbar bar */
         display: none;
     }
 }
@@ -290,9 +297,10 @@
     color: #2a61ea;
 }
 
-.ellipsisV-icon {
+.hamV-icon {
     display: flex;
     flex-basis: 8ch;
+    font-size: 15px;
     width: 75px;
     border: none;
     background: none;

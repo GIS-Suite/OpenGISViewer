@@ -9,7 +9,6 @@
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,29 +52,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Merging geotiffv2merge",
-    "ignore.virus.scanning.warn.message": "true",
-    "javascript.nodejs.core.library.configured.version": "21.1.0",
-    "javascript.nodejs.core.library.typings.version": "20.11.16",
-    "last_opened_file_path": "C:/Users/jakeh/source/OpenGISViewer",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.electron.executor": "Run",
-    "npm.start (1).executor": "Run",
-    "npm.start.executor": "Run",
-    "settings.editor.selected.configurable": "settings.javascript.prettier",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2023.3.3\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Merging geotiffv2merge&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;21.1.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.11.16&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/jakeh/source/OpenGISViewer&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.electron.executor&quot;: &quot;Run&quot;,
+    &quot;npm.start (1).executor&quot;: &quot;Run&quot;,
+    &quot;npm.start.executor&quot;: &quot;Run&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.prettier&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2023.3.3\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\vasyl\SELU Univ\411CMPS\OpenGISViewer\open-gis-viewer\src\utils" />
@@ -177,6 +176,8 @@
       <workItem from="1713066488014" duration="960000" />
       <workItem from="1713392366960" duration="10137000" />
       <workItem from="1713412927351" duration="5824000" />
+      <workItem from="1713477325774" duration="3480000" />
+      <workItem from="1713496432380" duration="4740000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
