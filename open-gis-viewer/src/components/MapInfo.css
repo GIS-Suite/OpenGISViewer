@@ -184,6 +184,10 @@
     height: 55px;
 }
 
+.map-table-selected-row {
+    border: 1px solid green;
+}
+
 .map-table input[type="number"] {
     width: 50px;
     background-color: #0e0e0e;
@@ -276,6 +280,12 @@
     background-color: #fcce67;
 }
 
+.clear-text-btn {
+    background: none;
+    color: white;
+    border: transparent;
+}
+
 .delete-btn:hover {
     background-color: #520303;
 }
@@ -325,4 +335,16 @@
 .add-group-layer-icon:hover {
     transform: rotate(360deg);
     color: #bdbdbd;
+}
+
+/*
+/////////////////////////////////map export btns
+*/
+.export-btns-cnt {
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+    max-width: 75px;
+    gap: 12px;
+    margin: auto;
 }

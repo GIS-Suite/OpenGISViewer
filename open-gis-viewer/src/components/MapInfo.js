@@ -5,15 +5,16 @@ import {NavItemButton} from "./NavItemButton";
 import "./MapInfo.css";
 import {InputForm} from "./InputForm";
 import TileLayer from "ol/layer/Tile";
+import * as source from "ol/source";
 import {TileWMS, WMTS} from "ol/source";
 import DataList from "./DataList";
-import * as source from "ol/source";
 import {WFS} from "ol/format";
 import {optionsFromCapabilities} from "ol/source/WMTS";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faSync, faPlusCircle, faHamburger, faBarsStaggered} from '@fortawesome/free-solid-svg-icons';
+import {faBarsStaggered, faPlusCircle, faSync} from '@fortawesome/free-solid-svg-icons';
 import LayerGroup from "ol/layer/Group";
 import {Collection} from "ol";
+import LayerGroupData from "./LayerGroupData";
 
 
 export const MapInfo = ({map, onToogleBottomMenu}) => {
@@ -23,8 +24,9 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     const [layerChanged, setLayerChanged] = useState(false);
     const [mapLayer, setMapLayer] = useState();
     const [draggedIndex, setDraggedIndex] = useState(0);
-    const [selectedRows, setSelectedRows] = useState([]);
+    const [selectedRowsLayer, setSelectedRowsLayer] = useState([]);
     const [layerGroup, setLayerGroup] = useState([]);
+    const [addingToGroup, setAddingToGroup] = useState(false);
 
 
     const data = {};
@@ -37,7 +39,9 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     }
 
     useEffect(() => {
-        console.log("Create LayerGroup", layerGroup);
+        console.log("Create LayerGroupData", layerGroup);
+
+
     }, [layerGroup]);
     useEffect(() => {
         if (map && typeof map.getLayers === 'function') {
@@ -151,27 +155,60 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
             </div>
         );
     } else if (selectedTab === "Layers") {
-        const handleGroupLayers = (layer) => {
-
-            setSelectedRows(prevSelected => {
-                if (prevSelected.includes(layer)) {
-                    return prevSelected.filter(name => name !== layer);
-                } else {
-                    return [...prevSelected, layer];
-                }
-
-            });
-            if (layerGroup && typeof layerGroup.setLayers === 'function') {
-                layerGroup.setLayers(new Collection(selectedRows));
+        const setMapGroup = (groupIndex) => {
+            if (typeof map.setLayerGroup === 'function') {//adding group to map
+                map.setLayerGroup(layerGroup[groupIndex]);
             }
 
-            console.log("Check group", layerGroup, "selectedRowslayers", selectedRows);
         }
+        /*   const handleGroupLayers = (layer) => {
+
+               setSelectedRowsLayer(prevSelected => {
+                   if (prevSelected.includes(layer)) {
+                       return prevSelected.filter(name => name !== layer);
+                   } else {
+                       return [...prevSelected, layer];
+                   }
+
+               });
+               console.log("Check group", layerGroup, "selectedRowslayers", selectedRowsLayer);
+           }*/
+        const handleGroupLayers = (layer) => {
+
+            setSelectedRowsLayer(prevSelected => {
+
+                return prevSelected.includes(layer)
+                    ? prevSelected.filter(name => name !== layer)
+                    : [...prevSelected, layer];
+            });
+
+
+        };
+        const handleGroupLayerAddition = (group) => {
+            setAddingToGroup(true);
+            const addLayersToGroup = (layers) => {
+
+                group.setLayers(new Collection(layers));
+            };
+
+            if (!addingToGroup) {
+                setAddingToGroup(prev => !prev);
+                addLayersToGroup(selectedRowsLayer);
+                setSelectedRowsLayer([]);
+            }
+        };
+
         const handleCreateLayerGroup = () => {
             const newLayerGroup = new LayerGroup();
             setLayerGroup(prevLayerGroups => [...prevLayerGroups, newLayerGroup]);
-
         }
+        const handleDeleteLayerGroup = (index) => {
+            setLayerGroup(prevLayerGroups => {
+                const updatedLayerGroups = [...prevLayerGroups];
+                updatedLayerGroups.splice(index, 1);
+                return updatedLayerGroups;
+            });
+        };
         const handleDragStart = (e, oldIndex) => {
             setDraggedIndex(oldIndex);
             console.log("BeforeUpdateArrayOrder", mapLayer);
@@ -211,7 +248,8 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
                     <tbody>
                     {mapLayer?.map((layer, index) => (
-                        <tr key={index} onClick={() => handleGroupLayers(layer)}>
+                        <tr key={index} onClick={() => addingToGroup && handleGroupLayers(layer)}
+                            className={addingToGroup && selectedRowsLayer.includes(layer) ? 'map-table-selected-row' : ''}>
 
                             <td>
                                 <div className="map-table-draggable-cnt">
@@ -283,13 +321,20 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
 
                     </tbody>
+
                 </table>
+                {layerGroup.length > 0 &&
+                    <LayerGroupData layerGroup={layerGroup} onDeleteGroup={handleDeleteLayerGroup}
+                                    handleAddLayer={handleGroupLayerAddition} onSetMapGroup={setMapGroup}
+                                    setAddingToGroup={setAddingToGroup} addingToGroup={addingToGroup}/>
+                }
+
                 <><FontAwesomeIcon title="Add Group" icon={faPlusCircle} className='add-group-layer-icon'
                                    onClick={handleCreateLayerGroup}/></>
             </div>
         );
     } else if (selectedTab === "Export") {
-        infoContent = (<div>
+        infoContent = (<div className='export-btns-cnt'>
                 <button>Export as PNG</button>
                 <button>Export KML</button>
 
