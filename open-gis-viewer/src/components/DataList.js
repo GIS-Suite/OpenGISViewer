@@ -6,8 +6,22 @@ import "./MapInfo.css";
 
 export default function DataList({input, onSelectLayer}) {
     const [query, setQuery] = useState("");
-
+    // const [isLayer, setIsLayer] = useState(null);
     let isLayer;
+    /*    useEffect(() => {
+            if (input) {
+                if (input?.Service?.Name?.includes('WMS')) {
+                    setIsLayer('WMS');
+                } else if (input?.ServiceIdentification?.ServiceType?.includes('WMTS')) {
+                    setIsLayer('WMTS');
+                } else if (input?.getSource() instanceof source.XYZ) {
+                    setIsLayer('XYZ');
+                } else {
+                    setIsLayer(null);
+                }
+            }
+        }, [input]);*/
+
     let filter = <div className='map-table-filter'>
         Filter:
         <input
@@ -22,7 +36,6 @@ export default function DataList({input, onSelectLayer}) {
     } else if (input?.ServiceIdentification?.ServiceType.includes('WMTS')) {
         isLayer = "WMTS";
     } else if (input?.getSource() instanceof source.XYZ) {
-
         isLayer = "XYZ";
         filter = null;
     }
@@ -44,7 +57,16 @@ export default function DataList({input, onSelectLayer}) {
                         <tr key={layer.Title}>
                             <td>{layer.Name}</td>
                             <td>{layer.Abstract ? layer.Abstract : "No Abstract available"}</td>
-                            <td>{layer.CRS ?? "N/A"} </td>
+                            <td>{<div className="map-table-scrollable-cnt">
+                                {layer.CRS?.map((crs, index) => (
+                                    crs.startsWith('CRS:') || crs.startsWith('EPSG:') ? (
+                                        <div className='map-table-projections-cell' key={index}>{crs}</div>
+                                    ) : null
+                                )) || (
+                                    <div>N/A</div>
+                                )}
+
+                            </div>} </td>
                             <td>{layer.KeywordList ? <DataUpdateTime date={new Date(layer?.KeywordList.find((item) => {
                                 return item.includes('Layer Update Time');
 

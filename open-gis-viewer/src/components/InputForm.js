@@ -39,7 +39,6 @@ export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
                 layerToAdd = new TileLayer({
                     source: new XYZ({
                         url: layerUrl,
-
                     }),
                 });
                 setDataLayers(layerToAdd);
@@ -54,7 +53,6 @@ export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
                     } catch (error) {
                         console.error('Error fetching data:', error);
                     }
-
                 }
                 getWMS();
                 break;
@@ -73,21 +71,6 @@ export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
                     }
                 }
                 getWMTS();
-                /* const getWMTS = async () => {
-
-                     try {
-                         const data = await fetchWmtsService(layerUrl);
-                         // console.log(data);
-                         setDataLayers(data);
-                         console.log(dataLayers);
-                     } catch (error) {
-                         console.error('Error fetching data:', error);
-                     }
-
-                 }
-                 getWMTS();
-                 console.log(dataLayers);*/
-
                 break;
             case 'GeoTIFF': // Handle GeoTIFF files
                 const handleGeoTIFF = async () => {
@@ -184,7 +167,6 @@ export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
                     <button className="input-btn">Import Layer
                     </button>
                 </>)}
-
             </form>
         </>)
 

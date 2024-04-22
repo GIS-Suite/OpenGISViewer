@@ -11,6 +11,7 @@
     width: 500px;
     transition: height 2s;
     animation: reverse;
+
 }
 
 .content-small {
@@ -70,7 +71,7 @@
 
 /*
 
-slider container
+slider bottom container
 */
 .bottom-container {
     position: fixed;
@@ -79,7 +80,6 @@ slider container
     bottom: 0;
     width: 100%;
     height: 0;
-    overflow: inherit;
     transition: height 1.2s;
     border-radius: 8px;
 

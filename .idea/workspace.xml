@@ -6,13 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="2360d212-7ba0-4b4f-b9f7-d63ccf4b4e70" name="Changes" comment="wip">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/utils/fetchParseGeoTIFFs.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/utils/fetchParseGeoTIFFs.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +57,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;Merging geotiffv2merge&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;21.1.0&quot;,
     &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.11.16&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/jakeh/source/OpenGISViewer&quot;,
@@ -165,6 +163,21 @@
       <workItem from="1710829895418" duration="311000" />
       <workItem from="1710853559394" duration="2663000" />
       <workItem from="1710890970231" duration="12570000" />
+      <workItem from="1710990921233" duration="308000" />
+      <workItem from="1711058466986" duration="3742000" />
+      <workItem from="1711069807025" duration="1203000" />
+      <workItem from="1712627860829" duration="7406000" />
+      <workItem from="1712715774823" duration="9827000" />
+      <workItem from="1712770693675" duration="2209000" />
+      <workItem from="1712800130257" duration="8623000" />
+      <workItem from="1712872904826" duration="2000000" />
+      <workItem from="1712889966300" duration="4451000" />
+      <workItem from="1713038714141" duration="269000" />
+      <workItem from="1713066488014" duration="960000" />
+      <workItem from="1713392366960" duration="10137000" />
+      <workItem from="1713412927351" duration="5824000" />
+      <workItem from="1713477325774" duration="3480000" />
+      <workItem from="1713496432380" duration="4740000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
