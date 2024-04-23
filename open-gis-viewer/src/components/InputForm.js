@@ -2,13 +2,14 @@ import React, {useEffect, useState} from "react";
 import "./MapInfo.css";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
+import { handleKMZFileSelect } from '../utils/KMZImport';
 /*import {addGeoTIFFLayer, handleFileSelect, readGeoTIFF} from "../utils/fetchParseGeoTIFFs";*/
 import fetchWmtsCapabilities from "../utils/WMTSHandler";
 import {handleFileSelect} from "../utils/fetchParseGeoTIFFs";
 import {fetchWmsService} from "../utils/fetchParseWMS";
 
 
-export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
+export const InputForm = ({onHandleAddLayer}) => {
     const [layerType, setLayerType] = useState('XYZ');
     const [layerUrl, setLayerUrl] = useState('');
     const [dataLayers, setDataLayers] = useState(null);
@@ -22,9 +23,12 @@ export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
             .catch(error => {
                 console.error('Error:', error);
             });
-
-
     }
+ const handleKMZCreation = (e) => {
+    //Create a function that will add the layer 
+    
+ }
+    
     useEffect(() => {
         console.log("Input_Form Layer:", dataLayers);
         onHandleAddLayer(dataLayers);
@@ -48,6 +52,7 @@ export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
 
                     try {
                         const data = await fetchWmsService(layerUrl);
+                        console.log(data);
                         setDataLayers(data);
                     } catch (error) {
                         console.error('Error fetching data:', error);
@@ -108,7 +113,6 @@ export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
                 break;
 
             case 'WMTS'://support for WMTS
-
                 const getWMTS = async () => {
                     try {
 
@@ -120,34 +124,51 @@ export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
                 }
                 getWMTS();
                 break;
-            case 'GeoTIFF': // Handle GeoTIFF files
+            case 'GeoTIFF':
                 const handleGeoTIFF = async () => {
                     try {
-                        //read file
-                        const tiffData = await readGeoTIFF(layerUrl);
-                        //add layer
-                        const geoTIFFLayer = await addGeoTIFFLayer(tiffData);
-                        //  map.addLayer(geoTIFFLayer);
-                        setDataLayers(geoTIFFLayer); //Collect just input from user in this file
+                        const fileInput = document.getElementById("fileInput");
+                        const file = fileInput.files[0];
+
+                        if (!file) {
+                            console.error('No GeoTIFF file selected');
+                            return;
+                        }
+
+                        // Read the GeoTIFF file and set the data layers
+                        const tiffData = await readGeoTIFF(file);
+                        setDataLayers(tiffData);
                     } catch (error) {
                         console.error('Error handling GeoTIFF:', error);
                     }
                 };
                 handleGeoTIFF();
                 break;
+            case 'KMZ' :
+                const handleKMZ = async () => {
+                    try{
+                        const fileInput = document.getElementById("fileInput");
+                        const file = fileInput.files[0];
+                        if (!file) {
+                            console.error('No KMZ file selected');
+                            return;
+                        }
+                        await handleKMZFileSelect(file, setDataLayers);
+                    }catch (error) {
+                        console.error('Error handling KMS:', error);
+                    }
+                }
+                handleKMZ();
+                break;
             default:
                 console.error('Invalid layer type');
-                return;
+                break;
         }
-
     };
+
     return (
-        < >
-            <form className='input-form-container' onSubmit={
-                (e) => {
-                    handleAddLayer(e, layerType, layerUrl)
-                }
-            }>
+        <>
+            <form className='input-form-container' onSubmit={(e) => handleAddLayer(e, layerType, layerUrl)}>
                 <div className="input-label-wrapper">
                     <label>
                         <input
@@ -177,7 +198,6 @@ export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
                         WMS
                     </label>
                     <label>
-
                         <input
                             type="radio"
                             value="WMTS"
@@ -195,29 +215,54 @@ export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
                         />
                         GeoTIFF
                     </label>
+                    <label>
+                        <input
+                            type="radio"
+                            value="KMZ"
+                            checked={layerType === 'KMZ'}
+                            onChange={() => setLayerType('KMZ')}
+                        />
+                        KMZ
+                    </label>
                 </div>
                 {layerType === 'GeoTIFF' ? (
                     <input
                         type="file"
+                        id="fileInput" // Add an ID to the file input
                         className="input-file"
                         accept=".tif, .tiff"
                         value=''
                         onChange={handleGeotiffCreation}
                         required
-                    />) : (<><input
-                    id="url"
-                    type="url"
-                    className="input-urls"
-                    onChange={(e) => setLayerUrl(e.target.value)}
-                    placeholder="Enter layer URL"
-                    required
-                />
-                    <button className="input-btn">Import Layer
-                    </button>
-                </>)}
+
+                    />
+                ) : null}
+                {layerType === 'KMZ' && 
+                    <input
+                        type="file"
+                        id="fileInput" // Add an ID to the file input
+                        className="input-file"
+                        accept=".kmz"
+                        value=''
+                        onChange={handleKMZCreation}
+                        required
+                    />}
+                {layerType !== 'KMZ' && layerType !== 'GeoTIFF' && (
+                    <>
+                        <input
+                            id="url"
+                            type="url"
+                            className="input-urls"
+                            onChange={(e) => setLayerUrl(e.target.value)}
+                            placeholder="Enter layer URL"
+                            required
+                        />
+                        <button className="input-btn">Import Layer</button>
+                    </>
+                )}
             </form>
-        </>)
+        </>
+    );
+ }    
 
-
-}
 

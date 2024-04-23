@@ -1,14 +1,18 @@
-import React, {useEffect, useRef, useState} from 'react';
-import "./Maps.css";
+
+import React, { useEffect, useRef, useState } from 'react';
+import './Maps.css';
 import 'ol/ol.css';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import OSM from 'ol/source/OSM';
-import {defaults as defaultControls, MousePosition, OverviewMap, ScaleLine, ZoomSlider} from 'ol/control';
-import TileLayer from "ol/layer/Tile";
-import {TileWMS} from "ol/source";
-import {fetchWmsService} from "../utils/fetchParseWMS";
-import {MapInfo} from "./MapInfo";
+
+import { defaults as defaultControls, MousePosition, OverviewMap, ScaleLine, ZoomSlider } from 'ol/control';
+import TileLayer from 'ol/layer/Tile';
+import { TileWMS } from 'ol/source';
+import { fetchWmsService } from '../utils/fetchParseWMS'; // Assuming you have a utility function for fetching WMS service capabilities
+import { MapInfo } from './MapInfo';
+
+
 
 function Maps() {
     const [maps, setMaps] = useState({});
@@ -62,6 +66,32 @@ function Maps() {
                     }),
                 ]),
             });
+
+            // Event listener for map click
+            initialMap.on('singleclick', function (evt) {
+                // Get feature info URL
+                const viewResolution = initialMap.getView().getResolution();
+                const url = initialMap.getLayers().getArray()[0].getSource().getFeatureInfoUrl(
+                    evt.coordinate,
+                    viewResolution,
+                    initialMap.getView().getProjection(),
+                    {'INFO_FORMAT': 'text/html'},
+                );
+
+                // Fetch feature info
+                if (url) {
+                    fetch(url)
+                        .then((response) => response.text())
+                        .then((html) => {
+                            console.log('Feature info:', html); 
+                            // Need to Log the feature info HTML and Update UI with feature info
+                        })
+                        .catch((error) => {
+                            console.error('Error fetching feature info:', error);
+                        });
+                }
+            });
+
             setMaps(initialMap);
         }
         initMap();
@@ -100,6 +130,7 @@ function Maps() {
                   maps.addLayer(layer); // Add the previously selected layers back to the map
               }
           });*/
+
     };
     return (
         <>

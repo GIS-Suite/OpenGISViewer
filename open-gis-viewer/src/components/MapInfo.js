@@ -1,3 +1,4 @@
+
 import React, {useEffect, useState} from "react";
 import {InputForm} from "./InputForm";
 import TileLayer from "ol/layer/Tile";
@@ -19,7 +20,8 @@ import {SectionItem} from "../UI/SectionItem";
 import {NavItemButton} from "./NavItemButton";
 
 
-export const MapInfo = ({map, onToogleBottomMenu}) => {
+
+export const MapInfo = ({ map, onToogleBottomMenu }) => {
     const [selectedTab, setSelectedTab] = useState('Import');
     const [dataLayer, setDataLayer] = useState(null);
     const [showData, setShowData] = useState(false);
@@ -161,8 +163,29 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     function handleSelect(selectedButton) {// func to select tabs
         setSelectedTab(selectedButton);
     }
+    function handleAddPin() {
+        // Add logic for handling pin addition here
+    }
+    
+    function renderPins() {
+        // Add logic for rendering pins here
+    }
 
     let infoContent = <p className="mapinfo-section-no-data">No data available</p>;//define content or else
+
+
+    if (selectedTab === "Pins") {
+        infoContent = (
+            <div className="pin-tab">
+                <button onClick={handleAddPin}>Add New Pin</button>
+                <div id="map" className="pin-map">
+                    {renderPins()}
+                </div>
+            </div>
+        );
+    }
+
+    if (selectedTab === "Import") {
 
 
     if (selectedTab === "Import") {
@@ -415,6 +438,12 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                         >
                             Interactions
                         </NavItemButton>
+                        <NavItemButton
+                            isSelected={selectedTab === 'Pins'}
+                            onClick={() => handleSelect('Pins')}
+                        >
+                              Pins
+                        </NavItemButton>
                     </>
                 }
             >
@@ -424,4 +453,5 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
     );
 }
+
 
