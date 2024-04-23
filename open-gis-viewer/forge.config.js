@@ -1,7 +1,7 @@
 module.exports = {
-  packagerConfig: {
-    asar: true,
-  },
+    packagerConfig: {
+        asar: true,
+    },
     rebuildConfig: {},
     makers: [
         {
@@ -45,11 +45,7 @@ module.exports = {
                         },
                     ],
                 },
-
             },
-          ],
         },
-      },
-    },
-  ],
+    ],
 };

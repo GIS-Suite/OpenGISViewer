@@ -6,9 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="2360d212-7ba0-4b4f-b9f7-d63ccf4b4e70" name="Changes" comment="wip">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/forge.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/forge.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/LayerGroupData.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/LayerGroupData.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/InputForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/InputForm.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -180,6 +180,7 @@
       <workItem from="1713496432380" duration="4740000" />
       <workItem from="1713751368153" duration="16141000" />
       <workItem from="1713828827550" duration="13251000" />
+      <workItem from="1713849670359" duration="3310000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />

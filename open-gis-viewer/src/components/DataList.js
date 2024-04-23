@@ -1,4 +1,3 @@
-
 import "./DataList.css";
 
 import React, {useState} from 'react';
@@ -124,60 +123,48 @@ export default function DataList({input, onSelectLayer}) {
                         ))
 
                     }
-                  >
-                    +
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+                    </tbody>
+                </table>}
 
-      {
-        //WFS
-        input?.ServiceIdentification?.ServiceType === "WFS" && (
-          <table className="data">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Title</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {input?.FeatureTypeList?.FeatureType?.map((layer, index) => (
-                <tr key={index}>
-                  <td>{layer.Name}</td>
-                  <td>{layer.Title ? layer.Title : "No Abstract Available"}</td>
-                  <td>
-                    <button
-                      onClick={() =>
-                        onSelectLayer(
-                          layer.Name,
-                          "WFS",
-                          input.OperationsMetadata.GetCapabilities.DCP.HTTP
-                            .Get[0].href
-                        )
-                      }
-                    >
-                      +
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )
-      }
-
-          
- 
+            {
+                //WFS
+                input?.ServiceIdentification?.ServiceType === "WFS" && (
+                    <table className="data">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Title</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {input?.FeatureTypeList?.FeatureType?.map((layer, index) => (
+                            <tr key={index}>
+                                <td>{layer.Name}</td>
+                                <td>{layer.Title ? layer.Title : "No Abstract Available"}</td>
+                                <td>
+                                    <button
+                                        onClick={() =>
+                                            onSelectLayer(
+                                                layer.Name,
+                                                "WFS",
+                                                input.OperationsMetadata.GetCapabilities.DCP.HTTP
+                                                    .Get[0].href
+                                            )
+                                        }
+                                    >
+                                        +
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                )
+            }
 
 
-
-
-  {isLayer === 'XYZ' &&
+            {isLayer === 'XYZ' &&
 
                 <table className="map-table">
                     <thead>
@@ -209,8 +196,6 @@ export default function DataList({input, onSelectLayer}) {
                 !isLayer && <p>No data imported</p>
             }
         </SectionItem>
-
-
 
 
     );

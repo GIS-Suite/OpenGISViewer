@@ -1,31 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Section } from "../UI/Section";
-import { SectionItem } from "../UI/SectionItem";
-import { NavItemButton } from "./NavItemButton";
-import "./MapInfo.css";
-
-
-    let test = "https://ahocevar.com/geoserver/wfs?service=WFS&";
-
-    if (type == "WFS") {
-      console.log("Passed URL: " + url);
-      console.log("Test URL: " + test);
-      const vectorSource = new VectorSource();
-      const vector = new VectorLayer({
-        source: vectorSource,
-        style: new Style({
-          stroke: new Stroke({
-            color: "rgba(0, 0, 255, 1.0)",
-            width: 2,
-          }),
-        }),
-      });
-
-      map.addLayer(vector);
-    }
-  }
-
-
+import React, {useEffect, useState} from "react";
 import {InputForm} from "./InputForm";
 import TileLayer from "ol/layer/Tile";
 import * as source from "ol/source";
@@ -38,6 +11,12 @@ import {faBarsStaggered, faPlusCircle, faSync} from '@fortawesome/free-solid-svg
 import LayerGroup from "ol/layer/Group";
 import {Collection} from "ol";
 import LayerGroupData from "./LayerGroupData";
+import VectorSource from "ol/source/Vector";
+import VectorLayer from "ol/layer/Vector";
+import {Stroke, Style} from "ol/style";
+import {Section} from "../UI/Section";
+import {SectionItem} from "../UI/SectionItem";
+import {NavItemButton} from "./NavItemButton";
 
 
 export const MapInfo = ({map, onToogleBottomMenu}) => {
@@ -133,6 +112,25 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
             console.log("xyz", dataLayer);
             map.addLayer(dataLayer);
             console.log(map?.getLayers().getArray());
+        }
+
+
+        if (type === "WFS") {
+            let test = "https://ahocevar.com/geoserver/wfs?service=WFS&";
+            console.log("Passed URL: " + url);
+            console.log("Test URL: " + test);
+            const vectorSource = new VectorSource();
+            const vector = new VectorLayer({
+                source: vectorSource,
+                style: new Style({
+                    stroke: new Stroke({
+                        color: "rgba(0, 0, 255, 1.0)",
+                        width: 2,
+                    }),
+                }),
+            });
+
+            map.addLayer(vector);
         }
     }
 
@@ -425,5 +423,5 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
         </Section>
 
     );
-  }
+}
 
