@@ -1,28 +1,21 @@
-
+/* NOT IN USE !!!!!!!!!!!!!!!*/
 .data-scroll {
-
     width: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
     scroll-snap-type: y proximity;
     scroll-behavior: smooth;
-
 }
 
 .data {
-    margin: 12px;
-    text-align: left;
-    /*border-collapse: collapse;*/
+    display: block;
+    text-align: center;
+    border-collapse: collapse;
+    margin-bottom: 4rem;
 }
 
 .data tbody tr {
     height: 50px;
-
-
-}
-
-.data tbody td {
-    border-radius: 12px;
 }
 
 .data thead {
@@ -30,7 +23,7 @@
     font-size: 1.2rem;
     color: #ffffff;
     margin: 2rem;
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid #575757;
 }
 
 .data tbody {
@@ -41,7 +34,7 @@
 }
 
 .data tbody tr:hover {
-    background: rgba(65, 64, 64, 0.9);
+    background: rgba(79, 79, 79, 0.9);
 }
 
 .data td button {
@@ -55,10 +48,4 @@
 
 .data td button:hover {
     background-color: #fcce67;
-
-}
-
-.data p {
-
-    text-align: center;
 }

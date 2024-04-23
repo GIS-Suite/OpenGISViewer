@@ -6,48 +6,27 @@ import View from 'ol/View';
 import OSM from 'ol/source/OSM';
 import {defaults as defaultControls, MousePosition, OverviewMap, ScaleLine, ZoomSlider} from 'ol/control';
 import TileLayer from "ol/layer/Tile";
-import XYZ from "ol/source/XYZ";
-import {TileWMS, WMTS} from "ol/source";
-import {GeoJSON} from "ol/format";
-import VectorLayer from "ol/layer/Vector";
-import VectorSource from "ol/source/Vector";
-import {bbox as bboxStrategy} from 'ol/loadingstrategy';
+import {TileWMS} from "ol/source";
 import {fetchWmsService} from "../utils/fetchParseWMS";
-import DataList from "./DataList";
-import {isNotEmpty, validateWMSUrl, validateXYZUrl} from "../utils/vaidateInputUrl";
-import {fetchWmtsService} from "../utils/fetchParseWMTS";
-import {getTopLeft, getWidth} from "ol/extent";
-import {get} from "ol/proj";
-import WMTSTileGrid from "ol/tilegrid/WMTS";
 import {MapInfo} from "./MapInfo";
-
 
 function Maps() {
     const [maps, setMaps] = useState({});
     const mapElement = useRef();
-    const [dataLayers, setDataLayers] = useState(null);
     const [expanded, setExpanded] = useState(false);
-    const [searching, setSearching] = useState(false);
 
 
     const toggleBottomBar = () => {
         setExpanded(!expanded);
-
     };
 
-    function toggleSearchUrl() {
-        setSearching(!searching);
-    }
-
     useEffect(() => {
-        //initialize a  main Map
         const initMap = async () => {
             const res = await fetchWmsService('https://geoint.nrlssc.org/nrltileserver/wms/layername?REQUEST=GetCapabilities&SERVICE=WMS');
             const marble = res.Capability.Layer.Layer.find(layer => layer.Name === 'bluemarble');
             const initialMap = new Map({
-
                 target: mapElement.current,
-                layers: [// core layer
+                layers: [
                     new TileLayer({
                         source: new TileWMS({
                             url: 'https://geoint.nrlssc.org/nrltileserver/wms',
@@ -62,23 +41,19 @@ function Maps() {
                     center: [0, 0],
                     zoom: 2,
                 }),
-                //extra controls for the map
                 controls: defaultControls().extend([
                     new MousePosition({
                         coordinateFormat: (coordinate) => {
                             return `Coordinates: ${coordinate[0].toFixed(2)}, ${coordinate[1].toFixed(2)}`;
                         },
                         projection: 'EPSG:4326',
-                        className: 'cursor-map-controls',// css for map cursor Maps.css
-                        //  target: document.getElementById('mouse-position'),
-
+                        className: 'cursor-map-controls',
                         undefinedHTML: '&nbsp;'
                     }),
                     new ScaleLine({units: 'us'}),
                     new ZoomSlider(),
                     new OverviewMap({
                         layers: [
-
                             new TileLayer({
                                 source: new OSM(),
                             })
@@ -92,19 +67,49 @@ function Maps() {
         initMap();
     }, []);
 
+    const handleButtonClick = async (l) => {
+
+        const layers = [...l];
+        maps.getLayers().clear();
+        maps.setLayers(layers);
+        maps.getLayers().forEach(layer => {
+            layer.getSource().refresh();
+        });
+        /*  const baseLayer = maps.getLayers().item(0); // Get the base layer
+          const layers = Array.from(maps.getLayers().getArray()); // Get all layers from the map
+          maps.getLayers().clear(); // Clear the map layers
+          const res = await fetchWmsService('https://geoint.nrlssc.org/nrltileserver/wms/layername?REQUEST=GetCapabilities&SERVICE=WMS');
+          const marble = res.Capability.Layer.Layer.find(layer => layer.Name === 'bluemarble');
+          const initialLayers = [
+              new TileLayer({
+                  source: new TileWMS({
+                      url: 'https://geoint.nrlssc.org/nrltileserver/wms',
+                      params: {
+                          'LAYERS': marble.Name,
+                      },
+                      serverType: 'geoserver',
+                  }),
+              })
+              // Add more layers as needed
+          ];
+          initialLayers.forEach(layer => {
+              maps.addLayer(layer); // Add the initial layers back to the map
+          });
+          layers.forEach(layer => {
+              if (layer !== baseLayer) {
+                  maps.addLayer(layer); // Add the previously selected layers back to the map
+              }
+          });*/
+    };
     return (
         <>
-            < div id='map' className="map" ref={mapElement}/>
+            <div id='map' className="map" ref={mapElement}/>
             <button className="menu-btn" onClick={toggleBottomBar}>{expanded ? "Hide" : "Map"} </button>
-            <button className="search-btn" onClick={toggleSearchUrl}>{searching ? "Hide" : "Import"}</button>
-
-
+            <button className="redraw-btn" onClick={() => handleButtonClick(maps.getLayers().getArray())}>Refresh
+            </button>
             <div className={`bottom-container ${expanded ? 'bottom-expanded' : ''}`}>
-
-                <MapInfo map={maps}/>
-
+                <MapInfo map={maps} onToogleBottomMenu={toggleBottomBar}/>
             </div>
-
         </>
     );
 }
