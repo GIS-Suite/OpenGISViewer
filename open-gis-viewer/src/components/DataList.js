@@ -60,7 +60,7 @@ export default function DataList({input, onSelectLayer}) {
                             <td>{<div className="map-table-scrollable-cnt">
                                 {layer.CRS?.map((crs, index) => (
                                     crs.startsWith('CRS:') || crs.startsWith('EPSG:') ? (
-                                        <div className='map-table-projections-cell' key={index}>{crs}</div>
+                                        <div className='map-table-data-cell' key={index}>{crs}</div>
                                     ) : null
                                 )) || (
                                     <div>N/A</div>

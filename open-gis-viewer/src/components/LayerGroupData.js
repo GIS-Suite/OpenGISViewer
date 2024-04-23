@@ -1,126 +1,146 @@
 import React, {useEffect, useState} from "react";
 import {Collection} from "ol";
 import "./MapInfo.css";
+import * as source from "ol/source";
 
 const LayerGroupData = ({
                             layerGroup,
                             onDeleteGroup,
                             handleAddLayer,
                             onSetMapGroup,
-                            setAddingToGroup,
-                            addingToGroup
+                            index,
+                            adding,
                         }) => {
-    const [groups, setGroups] = useState([]);
-
+    const [group, setGroup] = useState();
+    const [addingToGroup, setAddingToGroup] = useState(false);
     useEffect(() => {
-
         if (layerGroup) {
 
-            setGroups(layerGroup);
+            setGroup(layerGroup);
         }
     }, [layerGroup]);
-    const handleChange = (index, property, value) => {
-        setGroups(prevGroups => {
-            const updatedGroups = [...prevGroups];
-            const groupToUpdate = updatedGroups[index];
-            groupToUpdate.set(property, value);
-            return updatedGroups;
-        });
+    const handleChange = (property, value) => {
+        const updatedGroup = {...group};
+        switch (property) {
+            case 'maxResolution':
+                layerGroup.setMaxResolution(value);
+                break;
+            case 'maxZoom':
+                layerGroup.setMaxZoom(value);
+                break;
+            case 'minResolution':
+                layerGroup.setMinResolution(value);
+                break;
+            case 'minZoom':
+                layerGroup.setMinZoom(value);
+                break;
+            case 'opacity':
+                layerGroup.setOpacity(value);
+                break;
+            case 'visible':
+                layerGroup.setVisible(value);
+                break;
+            case 'zIndex':
+                layerGroup.setZIndex(value);
+                break;
+            default:
+                break;
+        }
+        setGroup(updatedGroup);
     };
 
-
-    function handleToggleAddingToGroup() {
-        setAddingToGroup(prev => !prev);
+    function handleAddLayerToGroup() {
+        setAddingToGroup(prevAdding => !prevAdding);
+        handleAddLayer(group, !addingToGroup);
+        adding(!addingToGroup);
     }
 
+//todo specifics to manipulate min max values on group obj
     return (
-        <>{layerGroup && <table className="map-table">
-            <thead>
+        <>
+            {layerGroup && <tbody>
+
             <tr>
-                <th>Layers</th>
-                <td>Max Resolution</td>
-                <td>Max Zoom</td>
-                <td>Min Resolution</td>
-                <td>Min Zoom</td>
-                <th>Visible</th>
-                <th>Opacity</th>
-                <th>ZIndex</th>
-                <th>Delete Group</th>
+                <td>
+                    <button className='clear-text-btn'
+                            onClick={() => {
+
+                                handleAddLayerToGroup();
+                            }}> {addingToGroup ? 'Stop Adding Layers' : 'Add Layers'}</button>
+                </td>
+                <td>
+                    <div
+                        className="map-table-scrollable-cnt">{layerGroup.getLayers().getArray().map((layer, index) => (
+
+                        <div className='map-table-data-cell'
+                             key={index}>{((layer.getSource() instanceof source.XYZ) ? '' : layer.values_.source.params_?.LAYERS) ?? layer.values_.source.layer_}</div>
+
+                    ))}
+
+                    </div>
+
+                </td>
+                <td>
+                    <input
+                        type="number"
+                        value={layerGroup.getMaxResolution() || ''}
+                        onChange={(e) => handleChange('maxResolution', parseFloat(e.target.value))}
+                    />
+                </td>
+                <td>
+                    <input
+                        type="number"
+                        value={layerGroup.getMaxZoom() || ''}
+                        onChange={(e) => handleChange('maxZoom', parseInt(e.target.value))}
+                    />
+                </td>
+                <td>
+                    <input
+                        type="number"
+                        value={layerGroup.getMinResolution() || ''}
+                        onChange={(e) => handleChange('minResolution', parseFloat(e.target.value))}
+                    />
+                </td>
+                <td>
+                    <input
+                        type="number"
+                        value={layerGroup.getMinZoom() || ''}
+                        onChange={(e) => handleChange('minZoom', parseInt(e.target.value))}
+                    />
+                </td>
+                <td>
+                    <input
+                        id="opacity"
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.01"
+                        value={layerGroup.getOpacity() || ''}
+                        onChange={(e) => handleChange('opacity', parseFloat(e.target.value))}
+                    />
+                </td>
+                <td>
+                    <input
+                        type="checkbox"
+                        checked={layerGroup.getVisible() || false}
+                        onChange={(e) => handleChange('visible', e.target.checked)}
+                    />
+                </td>
+                <td>
+                    <input
+                        type="number"
+                        value={layerGroup.getZIndex() || ''}
+                        onChange={(e) => handleChange('zIndex', parseInt(e.target.value))}
+                    />
+                </td>
+                <td>
+                    <button className='clear-text-btn' onClick={() => onSetMapGroup(index)}>Set</button>
+                </td>
+                <td>
+                    <button className='delete-btn' onClick={() => onDeleteGroup(index)}>Delete</button>
+                </td>
             </tr>
-            </thead>
-            <tbody>
-            {groups.map((group, index) => (
-//wip add min max default ranges
-                <tr key={index}>
-                    <td>
-                        <div
-                            className="map-table-scrollable-cnt"> {JSON.stringify(group.getLayers().getArray()) ?? 'n/a'}
-                        </div>
-                        <button className='clear-text-btn'
-                                onClick={() => {
-                                    handleAddLayer(group);
-                                    handleToggleAddingToGroup();
-                                }}> {addingToGroup ? 'Stop Adding Layers' : 'Add Layers'}</button>
-                    </td>
-                    <td>
-                        <input
-                            type="number"
-                            value={group.getMaxResolution() || ''}
-                            onChange={(e) => handleChange(index, 'maxResolution', parseFloat(e.target.value))}
-                        />
-                    </td>
-                    <td>
-                        <input
-                            type="number"
-                            value={group.getMaxZoom() || ''}
-                            onChange={(e) => handleChange(index, 'maxZoom', parseInt(e.target.value))}
-                        />
-                    </td>
-                    <td>
-                        <input
-                            type="number"
-                            value={group.getMinResolution() || ''}
-                            onChange={(e) => handleChange(index, 'minResolution', parseFloat(e.target.value))}
-                        />
-                    </td>
-                    <td>
-                        <input
-                            type="number"
-                            value={group.getMinZoom() || ''}
-                            onChange={(e) => handleChange(index, 'minZoom', parseInt(e.target.value))}
-                        />
-                    </td>
-                    <td>
-                        <input
-                            type="number"
-                            value={group.getOpacity() || ''}
-                            onChange={(e) => handleChange(index, 'opacity', parseFloat(e.target.value))}
-                        />
-                    </td>
-                    <td>
-                        <input
-                            type="checkbox"
-                            checked={group.getVisible() || false}
-                            onChange={(e) => handleChange(index, 'visible', e.target.checked)}
-                        />
-                    </td>
-                    <td>
-                        <input
-                            type="number"
-                            value={group.getZIndex() || ''}
-                            onChange={(e) => handleChange(index, 'zIndex', parseInt(e.target.value))}
-                        />
-                    </td>
-                    <td>
-                        <button className='clear-text-btn' onClick={() => onSetMapGroup(index)}>Set</button>
-                    </td>
-                    <td>
-                        <button className='delete-btn' onClick={() => onDeleteGroup(index)}>Delete</button>
-                    </td>
-                </tr>
-            ))}
-            </tbody>
-        </table>}
+            </tbody>}
 
         </>
 

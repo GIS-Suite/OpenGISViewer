@@ -254,7 +254,7 @@
     }
 }
 
-.map-table-projections-cell {
+.map-table-data-cell {
     scroll-snap-align: center;
 }
 
@@ -282,7 +282,7 @@
 
 .clear-text-btn {
     background: none;
-    color: white;
+    color: #688ee9;
     border: transparent;
 }
 

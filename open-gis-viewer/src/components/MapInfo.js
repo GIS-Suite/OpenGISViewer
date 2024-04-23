@@ -31,19 +31,19 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
     const data = {};
 
-    function selectedLayerHandler(data) {
+    function selectedLayerHandler(data) {//receives data from input components and  updates here to conditionally display content
         if (data) {
             setShowData(true);
         }
         setDataLayer(data);
     }
 
-    useEffect(() => {
+    useEffect(() => {//checkpoint to see what layergroup is, if is
         console.log("Create LayerGroupData", layerGroup);
 
-
     }, [layerGroup]);
-    useEffect(() => {
+
+    useEffect(() => {// updates zindex for layers tab,
         if (map && typeof map.getLayers === 'function') {
             // setMapLayer(map.getLayers().getArray());
             const layers = map.getLayers().getArray();
@@ -58,7 +58,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     }, [map, mapLayer]);
 
 
-    useEffect(() => {
+    useEffect(() => {//another check to see what is going on
         console.log("INFO-MAP:", map);
         if (map && typeof map.getLayerGroup === 'function') {
             console.log("LayerGroup", map.getLayerGroup());
@@ -67,20 +67,19 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
     }, [map, dataLayer, layerChanged])
 
-    function handleFormPopup() {
-
+    function handleFormPopup() {// conditionally handles form appearnace
         setShowData(false);
         if (selectedTab !== 'Import') {
             setSelectedTab('Import');
         }
     }
 
-    function onHandleAddTiff(tiff) {
+    function onHandleAddTiff(tiff) {//func to handle geotiff data , add tiff layer to a map object
         console.log("tiff:", tiff);
         map.addLayer(tiff);
     }
 
-    function onSelectLayerHandler(name, type, url, input) {
+    function onSelectLayerHandler(name, type, url, input) {//recieve data, and depending on type of data proceed with addding to map
         //  const baseUrl = new URL(url).origin + new URL(url).pathname.split('/').slice(0, 3).join('/');
         if (type === 'WMS') {
             const newLayer = new TileLayer({
@@ -114,6 +113,8 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
         }
     }
 
+    //handle layers tab, properties get/set of single layer
+
     function handleVisibilityChange(layer, checked) {
         setLayerChanged(prevState => !prevState);
         layer.setVisible(checked);
@@ -122,7 +123,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
     function handleOpacityChange(layer, number) {
         layer.setOpacity(number);
-        setLayerChanged(prevState => !prevState);
+        setLayerChanged(prevState => !prevState);//akward way to update component after change , cause layer.setOpacity dont update state
     }
 
     //set zindex function if enter on input
@@ -137,11 +138,11 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
         setLayerChanged(prevState => !prevState);
     }
 
-    function handleSelect(selectedButton) {
+    function handleSelect(selectedButton) {// func to select tabs
         setSelectedTab(selectedButton);
     }
 
-    let infoContent = <p className="mapinfo-section-no-data">No data available</p>;
+    let infoContent = <p className="mapinfo-section-no-data">No data available</p>;//define content or else
 
 
     if (selectedTab === "Import") {
@@ -155,28 +156,19 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
             </div>
         );
     } else if (selectedTab === "Layers") {
-        const setMapGroup = (groupIndex) => {
-            if (typeof map.setLayerGroup === 'function') {//adding group to map
+        const setMapGroup = (groupIndex) => {//setting LayerGroup to a map
+            if (typeof map.setLayerGroup === 'function') {
                 map.setLayerGroup(layerGroup[groupIndex]);
             }
 
         }
-        /*   const handleGroupLayers = (layer) => {
+        const updateAddingToGroup = (newState) => {//this update bool that conditionally activates what layer are or not selected
+            setAddingToGroup(newState);
+        };
 
-               setSelectedRowsLayer(prevSelected => {
-                   if (prevSelected.includes(layer)) {
-                       return prevSelected.filter(name => name !== layer);
-                   } else {
-                       return [...prevSelected, layer];
-                   }
-
-               });
-               console.log("Check group", layerGroup, "selectedRowslayers", selectedRowsLayer);
-           }*/
         const handleGroupLayers = (layer) => {
 
-            setSelectedRowsLayer(prevSelected => {
-
+            setSelectedRowsLayer(prevSelected => {//selecting layers from a table adding to a state
                 return prevSelected.includes(layer)
                     ? prevSelected.filter(name => name !== layer)
                     : [...prevSelected, layer];
@@ -184,32 +176,32 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
 
         };
-        const handleGroupLayerAddition = (group) => {
-            setAddingToGroup(true);
+        const handleGroupLayerAddition = (group, adding) => {//call this func with single layer and bool to add layers while btn pressed or add added layers to a group
             const addLayersToGroup = (layers) => {
-
-                group.setLayers(new Collection(layers));
+                if (typeof group.setLayers === 'function')
+                    group.setLayers(new Collection(layers));
             };
 
-            if (!addingToGroup) {
-                setAddingToGroup(prev => !prev);
+            if (!adding) {
+
                 addLayersToGroup(selectedRowsLayer);
                 setSelectedRowsLayer([]);
+                setAddingToGroup(prev => !prev);
             }
         };
 
-        const handleCreateLayerGroup = () => {
+        const handleCreateLayerGroup = () => {//craete group
             const newLayerGroup = new LayerGroup();
             setLayerGroup(prevLayerGroups => [...prevLayerGroups, newLayerGroup]);
         }
-        const handleDeleteLayerGroup = (index) => {
+        const handleDeleteLayerGroup = (index) => {//delete a group from layer group array state
             setLayerGroup(prevLayerGroups => {
                 const updatedLayerGroups = [...prevLayerGroups];
                 updatedLayerGroups.splice(index, 1);
                 return updatedLayerGroups;
             });
         };
-        const handleDragStart = (e, oldIndex) => {
+        const handleDragStart = (e, oldIndex) => {//functionality to drag and drop, on Start
             setDraggedIndex(oldIndex);
             console.log("BeforeUpdateArrayOrder", mapLayer);
         };
@@ -323,17 +315,35 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                     </tbody>
 
                 </table>
-                {layerGroup.length > 0 &&
-                    <LayerGroupData layerGroup={layerGroup} onDeleteGroup={handleDeleteLayerGroup}
-                                    handleAddLayer={handleGroupLayerAddition} onSetMapGroup={setMapGroup}
-                                    setAddingToGroup={setAddingToGroup} addingToGroup={addingToGroup}/>
-                }
+                <>{layerGroup.length > 0 && <table className="map-table">
+                    <thead>
+                    <tr>
+                        <th colSpan={2}>Layers</th>
+                        <td>Max Resolution</td>
+                        <td>Max Zoom</td>
+                        <td>Min Resolution</td>
+                        <td>Min Zoom</td>
+                        <th>Opacity</th>
+                        <th>Visible</th>
+                        <th>ZIndex</th>
+                        <th>Set to Map</th>
+                        <th>Delete Group</th>
+                    </tr>
+                    </thead>
+                    {layerGroup.map((group, index) => (
+                        <LayerGroupData key={index} layerGroup={group}
+                                        onDeleteGroup={handleDeleteLayerGroup}
+                                        handleAddLayer={handleGroupLayerAddition} onSetMapGroup={setMapGroup}
+                                        index={index}
+                                        adding={updateAddingToGroup}/>))
+
+                    }</table>}</>
 
                 <><FontAwesomeIcon title="Add Group" icon={faPlusCircle} className='add-group-layer-icon'
                                    onClick={handleCreateLayerGroup}/></>
             </div>
         );
-    } else if (selectedTab === "Export") {
+    } else if (selectedTab === "Export") {// here add export functionality, to export map in different ways
         infoContent = (<div className='export-btns-cnt'>
                 <button>Export as PNG</button>
                 <button>Export KML</button>
@@ -342,7 +352,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
         )
     }
 
-
+//main content setup
     return (
         <Section className="mapinfo-section">
             <SectionItem
