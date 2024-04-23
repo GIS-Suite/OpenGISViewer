@@ -1,8 +1,31 @@
-import React, {useEffect, useState} from 'react';
-import {Section} from "../UI/Section";
-import {SectionItem} from "../UI/SectionItem";
-import {NavItemButton} from "./NavItemButton";
+import React, { useEffect, useState } from "react";
+import { Section } from "../UI/Section";
+import { SectionItem } from "../UI/SectionItem";
+import { NavItemButton } from "./NavItemButton";
 import "./MapInfo.css";
+
+
+    let test = "https://ahocevar.com/geoserver/wfs?service=WFS&";
+
+    if (type == "WFS") {
+      console.log("Passed URL: " + url);
+      console.log("Test URL: " + test);
+      const vectorSource = new VectorSource();
+      const vector = new VectorLayer({
+        source: vectorSource,
+        style: new Style({
+          stroke: new Stroke({
+            color: "rgba(0, 0, 255, 1.0)",
+            width: 2,
+          }),
+        }),
+      });
+
+      map.addLayer(vector);
+    }
+  }
+
+
 import {InputForm} from "./InputForm";
 import TileLayer from "ol/layer/Tile";
 import * as source from "ol/source";
@@ -400,5 +423,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                 {infoContent}
             </SectionItem>
         </Section>
+
     );
-}
+  }
+

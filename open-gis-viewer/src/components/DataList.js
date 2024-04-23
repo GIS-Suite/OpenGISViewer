@@ -1,4 +1,8 @@
+
+import "./DataList.css";
+
 import React, {useState} from 'react';
+
 import * as source from "ol/source";
 import DataUpdateTime from "./DataUpdateTime";
 import {SectionItem} from "../UI/SectionItem";
@@ -118,12 +122,62 @@ export default function DataList({input, onSelectLayer}) {
                                 </td>
                             </tr>
                         ))
-                    }
-                    </tbody>
-                </table>
 
-            }
-            {isLayer === 'XYZ' &&
+                    }
+                  >
+                    +
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
+      {
+        //WFS
+        input?.ServiceIdentification?.ServiceType === "WFS" && (
+          <table className="data">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Title</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {input?.FeatureTypeList?.FeatureType?.map((layer, index) => (
+                <tr key={index}>
+                  <td>{layer.Name}</td>
+                  <td>{layer.Title ? layer.Title : "No Abstract Available"}</td>
+                  <td>
+                    <button
+                      onClick={() =>
+                        onSelectLayer(
+                          layer.Name,
+                          "WFS",
+                          input.OperationsMetadata.GetCapabilities.DCP.HTTP
+                            .Get[0].href
+                        )
+                      }
+                    >
+                      +
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )
+      }
+
+          
+ 
+
+
+
+
+  {isLayer === 'XYZ' &&
 
                 <table className="map-table">
                     <thead>
@@ -157,5 +211,8 @@ export default function DataList({input, onSelectLayer}) {
         </SectionItem>
 
 
+
+
     );
 }
+
