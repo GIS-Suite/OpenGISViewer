@@ -57,8 +57,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
             setMapLayer(layers);
         }
 
-    }, [map, mapLayer]);
-
+    }, [map, mapLayer, layerGroup]);
 
     useEffect(() => {//another check to see what is going on
         console.log("INFO-MAP:", map);
@@ -201,6 +200,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
             const addLayersToGroup = (layers) => {
                 if (typeof group.setLayers === 'function')
                     group.setLayers(new Collection(layers));
+
             };
 
             if (!adding) {
