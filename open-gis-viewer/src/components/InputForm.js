@@ -2,14 +2,14 @@ import React, {useEffect, useState} from "react";
 import "./MapInfo.css";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
-import { handleKMZFileSelect } from '../utils/KMZImport';
+import {handleKMZFileSelect} from '../utils/KMZImport';
 /*import {addGeoTIFFLayer, handleFileSelect, readGeoTIFF} from "../utils/fetchParseGeoTIFFs";*/
 import fetchWmtsCapabilities from "../utils/WMTSHandler";
 import {handleFileSelect} from "../utils/fetchParseGeoTIFFs";
 import {fetchWmsService} from "../utils/fetchParseWMS";
 
 
-export const InputForm = ({onHandleAddLayer}) => {
+export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
     const [layerType, setLayerType] = useState('XYZ');
     const [layerUrl, setLayerUrl] = useState('');
     const [dataLayers, setDataLayers] = useState(null);
@@ -24,11 +24,11 @@ export const InputForm = ({onHandleAddLayer}) => {
                 console.error('Error:', error);
             });
     }
- const handleKMZCreation = (e) => {
-    //Create a function that will add the layer 
-    
- }
-    
+    const handleKMZCreation = (e) => {
+        //Create a function that will add the layer
+
+    }
+
     useEffect(() => {
         console.log("Input_Form Layer:", dataLayers);
         onHandleAddLayer(dataLayers);
@@ -146,7 +146,7 @@ export const InputForm = ({onHandleAddLayer}) => {
                 break;
             case 'KMZ' :
                 const handleKMZ = async () => {
-                    try{
+                    try {
                         const fileInput = document.getElementById("fileInput");
                         const file = fileInput.files[0];
                         if (!file) {
@@ -154,7 +154,7 @@ export const InputForm = ({onHandleAddLayer}) => {
                             return;
                         }
                         await handleKMZFileSelect(file, setDataLayers);
-                    }catch (error) {
+                    } catch (error) {
                         console.error('Error handling KMS:', error);
                     }
                 }
@@ -237,7 +237,7 @@ export const InputForm = ({onHandleAddLayer}) => {
 
                     />
                 ) : null}
-                {layerType === 'KMZ' && 
+                {layerType === 'KMZ' &&
                     <input
                         type="file"
                         id="fileInput" // Add an ID to the file input
@@ -263,6 +263,6 @@ export const InputForm = ({onHandleAddLayer}) => {
             </form>
         </>
     );
- }    
+}
 
 

@@ -1,4 +1,3 @@
-
 import React, {useEffect, useState} from "react";
 import {InputForm} from "./InputForm";
 import TileLayer from "ol/layer/Tile";
@@ -20,8 +19,7 @@ import {SectionItem} from "../UI/SectionItem";
 import {NavItemButton} from "./NavItemButton";
 
 
-
-export const MapInfo = ({ map, onToogleBottomMenu }) => {
+export const MapInfo = ({map, onToogleBottomMenu}) => {
     const [selectedTab, setSelectedTab] = useState('Import');
     const [dataLayer, setDataLayer] = useState(null);
     const [showData, setShowData] = useState(false);
@@ -163,10 +161,11 @@ export const MapInfo = ({ map, onToogleBottomMenu }) => {
     function handleSelect(selectedButton) {// func to select tabs
         setSelectedTab(selectedButton);
     }
+
     function handleAddPin() {
         // Add logic for handling pin addition here
     }
-    
+
     function renderPins() {
         // Add logic for rendering pins here
     }
@@ -183,12 +182,7 @@ export const MapInfo = ({ map, onToogleBottomMenu }) => {
                 </div>
             </div>
         );
-    }
-
-    if (selectedTab === "Import") {
-
-
-    if (selectedTab === "Import") {
+    } else if (selectedTab === "Import") {
         infoContent = (
             <div className="mapinfo-content">
                 {!showData && <InputForm onHandleAddLayer={selectedLayerHandler}
@@ -442,7 +436,7 @@ export const MapInfo = ({ map, onToogleBottomMenu }) => {
                             isSelected={selectedTab === 'Pins'}
                             onClick={() => handleSelect('Pins')}
                         >
-                              Pins
+                            Pins
                         </NavItemButton>
                     </>
                 }
