@@ -73,7 +73,7 @@ const LayerGroupData = ({
                         className="map-table-scrollable-cnt">{layerGroup.getLayers().getArray().map((layer, index) => (
 
                         <div className='map-table-data-cell'
-                             key={index}>{((layer.getSource() instanceof source.XYZ) ? '' : layer.values_.source.params_?.LAYERS) ?? layer.values_.source.layer_}</div>
+                             key={index}>{((layer.getSource() instanceof source.XYZ) ? 'xyz' : ((layer.getSource() instanceof source.GeoTIFF) ? 'geotiff' : (layer.values_.source.params_?.LAYERS ?? layer.values_.source.layer_)))}</div>
 
                     ))}
 
