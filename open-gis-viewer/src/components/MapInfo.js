@@ -55,9 +55,10 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
             });
             setMapLayer(layers);
+
         }
 
-    }, [map, mapLayer, layerGroup]);
+    }, [map, mapLayer]);
 
     useEffect(() => {//another check to see what is going on
         console.log("INFO-MAP:", map);
@@ -143,7 +144,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
     function handleOpacityChange(layer, number) {
         layer.setOpacity(number);
-        setLayerChanged(prevState => !prevState);//akward way to update component after change , cause layer.setOpacity dont update state
+        setLayerChanged(prevState => !prevState);//awkward way to update component after change , cause layer.setOpacity dont update state
     }
 
     //set zindex function if enter on input
@@ -173,16 +174,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
     let infoContent = <p className="mapinfo-section-no-data">No data available</p>;//define content or else
 
 
-    if (selectedTab === "Pins") {
-        infoContent = (
-            <div className="pin-tab">
-                <button onClick={handleAddPin}>Add New Pin</button>
-                <div id="map" className="pin-map">
-                    {renderPins()}
-                </div>
-            </div>
-        );
-    } else if (selectedTab === "Import") {
+    if (selectedTab === "Import") {
         infoContent = (
             <div className="mapinfo-content">
                 {!showData && <InputForm onHandleAddLayer={selectedLayerHandler}
@@ -196,6 +188,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
         const setMapGroup = (groupIndex) => {//setting LayerGroup to a map
             if (typeof map.setLayerGroup === 'function') {
                 map.setLayerGroup(layerGroup[groupIndex]);
+                setMapLayer(layerGroup[groupIndex].getLayers().getArray());
             }
 
         }
@@ -228,7 +221,7 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
             }
         };
 
-        const handleCreateLayerGroup = () => {//craete group
+        const handleCreateLayerGroup = () => {//craete  layer group
             const newLayerGroup = new LayerGroup();
             setLayerGroup(prevLayerGroups => [...prevLayerGroups, newLayerGroup]);
         }
@@ -388,6 +381,15 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
             </div>
         )
+    } else if (selectedTab === "WMS Features") {
+        infoContent = (
+            <div className="pin-tab">
+                <button onClick={handleAddPin}>Add New Pin</button>
+                <div id="map" className="pin-map">
+                    {renderPins()}
+                </div>
+            </div>
+        );
     }
 
 //main content setup
@@ -421,22 +423,16 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
                             Layers
                         </NavItemButton>
                         <NavItemButton
-                            isSelected={selectedTab === 'Overlays'}
-                            onClick={() => handleSelect('Overlays')}
+                            isSelected={selectedTab === 'WMS Features'}
+                            onClick={() => handleSelect('WMS Features')}
                         >
-                            Overlays
+                            WMS Features
                         </NavItemButton>
                         <NavItemButton
                             isSelected={selectedTab === 'Interactions'}
                             onClick={() => handleSelect('Interactions')}
                         >
                             Interactions
-                        </NavItemButton>
-                        <NavItemButton
-                            isSelected={selectedTab === 'Pins'}
-                            onClick={() => handleSelect('Pins')}
-                        >
-                            Pins
                         </NavItemButton>
                     </>
                 }
