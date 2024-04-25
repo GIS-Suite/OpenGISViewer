@@ -19,7 +19,7 @@ import {SectionItem} from "../UI/SectionItem";
 import {NavItemButton} from "./NavItemButton";
 
 
-export const MapInfo = ({map, onToogleBottomMenu}) => {
+export const MapInfo = ({ map, onToogleBottomMenu, featureInfo }) => {
     const [selectedTab, setSelectedTab] = useState('Import');
     const [dataLayer, setDataLayer] = useState(null);
     const [showData, setShowData] = useState(false);
@@ -32,7 +32,6 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
 
     const data = {};
-
     function selectedLayerHandler(data) {//receives data from input components and  updates here to conditionally display content
         if (data) {
             setShowData(true);
@@ -161,14 +160,6 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
 
     function handleSelect(selectedButton) {// func to select tabs
         setSelectedTab(selectedButton);
-    }
-
-    function handleAddPin() {
-        // Add logic for handling pin addition here
-    }
-
-    function renderPins() {
-        // Add logic for rendering pins here
     }
 
     let infoContent = <p className="mapinfo-section-no-data">No data available</p>;//define content or else
@@ -382,15 +373,23 @@ export const MapInfo = ({map, onToogleBottomMenu}) => {
             </div>
         )
     } else if (selectedTab === "WMS Features") {
-        infoContent = (
-            <div className="pin-tab">
-                <button onClick={handleAddPin}>Add New Pin</button>
-                <div id="map" className="pin-map">
-                    {renderPins()}
+        if (featureInfo) {
+            infoContent = (
+                <div className="wms-features-tab">
+                    <h2>WMS Feature Information</h2>
+                    <div dangerouslySetInnerHTML={{ __html: featureInfo }} />
                 </div>
-            </div>
-        );
+            );
+        } else {
+            infoContent = (
+                <div className="wms-features-tab">
+                    <h2>WMS Feature Information</h2>
+                    <p>No feature information available</p>
+                </div>
+            );
+        }
     }
+    
 
 //main content setup
     return (
