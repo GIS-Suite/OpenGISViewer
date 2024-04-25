@@ -258,7 +258,7 @@ export const MapInfo = ({ map, onToogleBottomMenu }) => {
                             isSelected={selectedTab === 'Pins'}
                             onClick={() => handleSelect('Pins')}
                         >
-                              Pins
+                              Inspection
                         </NavItemButton>
                     </>
                 }
