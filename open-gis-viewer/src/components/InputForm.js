@@ -1,14 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from "react";
 import "./MapInfo.css";
 import TileLayer from "ol/layer/Tile";
 import XYZ from "ol/source/XYZ";
-import { fetchWmsService } from "../utils/fetchParseWMS";
-import { handleFileSelect, addGeoTIFFLayer } from '../utils/fetchParseGeoTIFFs'; 
-import GeoTIFF from 'geotiff';
+import {handleKMZFileSelect} from '../utils/KMZImport';
+/*import {addGeoTIFFLayer, handleFileSelect, readGeoTIFF} from "../utils/fetchParseGeoTIFFs";*/
 import fetchWmtsCapabilities from "../utils/WMTSHandler";
-import { handleKMZFileSelect } from '../utils/KMZImport';
+import {handleFileSelect} from "../utils/fetchParseGeoTIFFs";
+import {fetchWmsService} from "../utils/fetchParseWMS";
 
-export const InputForm = ({onHandleAddLayer}) => {
+
+export const InputForm = ({onHandleAddLayer, onHandleTiff}) => {
     const [layerType, setLayerType] = useState('XYZ');
     const [layerUrl, setLayerUrl] = useState('');
     const [dataLayers, setDataLayers] = useState(null);
@@ -23,11 +24,11 @@ export const InputForm = ({onHandleAddLayer}) => {
                 console.error('Error:', error);
             });
     }
- const handleKMZCreation = (e) => {
-    //Create a function that will add the layer 
-    
- }
-    
+    const handleKMZCreation = (e) => {
+        //Create a function that will add the layer
+
+    }
+
     useEffect(() => {
         console.log("Input_Form Layer:", dataLayers);
         onHandleAddLayer(dataLayers);
@@ -42,11 +43,9 @@ export const InputForm = ({onHandleAddLayer}) => {
                 layerToAdd = new TileLayer({
                     source: new XYZ({
                         url: layerUrl,
-
                     }),
                 });
                 setDataLayers(layerToAdd);
-
                 break;
             case 'WMS'://add WMS layeres suport, TileWMS
                 const getWMS = async () => {
@@ -62,9 +61,57 @@ export const InputForm = ({onHandleAddLayer}) => {
                 }
                 getWMS();
                 break;
-            case 'WFS':// suport for WFS TODOS
-                //COLLECT WFS INPUT
+            case "WFS": // suport for WFS TODOS
+                const getWFS = async () => {
+                    try {
+                        const featureRequest = new WFS().writeGetFeature({
+                            srsName: "EPSG:3857",
+                            featureNS: "https://geoint.nrlssc.org",
+                            featurePrefix: "osm",
+                            featureTypes: ["water_areas"],
+                            outputFormat: "application/json",
+                            /*filter: andFilter(
+                              likeFilter("name", "Mississipi*"),
+                              equalToFilter("waterway", "riverbank")
+                            ),*/
+                        });
+
+
+                        console.log(new XMLSerializer().serializeToString(featureRequest));
+
+                        const response = fetch(
+                            "https://geoint.nrlssc.org/embassy-locator/wfs?REQUEST=GetCapabilities&VERSION=1.1.0&SERVICE=WFS",
+                            {
+                                method: "POST",
+                                body: new XMLSerializer().serializeToString(featureRequest),
+                            }
+                        );
+                        if (!response.ok) {
+                            throw new Error("Network response is not okay");
+                        }
+                        const data = await response.data;
+                        console.log(data);
+                        /*.then(function (response) {
+                            console.log(response);
+                            return response.json();
+                          })
+                          .then(function (json) {
+                            console.log(json);
+                            const features = new GeoJSON().readFeatures(json);
+                            VectorSource.addFeatures(features);
+                            map.getView().fit(vectorSource.getExtent());
+                          });*/
+                        //const data = await fetchWfsService(layerUrl);
+                        //console.log("Entered Url: ", layerUrl);
+                        //console.log("URL Data: ", data);
+                        //setDataLayers(data);
+                    } catch (error) {
+                        console.error("Error fetching WFS: ", error);
+                    }
+                };
+                getWFS();
                 break;
+
             case 'WMTS'://support for WMTS
                 const getWMTS = async () => {
                     try {
@@ -76,21 +123,6 @@ export const InputForm = ({onHandleAddLayer}) => {
                     }
                 }
                 getWMTS();
-                /* const getWMTS = async () => {
-
-                     try {
-                         const data = await fetchWmtsService(layerUrl);
-                         // console.log(data);
-                         setDataLayers(data);
-                         console.log(dataLayers);
-                     } catch (error) {
-                         console.error('Error fetching data:', error);
-                     }
-
-                 }
-                 getWMTS();
-                 console.log(dataLayers);*/
-
                 break;
             case 'GeoTIFF':
                 const handleGeoTIFF = async () => {
@@ -114,7 +146,7 @@ export const InputForm = ({onHandleAddLayer}) => {
                 break;
             case 'KMZ' :
                 const handleKMZ = async () => {
-                    try{
+                    try {
                         const fileInput = document.getElementById("fileInput");
                         const file = fileInput.files[0];
                         if (!file) {
@@ -122,7 +154,7 @@ export const InputForm = ({onHandleAddLayer}) => {
                             return;
                         }
                         await handleKMZFileSelect(file, setDataLayers);
-                    }catch (error) {
+                    } catch (error) {
                         console.error('Error handling KMS:', error);
                     }
                 }
@@ -202,9 +234,10 @@ export const InputForm = ({onHandleAddLayer}) => {
                         value=''
                         onChange={handleGeotiffCreation}
                         required
+
                     />
                 ) : null}
-                {layerType === 'KMZ' && 
+                {layerType === 'KMZ' &&
                     <input
                         type="file"
                         id="fileInput" // Add an ID to the file input
@@ -230,4 +263,6 @@ export const InputForm = ({onHandleAddLayer}) => {
             </form>
         </>
     );
- }    
+}
+
+
