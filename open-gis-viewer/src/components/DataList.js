@@ -1,5 +1,3 @@
-import "./DataList.css";
-
 import React, {useState} from 'react';
 
 import * as source from "ol/source";
