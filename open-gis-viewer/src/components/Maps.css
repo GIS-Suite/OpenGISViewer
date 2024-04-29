@@ -4,15 +4,14 @@
     color: white;
     gap: 3rem;
     padding: 8px;
-    right: 0;
-    top: 40%;
-    height: 0;
-    bottom: 40vh;
+    top: 50%; /* Adjust positioning */
+    left: 50%; /* Adjust positioning */
+    transform: translate(-50%, -50%); /* Center the content */
     width: 500px;
     transition: height 2s;
     animation: reverse;
-
 }
+
 
 .content-small {
     height: 40vw;
@@ -128,4 +127,22 @@ slider bottom container
 
 .control-error p {
     margin: -10px;
+}
+.wms-features-tab {
+    padding: 0.5rem 1rem;
+    height: 200px;
+    border: none;
+    border-radius: 6px;
+    background-color: transparent;
+    color: #dededc;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    overflow-y: scroll; /* Add overflow-y to enable vertical scrolling */
+}
+
+
+.wms-features-tab.active {
+    background-color: #0b1f46;
+    color: #ebe7ef;
 }
