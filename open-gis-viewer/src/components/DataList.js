@@ -1,5 +1,3 @@
-import "./DataList.css";
-
 import React, {useState} from 'react';
 
 import * as source from "ol/source";
@@ -9,6 +7,8 @@ import "./MapInfo.css";
 
 export default function DataList({input, onSelectLayer}) {
     const [query, setQuery] = useState("");
+    const [showAll, setShowAll] = useState(false);
+    const [itemsToShow, setItemsToShow] = useState(10);
     // const [isLayer, setIsLayer] = useState(null);
     let isLayer;
     /*    useEffect(() => {
@@ -24,7 +24,9 @@ export default function DataList({input, onSelectLayer}) {
                 }
             }
         }, [input]);*/
-
+    const handleShowMore = () => {
+        setItemsToShow(itemsToShow + 10);
+    };
     let filter = <div className='map-table-filter'>
         Filter:
         <input
@@ -56,19 +58,23 @@ export default function DataList({input, onSelectLayer}) {
                     </thead>
                     <tbody>
 
-                    {input?.Capability?.Layer?.Layer?.filter(layer => layer.Name.toLowerCase().includes(query.toLowerCase())).map((layer) => (
-                        <tr key={layer.Title}>
+                    {input?.Capability?.Layer?.Layer?.filter(layer => layer.Name.toLowerCase().includes(query.toLowerCase())).map((layer, index) => (
+                        <tr key={index}>
                             <td>{layer.Name}</td>
                             <td>{layer.Abstract ? layer.Abstract : "No Abstract available"}</td>
                             <td>{<div className="map-table-scrollable-cnt">
-                                {layer.CRS?.map((crs, index) => (
-                                    crs.startsWith('CRS:') || crs.startsWith('EPSG:') ? (
+                                {layer.CRS?.slice(0, showAll ? layer.CRS.length : itemsToShow).map((crs, index) => (
+                                    crs && (crs.startsWith('CRS:') || crs.startsWith('EPSG:')) ? (
                                         <div className='map-table-data-cell' key={index}>{crs}</div>
                                     ) : null
-                                )) || (
+                                ))}
+                                {layer.CRS && layer.CRS.length > 10 && !showAll && (
+                                    <div className='map-table-data-cell' onClick={handleShowMore}>Show
+                                        More</div>
+                                )}
+                                {!layer.CRS && (
                                     <div>N/A</div>
                                 )}
-
                             </div>} </td>
                             <td>{layer.KeywordList ? <DataUpdateTime date={new Date(layer?.KeywordList.find((item) => {
                                 return item.includes('Layer Update Time');

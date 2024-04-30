@@ -6,8 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="2360d212-7ba0-4b4f-b9f7-d63ccf4b4e70" name="Changes" comment="wip">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/forge.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/forge.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/MapInfo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/DataList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" beforeDir="false" afterPath="$PROJECT_DIR$/open-gis-viewer/src/components/Maps.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,6 +183,18 @@
       <workItem from="1713879130740" duration="3448000" />
       <workItem from="1713909807307" duration="2017000" />
       <workItem from="1713926918720" duration="3870000" />
+      <workItem from="1713931915102" duration="565000" />
+      <workItem from="1714013109310" duration="1614000" />
+      <workItem from="1714076407212" duration="500000" />
+      <workItem from="1714082494337" duration="1608000" />
+      <workItem from="1714100349559" duration="51000" />
+      <workItem from="1714101239991" duration="373000" />
+      <workItem from="1714102328711" duration="28000" />
+      <workItem from="1714175373965" duration="2990000" />
+      <workItem from="1714264005709" duration="1065000" />
+      <workItem from="1714270719589" duration="3286000" />
+      <workItem from="1714279199970" duration="488000" />
+      <workItem from="1714357782083" duration="1821000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
